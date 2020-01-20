@@ -2,28 +2,24 @@
 // ==  ACTION type  ==
 // ===================
 export const type = {
-    SET_TOKEN: 'SET_TOKEN',
-    SET_USER: 'SET_USER'
+  SET_TOKEN: 'SET_TOKEN',
+  SET_USER: 'SET_USER'
 };
 
-// =========================
-// ==  Token action type  ==
-// =========================
+// =======================
+// ==  ACTION function  ==
+// =======================
 
-export function setToken(user) {
-    return {
-        type: type.SET_TOKEN,
-        user
-    }
-}
+export const setToken = (user) => {
+  return {
+    type: type.SET_TOKEN,
+    user
+  };
+};
 
-// ========================
-// ==  User action type  ==
-// ========================
-
-export function setUser(user) {
-    return {
-        type: type.SET_USER,
-        user
-    }
-}
+export const setUser = (user) => {
+  return {
+    type: type.SET_USER,
+    user
+  };
+};
