@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
-import userReducer from './userReducer';
+import authReducer from './authReducer';
+import userListReducer from './userListReducer';
 
-export const rootReducer = combineReducers({
-  userReducer: userReducer
-});
-
-export default rootReducer;
+export default (token) => {
+  return combineReducers({
+    auth: authReducer,
+    users: userListReducer
+  })
+};

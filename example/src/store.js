@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux';
-import fleetReducer from 'fleet-ui/src/reducers/rootReducer';
+import { fleetReducer } from 'fleet-ui';
 import appReducer from './reducer/appReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const rootReducer = combineReducers({
-    fleet: fleetReducer,
+    fleet: fleetReducer(),
     app: appReducer
 });
 
