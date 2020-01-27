@@ -8,10 +8,6 @@ import { UserListComponent } from 'fleet-ui';
 
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers('7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', '0Q3gGkMDdF06l7VzUWwa6Qtt'));
-setTimeout(() => {
-  store.dispatch(fleet_actions.fetchUsers());
-}, 3000);
-
 
 store.dispatch(app_actions.setAppInfo({
   app_name: 'Exemple App',

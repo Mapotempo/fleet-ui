@@ -1,28 +1,20 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ListGroup } from 'react-bootstrap';
+import FleetGuard from './utils/guards';
+import Pending from './utils/pending';
 import UserItem from './user-item';
+import {fetchUsers } from '../actions';
 
 const UserList = () => {
-  const [loader, setLoader] = useState(0);
   let users = useSelector(state => state.fleet.users.items);
   let isFetching = useSelector(state => state.fleet.users.isFetching);
-
-  useEffect(() => {
-    if (isFetching) {
-      setTimeout(() => {
-        if (loader < 5)
-          setLoader(loader + 1);
-        else
-          setLoader(0);
-      }, 500);
-    }
-  });
-
+  const dispatch = useDispatch();
   if (isFetching)
-    return ('load users' + '.'.repeat(loader));
-
+    return (<Pending message='load users'/>);
+  if (Object.entries(users).length === 0) {
+    dispatch(fetchUsers());
+  }
   return (
     <ListGroup>
       {
@@ -31,4 +23,4 @@ const UserList = () => {
     </ListGroup>);
 };
 
-export default UserList;
+export default FleetGuard(UserList);
