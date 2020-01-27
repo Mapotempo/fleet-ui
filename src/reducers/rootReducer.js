@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
 
 import authReducer from './authReducer';
-import userListReducer from './userListReducer';
+import usersReducer from './usersReducer';
 
-export default (token) => {
+export default (fleetHost) => {
   return combineReducers({
+    fleetHost: () => { return fleetHost; },
     auth: authReducer,
-    users: userListReducer
-  })
+    users: usersReducer
+  });
 };

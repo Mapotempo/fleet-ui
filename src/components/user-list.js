@@ -1,42 +1,28 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ListGroup } from 'react-bootstrap';
-import UserItem from './user-item'
+import UserItem from './user-item';
 
-// import styles from '../styles.css'
-
-class UserListComponent extends Component {
-  render() {
-    const {
-      text,
-      users
-    } = this.props
-
-    return (
-      <ListGroup>
-        {
-          Object.entries(users).map(
-            (data) => <UserItem key={data[0]} user={data[1]}></UserItem>
-          )
-        }
-      </ListGroup>)
+const UserList = () => {
+  const [loader, setLoader] = useState(0);
+  let users = useSelector(state => state.fleet.users.items);
+  let isFetching = useSelector(state => state.fleet.users.isFetching);
+  if (isFetching) {
+    setTimeout(() => {
+      setLoader(loader + 1);
+    }, 200);
+    if (loader > 3)
+      setLoader(0);
+    return ('.'.repeat(loader));
   }
-}
 
-UserListComponent.propTypes = {
-  text: PropTypes.string
+  return (
+    <ListGroup>
+      {
+        Object.entries(users).map((data) => <UserItem key={data[0]} user={data[1]}></UserItem>)
+      }
+    </ListGroup>);
 };
 
-const mapStateToProps = state => ({
-  users: state.fleet.users
-})
-const mapDispatchToProps = dispatch => ({
-  // toggleTodo: id => dispatch(toggleTodo(id))
-})
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserListComponent)
+export default UserList;

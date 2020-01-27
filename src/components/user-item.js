@@ -1,12 +1,19 @@
-import React, { Component } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroupItem, Checkbox } from 'react-bootstrap';
 
-export default (props) => {
+const UserItem = (props) => {
   return (
     <ListGroupItem >
       <Checkbox style={{ display: 'inline-block' }}></Checkbox>
       {
         props.user.email
       }
-    </ListGroupItem>)
-}
+    </ListGroupItem>);
+};
+
+UserItem.propTypes = {
+  user: PropTypes.object
+};
+
+export default UserItem;

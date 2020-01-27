@@ -1,17 +1,16 @@
-import { createStore, combineReducers } from 'redux';
-import { fleetReducer } from 'fleet-ui';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { fleetReducer, fleetMiddleware } from 'fleet-ui';
 import appReducer from './reducer/appReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const rootReducer = combineReducers({
-    fleet: fleetReducer(),
-    app: appReducer
+  fleet: fleetReducer('http://localhost:8084/'),
+  app: appReducer
 });
 
-
 export default function configureStore() {
-    return createStore(
-        rootReducer,
-        composeWithDevTools()
-    );
+  return createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(fleetMiddleware))
+  );
 }

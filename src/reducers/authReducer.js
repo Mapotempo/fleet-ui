@@ -1,29 +1,39 @@
-import { type } from '../actions';
+import {
+  REQUEST_AUTH_USER,
+  RECEIVE_AUTH_USER
+} from '../actions';
 
 const initState = {
-  auth_token: '',
-  auth_user: {
-    pk: -1,
-    first_name: '',
-    last_name: '',
+  isFetching: false,
+  isConnected: false,
+  user: {
+    id: -1,
+    company_id: '',
     email: '',
-    phone_number: ''
+    sync_user: '',
+    name: '',
+    vehicle: false,
+    api_key: ''
   }
 };
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
-    case type.SET_AUTH_TOKEN:
+    case REQUEST_AUTH_USER:
       state = {
         ...state,
-        auth_token: action.token
+        isFetching: true,
+        isConnected: false
       };
       break;
-    case type.SET_AUTH_USER:
+    case RECEIVE_AUTH_USER:
       state = {
         ...state,
-        auth_user: { ...state.user, ...action.user }
-      }
+        isFetching: false,
+        isConnected: true,
+        user: { ...state.user, ...action.user }
+      };
+      break;
     default:
       break;
   }
