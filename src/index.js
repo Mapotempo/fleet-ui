@@ -1,3 +1,5 @@
+import FleetGuard from './components/utils/guards';
+
 // Actions
 export * from './actions';
 
@@ -8,4 +10,5 @@ export { default as fleetReducer } from './reducers/rootReducer';
 export { default as fleetMiddleware } from 'redux-thunk';
 
 // Components
-export { default as UserListComponent } from './components/user-list';
+import _UserListComponent from './components/user/user-list';
+export const UserListComponent = FleetGuard(_UserListComponent);

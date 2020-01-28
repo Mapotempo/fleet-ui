@@ -21,7 +21,7 @@ const Penging = (props) => {
       isCancelled = true;
     };
   });
-  return (<div style={{height: '100%'}}>
+  return (<div style={{marginTop: '50px', marginBottom: '50px'}}>
     <p style={{textAlign: 'center'}}>
       {ascii[loader]}
       <br />

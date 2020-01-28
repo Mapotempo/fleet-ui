@@ -12,7 +12,7 @@ const FleetGuard = (Component) => {
     let isConnected = useSelector(state => state.fleet.auth.isConnected);
     let isFetching = useSelector(state => state.fleet.auth.isFetching);
     if (isFetching)
-      return (<Pending message='connexion pending' />);
+      return (<Pending message='Mapotempo Live Server - connexion pending' />);
     if (!isConnected)
       return 'Not connected';
     return (<Component {...props}/>);
