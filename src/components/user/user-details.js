@@ -7,7 +7,6 @@ const UserDetails = (props) => {
 
   };
   const handleChange = (e) => {
-    this.setState({ value: e.target.value });
   };
 
   if (!props.user)
