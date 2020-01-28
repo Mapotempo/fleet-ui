@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { Jumbotron } from 'react-bootstrap';
 
 const ascii = ['◐', '◓', '◑', '◒'];
 
@@ -21,13 +22,14 @@ const Penging = (props) => {
       isCancelled = true;
     };
   });
-  return (<div style={{marginTop: '50px', marginBottom: '50px'}}>
-    <p style={{textAlign: 'center'}}>
-      {ascii[loader]}
-      <br />
-      {props.message}
-    </p>
-  </div>);
+  return (
+    <Jumbotron>
+      <p style={{textAlign: 'center'}}>
+        {ascii[loader]}
+        <br />
+        {props.message}
+      </p>
+    </Jumbotron>);
     
 };
 

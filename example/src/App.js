@@ -4,7 +4,7 @@ import configureStore from './store';
 
 import * as fleet_actions from 'fleet-ui';
 import * as app_actions from './actions';
-import { UserListComponent } from 'fleet-ui';
+import { UserListComponent, LiveView } from 'fleet-ui';
 
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers('7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', '0Q3gGkMDdF06l7VzUWwa6Qtt'));
@@ -19,7 +19,8 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <UserListComponent />
+        {/* <UserListComponent /> */}
+        <LiveView/>
       </Provider>
     );
   }
