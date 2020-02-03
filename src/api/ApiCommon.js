@@ -15,14 +15,19 @@ const processError = (error) => {
   }
   return resError;
 };
-const doRequest = (type, host, {onSuccess, onError, url='', body=null, apiKey = ''}) => {
+
+const doRequest = (type, host, { onSuccess, onError, url = '', body = null, apiKey = '', parameters = {}}) => {
   axios({
     method: type,
-    url: host + url + '?api_key=' + apiKey,
+    url: host + url,
     headers: {
       'Content-Type': 'application/json'
     },
-    data: body
+    data: body,
+    params: {
+      api_key: apiKey,
+      ...parameters
+    }  
   }).then(function(response) {
     onSuccess(response.data);
   }).catch(function(error) {
@@ -30,15 +35,15 @@ const doRequest = (type, host, {onSuccess, onError, url='', body=null, apiKey = 
   });
 };
 
-export const doGet = (host, {onSuccess, onError, url='', apiKey = ''}) => {
-  doRequest('GET', host, {onSuccess, onError, url, apiKey});
+export const doGet = (host, {onSuccess, onError, url='', apiKey = '', parameters={}}) => {
+  doRequest('GET', host, {onSuccess, onError, url, apiKey, parameters});
 };
-export const doPost = (host, {onSuccess, onError, url='', apiKey = '', body={}}) => {
-  doRequest('POST', host, {onSuccess, onError, url, apiKey, body});
+export const doPost = (host, {onSuccess, onError, url='', apiKey = '', body={}, parameters={}}) => {
+  doRequest('POST', host, {onSuccess, onError, url, apiKey, body, parameters});
 };
-export const doFetch = (host, {onSuccess, onError, url='', apiKey = '', body={}}) => {
-  doRequest('FETCH', host, {onSuccess, onError, url, apiKey, body});
+export const doFetch = (host, {onSuccess, onError, url='', apiKey = '', body={}, parameters={}}) => {
+  doRequest('FETCH', host, {onSuccess, onError, url, apiKey, body, parameters});
 };
-export const doDelete = (host, { onSuccess, onError, url = '', apiKey = '' }) => {
-  doRequest('DELETE', host, {onSuccess, onError, url, apiKey});
+export const doDelete = (host, { onSuccess, onError, url = '', apiKey = '', parameters = {}}) => {
+  doRequest('DELETE', host, {onSuccess, onError, url, apiKey, parameters});
 };

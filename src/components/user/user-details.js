@@ -7,6 +7,7 @@ const UserDetails = (props) => {
 
   };
   const handleChange = (e) => {
+    console.log(e);
   };
 
   if (!props.user)

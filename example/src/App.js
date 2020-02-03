@@ -4,10 +4,10 @@ import configureStore from './store';
 
 import * as fleet_actions from 'fleet-ui';
 import * as app_actions from './actions';
-import { UserListComponent, LiveView } from 'fleet-ui';
+import { LiveView } from 'fleet-ui';
 
 const store = configureStore();
-store.dispatch(fleet_actions.signInUsers('7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', '0Q3gGkMDdF06l7VzUWwa6Qtt'));
+store.dispatch(fleet_actions.signInUsers('7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', 'jJjAc6u1pQMkuOjBDRRVQwtt'));
 
 store.dispatch(app_actions.setAppInfo({
   app_name: 'Exemple App',

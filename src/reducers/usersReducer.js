@@ -1,7 +1,4 @@
-import {
-  RECEIVE_USERS,
-  REQUEST_USERS
-} from '../actions';
+import { RECEIVE_USERS, REQUEST_USERS, ERRORS_ROUTES } from '../actions';
 
 // {items={5: {email: 'test@mapotempo.com', phone: '0600000000' }}, isFetching: False}
 const initState = {
@@ -21,6 +18,9 @@ export default function usersReducer(state = initState, action) {
       break;
     case REQUEST_USERS:
       state = { ...state, isFetching: true };
+      break;
+    case ERRORS_ROUTES:
+      state = { ...state, errors: action.errors, isFetching: false };
       break;
     default:
       break;

@@ -15,6 +15,14 @@ const receiveUsers = (users) => {
   };
 };
 
+export const ERRORS_USERS = 'ERRORS_USERS';
+const errorsUsers = (errors) => {
+  return {
+    type: ERRORS_USERS,
+    errors
+  };
+};
+
 export const fetchUsers = () => {
   return (dispatch, getState) => {
     dispatch(requestUsers());
@@ -22,12 +30,8 @@ export const fetchUsers = () => {
       {
         host: getState().fleet.fleetHost,
         apiKey: getState().fleet.auth.user.api_key,
-        onSuccess: (users) => {
-          dispatch(receiveUsers(users));
-        },
-        onError: () => {
-          console.error('getUserApiCall ERROR');
-        }
+        onSuccess: (users) => dispatch(receiveUsers(users)),
+        onError: (errors) => errorsUsers(errors)
       }
     );
   };

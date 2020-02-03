@@ -15,11 +15,11 @@ const receiveAuthUser = (user) => {
   };
 };
 
-export const ERROR_AUTH_USER = 'ERROR_AUTH_USER';
-const errorAuthUser = (error) => {
+export const ERRORS_AUTH_USER = 'ERRORS_AUTH_USER';
+const errorAuthUser = (errors) => {
   return {
-    type: ERROR_AUTH_USER,
-    error
+    type: ERRORS_AUTH_USER,
+    errors
   };
 };
 
@@ -33,9 +33,7 @@ export const signInUsers = (syncUser, apiKey) => {
         onSuccess: (user) => {
           dispatch(receiveAuthUser(user));
         },
-        onError: (error) => {
-          dispatch(errorAuthUser(error));
-        }
+        onError: (errors) => dispatch(errorAuthUser(errors))
       }
     );
   };

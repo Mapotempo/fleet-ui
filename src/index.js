@@ -14,5 +14,5 @@ import _UserListComponent from './components/user/user-list';
 export const UserListComponent = FleetGuard(_UserListComponent);
 
 // Views
-import _LiveView from './views/liveView';
+import _LiveView from './views/LiveView';
 export const LiveView = FleetGuard(_LiveView);
