@@ -1,11 +1,13 @@
 import {
   REQUEST_AUTH_USER,
-  RECEIVE_AUTH_USER
+  RECEIVE_AUTH_USER,
+  ERROR_AUTH_USER
 } from '../actions';
 
 const initState = {
   isFetching: false,
   isConnected: false,
+  error: null,
   user: {
     id: -1,
     company_id: '',
@@ -32,6 +34,13 @@ export default function authReducer(state = initState, action) {
         isFetching: false,
         isConnected: true,
         user: { ...state.user, ...action.user }
+      };
+      break;
+    case ERROR_AUTH_USER:
+      state = {
+        isFetching: false,
+        isConnected: false,
+        error: action.error
       };
       break;
     default:

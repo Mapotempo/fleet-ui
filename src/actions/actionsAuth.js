@@ -1,8 +1,5 @@
-import apiAuth from '../api/api_auth';
+import apiAuth from '../api/ApiAuth';
 
-// =======================
-// ==  ACTION function  ==
-// =======================
 export const REQUEST_AUTH_USER = 'REQUEST_AUTH_USER';
 const requestAuthUser = () => {
   return {
@@ -18,16 +15,26 @@ const receiveAuthUser = (user) => {
   };
 };
 
+export const ERROR_AUTH_USER = 'ERROR_AUTH_USER';
+const errorAuthUser = (error) => {
+  return {
+    type: ERROR_AUTH_USER,
+    error
+  };
+};
+
 export const signInUsers = (syncUser, apiKey) => {
   return (dispatch, getState) => {
     dispatch(requestAuthUser());
-    apiAuth.apiFetchAuthUser(getState().fleet.fleetHost, syncUser, apiKey,
+    apiAuth.apiFetchAuthUser(syncUser,
       {
+        host: getState().fleet.fleetHost,
+        apiKey,
         onSuccess: (user) => {
           dispatch(receiveAuthUser(user));
         },
         onError: (error) => {
-          console.error('apiFetchAuthUser ERROR', error);
+          dispatch(errorAuthUser(error));
         }
       }
     );
