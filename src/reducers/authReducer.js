@@ -34,9 +34,10 @@ export default function authReducer(state = initState, action) {
       break;
     case ERRORS_AUTH_USER:
       state = {
+        ...state,
         isFetching: false,
         isConnected: false,
-        errors: action.error
+        errors: action.errors
       };
       break;
     default:

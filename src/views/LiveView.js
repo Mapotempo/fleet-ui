@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import RoutesList from '../components/route/RouteList';
-import Pending from '../components/utils/pending';
+import Loader from '../components/utils/loader';
 
 import { fetchRoutes } from '../actions';
 
@@ -24,12 +24,10 @@ const LiveView = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // if (isRoutesFetching)
-  //   return (<Pending message='Loading routes'/>);
+  if (isRoutesFetching)
+    return (<Loader message='Loading routes'/>);
 
-  return (
-    <RoutesList routes={routes}/>
-  );
+  return (<RoutesList routes={routes} />);
 };
     
 export default LiveView;

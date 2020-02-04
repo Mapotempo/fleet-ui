@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Table, Checkbox, Pager } from 'react-bootstrap';
 
-import Pending from '../utils/pending';
+import Loader from '../utils/loader';
 import UserItem from './user-item';
 import {fetchUsers } from '../../actions';
 
@@ -11,7 +11,7 @@ const UserList = (props) => {
   let users = useSelector(state => state.fleet.users.items);
   const dispatch = useDispatch();
   if (useSelector(state => state.fleet.users.isFetching))
-    return (<Pending message='Loading users'/>);
+    return (<Loader message='Loading users'/>);
   if (Object.entries(users).length === 0) {
     dispatch(fetchUsers());
   }
