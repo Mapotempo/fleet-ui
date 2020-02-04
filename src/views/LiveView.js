@@ -20,7 +20,7 @@ const LiveView = () => {
   useEffect(() => {
     if (!mounted)
       setMounted(true);
-    const interval = setInterval(() => dispatch(fetchRoutes()), 20000);
+    const interval = setInterval(() => dispatch(fetchRoutes()), 60000);
     return () => clearInterval(interval);
   }, []);
 
