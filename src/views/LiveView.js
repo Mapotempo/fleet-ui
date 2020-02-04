@@ -5,16 +5,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import RoutesList from '../components/route/RouteList';
 import Loader from '../components/utils/loader';
 
-import { fetchRoutes } from '../actions';
+import { fetchRoutes, fetchWorkflow, fetchUsers } from '../actions';
 
 const LiveView = () => {
   const [mounted, setMounted] = useState(false);
   let routes = useSelector(state => state.fleet.routes.items);
-  let isRoutesFetching = useSelector(state => state.fleet.routes.isFetching);
+  let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
+  let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
+  let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
+
   const dispatch = useDispatch();
 
   if (!mounted) {
     dispatch(fetchRoutes());
+    dispatch(fetchWorkflow());
+    dispatch(fetchUsers());
   }
   
   useEffect(() => {
@@ -24,8 +29,8 @@ const LiveView = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (isRoutesFetching)
-    return (<Loader message='Loading routes'/>);
+  if (isFetchingMST || isFetchingMAT || isFetchingUser)
+    return (<Loader message='Loading data'/>);
 
   return (<RoutesList routes={routes} />);
 };
