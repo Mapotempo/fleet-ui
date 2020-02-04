@@ -24,7 +24,6 @@ const requestMissionStatusType = () => {
 
 export const RECEIVE_MISSION_STATUS_TYPE = 'RECEIVE_MISSION_STATUS_TYPE';
 const receiveMissionStatusType = (missionStatusTypes) => {
-  console.log(missionStatusTypes);
   return {
     type: RECEIVE_MISSION_STATUS_TYPE,
     missionStatusTypes

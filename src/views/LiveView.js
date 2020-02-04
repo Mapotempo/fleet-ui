@@ -7,14 +7,15 @@ import Loader from '../components/utils/loader';
 
 import { fetchRoutes, fetchWorkflow, fetchUsers } from '../actions';
 
+import { routesFullInfo } from '../selectors';
+
 const LiveView = () => {
+  const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
-  let routes = useSelector(state => state.fleet.routes.items);
+  let routes = useSelector(routesFullInfo);
   let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
   let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
   let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
-
-  const dispatch = useDispatch();
 
   if (!mounted) {
     dispatch(fetchRoutes());

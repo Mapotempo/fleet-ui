@@ -16,7 +16,7 @@ const defaultProps = {
 
 const RoutesList = (props) => {
   return (
-    <Table hover condensed responsive>
+    <Table hover responsive>
       <thead>
         <tr>
           <th>Name</th>
@@ -50,46 +50,18 @@ const routeItemPropTypes = {
   route: PropTypes.object
 };
 
-const computeAdvancing = (actualDate, departureDate, eta) => {
-  if (actualDate > eta)
-    return 100;
-  else if (actualDate > departureDate)
-    return Math.round(((actualDate - departureDate) / (eta - departureDate)) * 100);
-  else
-    return 0;
-};
-
-const computeRouteInfo = (route) => {
-  let actualDate = new Date();
-  return route.missions.reduce((accumulator, currentValue) => {
-    // Choosed the better ETA source
-    let currentEtaValue = currentValue.eta ? currentValue.eta : currentValue.date;
-    if (currentEtaValue > accumulator.eta)
-    {
-      accumulator.eta = currentEtaValue;
-      accumulator.advancing = computeAdvancing(actualDate, new Date(accumulator.departure), new Date(accumulator.eta));
-    }
-    return accumulator;
-  },
-  {
-    advancing: 0,
-    departure: route.date,
-    eta: '1970-01-01T00:00:00.000'
-  });
-};
-
 const style = ['default', 'success', 'warning', 'danger'];
 const RouteItem = (props) => {
-  let routeInfo = computeRouteInfo(props.route);
+  let fake = Math.floor(Math.random() * props.route.missions.length);
   return (
     <tr>
       <td>{props.route.name}</td>
-      <td>{props.route.user_id}</td>
-      <td></td>
-      <td></td>
+      <td>{props.route.user.email}</td>
+      <td>{fake}</td>
+      <td>{props.route.missions.length - fake}</td>
       <td>{props.route.missions.length}</td>
-      <td ><ProgressBar style={{ margin: 0 }} now={routeInfo.advancing} label={`${routeInfo.advancing}%`} title={`${routeInfo.advancing}%`}/></td>
-      <td ><Label bsStyle={style[Math.floor(Math.random() * style.length)]}>{new Date(routeInfo.eta).toLocaleString()}</Label></td>
+      <td ><ProgressBar style={{ margin: 0 }} now={props.route.info.advancing} label={`${props.route.info.advancing}%`} title={`${props.route.info.advancing}%`}/></td>
+      <td ><Label bsStyle={style[Math.floor(Math.random() * style.length)]}>{new Date(props.route.info.eta).toLocaleString()}</Label></td>
     </tr>);
 };
 

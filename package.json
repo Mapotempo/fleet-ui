@@ -65,6 +65,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "react-bootstrap": "^0.33.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
   }
 }
