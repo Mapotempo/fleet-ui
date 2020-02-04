@@ -22,7 +22,7 @@ const FleetGuard = (Component) => {
     if (isFetching)
       return <Loader message='Mapotempo Live Server - connexion pending'/>;
     if (!isConnected)
-      return <NotConnected errors={errors.message}/>;
+      return <NotConnected errors={errors ? errors.message : ''}/>;
     return (<Component {...props}/>);
   };
   return newFunc;
