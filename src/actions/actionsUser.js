@@ -1,4 +1,4 @@
-import apiUser from '../api/ApiUsers';
+import { ApiUsers } from '../api';
 
 export const REQUEST_USERS = 'REQUEST_USERS';
 const requestUsers = () => {
@@ -26,7 +26,7 @@ const errorsUsers = (errors) => {
 export const fetchUsers = () => {
   return (dispatch, getState) => {
     dispatch(requestUsers());
-    apiUser.apiFetchUser(
+    ApiUsers.apiFetchUser(
       {
         host: getState().fleet.fleetHost,
         apiKey: getState().fleet.auth.user.api_key,

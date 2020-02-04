@@ -1,2 +1,3 @@
-export * from './api_auth';
-export * from './api_users';
+export { default as ApiAuth }  from './ApiAuth';
+export { default as ApiUsers }  from './ApiUsers';
+export { default as ApiRoutes }  from './ApiRoutes';

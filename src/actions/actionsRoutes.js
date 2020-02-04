@@ -1,4 +1,4 @@
-import apiRoutes from '../api/ApiRoutes';
+import { ApiRoutes } from '../api';
 
 export const REQUEST_ROUTES = 'REQUEST_ROUTES';
 const requestRoutes = () => {
@@ -26,7 +26,7 @@ const errorsRoutes = (errors) => {
 export const fetchRoutes = () => {
   return (dispatch, getState) => {
     dispatch(requestRoutes());
-    apiRoutes.apiFetchRoute(
+    ApiRoutes.apiFetchRoute(
       {
         host: getState().fleet.fleetHost,
         apiKey: getState().fleet.auth.user.api_key,
