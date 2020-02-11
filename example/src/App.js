@@ -20,7 +20,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         {/* <UserListComponent /> */}
-        <LiveView/>
+        <LiveView routePerPage={10}/>
       </Provider>
     );
   }

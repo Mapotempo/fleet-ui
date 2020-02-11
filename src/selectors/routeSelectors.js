@@ -52,7 +52,7 @@ const computeAdvancing = (actualDate, departureDate, eta) => {
   else
     return 0;
 };
-    
+
 const computeRouteInfo = (route, finalMissionStatusTypeInfo) => {
   let actualDate = new Date();
   return route.missions.reduce((accumulator, mission) => {
@@ -67,9 +67,6 @@ const computeRouteInfo = (route, finalMissionStatusTypeInfo) => {
       accumulator.advancing = computeAdvancing(actualDate, new Date(route.date), new Date(accumulator.eta));
     }
 
-
-
-
     // Increment number of done and undone status if necessary
     if (finalMissionStatusTypeInfo.doneIDs.includes(mission.mission_status_type_id))
       accumulator[mission.mission_type].doneCount++;
@@ -79,10 +76,6 @@ const computeRouteInfo = (route, finalMissionStatusTypeInfo) => {
     // Increment the status id
     let count = accumulator[mission.mission_type].missionStatusTypeIdsCounter[mission.mission_status_type_id] ? accumulator[mission.mission_type].missionStatusTypeIdsCounter[mission.mission_status_type_id] : 0;
     accumulator[mission.mission_type].missionStatusTypeIdsCounter[mission.mission_status_type_id] = count + 1;
-
-
-
-
     return accumulator;
   },
   {
