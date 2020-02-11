@@ -12,8 +12,8 @@ const initState = {
   isFetchingMAT: false,
   errorsMST: null,
   errorsMAT: null,
-  missionStatusTypeItems: {},
-  missionActionTypeItems: {}
+  missionStatusTypeItems: [],
+  missionActionTypeItems: []
 };
 
 export default function workflowReducer(state = initState, action) {
@@ -25,8 +25,7 @@ export default function workflowReducer(state = initState, action) {
       state = { ...state };
       state.isFetchingMST = false;
       state.errorsMST = null;
-      state.missionStatusTypeItems = {};
-      action.missionStatusTypes.forEach(missionStatusType => state.missionStatusTypeItems[missionStatusType.id] = missionStatusType);
+      state.missionStatusTypeItems = [...action.missionStatusTypes];
       break;
     case ERRORS_MISSION_STATUS_TYPE:
       state = { ...state, errorsMST: action.errors, isFetching: false };
@@ -38,8 +37,7 @@ export default function workflowReducer(state = initState, action) {
       state = { ...state };
       state.isFetchingMAT = false;
       state.errorsMAT = null;
-      state.missionActionTypeItems = {};
-      action.missionActionTypes.forEach(missionActionType => state.missionActionTypeItems[missionActionType.id] = missionActionType);
+      state.missionActionTypeItems = [...action.missionActionTypes];
       break;
     case ERRORS_MISSION_ACTION_TYPE:
       state = { ...state, errorsMAT: action.errors, isFetchingMAT: false };

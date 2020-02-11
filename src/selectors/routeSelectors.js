@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+import { usersMapper } from './userSelectors';
+import { finalMissionStatusTypeInfo } from './workflowSelectors';
 
 // =========
 // Selectors
@@ -6,20 +8,31 @@ import { createSelector } from 'reselect';
 
 const routesSelector = state => state.fleet.routes.items;
 
-const missionStatusTypesSelector = state => state.fleet.workflow.missionStatusTypeItems;
-
-const usersSelector = state => state.fleet.users.items;
-
+// ===================
+// routesFullInfo:
+//
+// Compute and add extra info on each route model
+// info shape:
+// {
+//   doneCount: 0,
+//   undoneCount: 0,
+//   finalMissionStatusTypeIds: {},
+//   missionStatusTypeIds: {},      
+//   advancing: 0,
+//   departure: route.date,
+//   eta: '1970-01-01T00:00:00.000'
+// }
+// ===================
 export const routesFullInfo = createSelector(
   routesSelector,
-  missionStatusTypesSelector,
-  usersSelector,
-  (routes, missionStatusTypes, users) => {
+  usersMapper,
+  finalMissionStatusTypeInfo,
+  (routes, usersMap, finalMissionStatusTypeInfo) => {
     return routes.map(route => {
       return {
         ...route,
-        user: users[route.user_id],
-        info: computeRouteInfo(route) // Shape: {advancing, departure, eta}
+        user: usersMap[route.user_id],
+        info: computeRouteInfo(route, finalMissionStatusTypeInfo) // Shape: {advancing, departure, eta},
       };
     });
   }
@@ -38,25 +51,32 @@ const computeAdvancing = (actualDate, departureDate, eta) => {
     return 0;
 };
     
-const computeRouteInfo = (route) => {
+const computeRouteInfo = (route, finalMissionStatusTypeInfo) => {
   let actualDate = new Date();
-  return route.missions.reduce((accumulator, currentValue) => {
+  return route.missions.reduce((accumulator, mission) => {
+    if (mission.date > accumulator.scheduledArrival) 
+      accumulator.scheduledArrival = mission.date;
+    
+    
     // Choosed the better ETA source
-    let currentEtaValue = currentValue.eta ? currentValue.eta : currentValue.date;
+    let currentEtaValue = mission.eta ? mission.eta : mission.date;
     if (currentEtaValue > accumulator.eta)
     {
       accumulator.eta = currentEtaValue;
       accumulator.advancing = computeAdvancing(actualDate, new Date(accumulator.departure), new Date(accumulator.eta));
     }
-    let add = accumulator.missionStatusTypeIds[currentValue.mission_status_type_id] ? accumulator.missionStatusTypeIds[currentValue.mission_status_type_id] : 0;
-    accumulator.missionStatusTypeIds[currentValue.mission_status_type_id] = add + 1;
+    if (finalMissionStatusTypeInfo.doneIDs.includes(mission.mission_status_type_id))
+      accumulator.doneCount++;
+    if (finalMissionStatusTypeInfo.undoneIDs.includes(mission.mission_status_type_id))
+      accumulator.undoneCount++;
     return accumulator;
   },
   {
-    finalMissionStatusTypeIds: {},
-    missionStatusTypeIds: {},      
+    doneCount: 0,
+    undoneCount: 0,
     advancing: 0,
     departure: route.date,
+    scheduledArrival: '1970-01-01T00:00:00.000',
     eta: '1970-01-01T00:00:00.000'
   });
 };

@@ -3,7 +3,7 @@ import { RECEIVE_USERS, REQUEST_USERS, ERRORS_ROUTES } from '../actions';
 // {items={5: {email: 'test@mapotempo.com', phone: '0600000000' }}, isFetching: False}
 const initState = {
   isFetching: false,
-  items: {}
+  items: []
 };
 
 export default function usersReducer(state = initState, action) {
@@ -12,9 +12,7 @@ export default function usersReducer(state = initState, action) {
       state = { ...state };
       state.isFetching = false;
       state.items = {};
-      action.users.forEach(user => {
-        state.items[user.id] = user;
-      });
+      state.items = [...action.users];
       break;
     case REQUEST_USERS:
       state = { ...state, isFetching: true };
