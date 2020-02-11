@@ -1,13 +1,16 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import RoutesList from '../components/route/RouteList';
-import Loader from '../components/utils/loader';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import { fetchRoutes, fetchWorkflow, fetchUsers } from '../actions';
-
 import { routesFullInfo } from '../selectors';
+
+import RoutesList from '../components/route/RouteList';
+import DoughnutStatuses from '../components/route/DoughnutStatuses';
+import Loader from '../components/utils/loader';
+
+
 
 const LiveView = () => {
   const dispatch = useDispatch();
@@ -17,12 +20,13 @@ const LiveView = () => {
   let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
   let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
 
+  console.log(routes);
   if (!mounted) {
     dispatch(fetchRoutes());
     dispatch(fetchWorkflow());
     dispatch(fetchUsers());
   }
-  
+
   useEffect(() => {
     if (!mounted)
       setMounted(true);
@@ -31,9 +35,31 @@ const LiveView = () => {
   }, []);
 
   if (isFetchingMST || isFetchingMAT || isFetchingUser)
-    return (<Loader message='Loading data'/>);
+    return (<Loader message='Loading data' />);
 
-  return (<RoutesList routes={routes} />);
+  return (<div>
+    <Grid fluid>
+      <Row className="show-grid" style={{padding: '20px'}}>
+        <Col xs={6} md={4}>
+          <DoughnutStatuses
+            routes={routes}
+            header="Global Mission"/>
+        </Col>
+        <Col xs={6} md={4}>
+          <DoughnutStatuses routes={routes} missionType="departure" 
+            header="Global Departure"/>
+        </Col>
+        <Col xs={6} md={4}>
+          <DoughnutStatuses routes={routes} missionType="arrival" header="Global Arrival"/>
+        </Col>
+      </Row>
+      <Row style={{paddingTop: '15px'}}>
+        <Col xs={12}>
+          <RoutesList routes={routes} />
+        </Col>
+      </Row>
+    </Grid>
+  </div>);
 };
-    
+
 export default LiveView;

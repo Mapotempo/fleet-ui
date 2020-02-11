@@ -18,13 +18,16 @@ const RoutesList = (props) => {
   return (
     <Table hover responsive striped >
       <thead>
-        <tr className='warning'>
+        <tr className='info'>
           <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
-          <th style={{ textAlign: 'center' }}>Undone</th>
-          <th style={{ textAlign: 'center' }}>Done</th>
+          <th style={{ textAlign: 'center' }}>Departure</th>
+          <th style={{ textAlign: 'center' }}>Arrival</th>
+          <th style={{ textAlign: 'center' }}>Rest</th>
           <th style={{ textAlign: 'center' }}>Missions</th>
+          {/* <th style={{ textAlign: 'center' }}>Done</th> */}
+          {/* <th style={{ textAlign: 'center' }}>Missions</th> */}
           <th>Estimated Time Advancement</th>
           <th>Estimated Time Arrival (ETA)</th>
         </tr>
@@ -58,9 +61,21 @@ const RouteItem = (props) => {
       <td>{props.route.name}</td>
       <td>{props.route.user.email}</td>
       <td >{props.route.user.phone}</td>
-      <td style={{textAlign: 'center'}}><Badge style={{backgroundColor: "red"}}>{props.route.info.doneCount}</Badge></td>
-      <td style={{textAlign: 'center'}}><Badge style={{backgroundColor: "green"}}>{props.route.info.undoneCount}</Badge></td>
-      <td style={{textAlign: 'center'}}><Badge>{props.route.missions.length}</Badge></td>
+      <td style={{ textAlign: 'center' }} >Done</td>
+      <td style={{ textAlign: 'center' }}>Undone</td>
+      <td style={{ textAlign: 'center' }}>
+        <Badge style={{ backgroundColor: "red" }}>{props.route.info.doneCount}</Badge>
+        {" "}
+        <Badge style={{ backgroundColor: "green" }}>{props.route.info.undoneCount}</Badge>
+      </td>
+
+      <td style={{ textAlign: 'center' }}>
+        <Badge style={{ backgroundColor: "red" }}>{props.route.info.doneCount}</Badge>
+        {" "}
+        <Badge style={{ backgroundColor: "green" }}>{props.route.info.undoneCount}</Badge>
+        {" "}
+        <Badge>{props.route.missions.length}</Badge>
+      </td>
       <td ><ProgressBar style={{ margin: 0 }} now={props.route.info.advancing} label={`${props.route.info.advancing}%`} title={`${props.route.info.advancing}%`}/></td>
       <td ><Label bsStyle={style[Math.floor(Math.random() * style.length)]}>{new Date(props.route.info.eta).toLocaleString()}</Label></td>
     </tr>);
