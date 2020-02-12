@@ -48,7 +48,7 @@ const LiveView = (props) => {
 
   return (<div>
     <Grid fluid>
-      <Row className="show-grid" style={{padding: '20px'}}>
+      {/* <Row className="show-grid" style={{padding: '20px'}}>
         <Col xs={6} md={4}>
           <DoughnutStatuses
             routes={routes}
@@ -61,7 +61,7 @@ const LiveView = (props) => {
         <Col xs={6} md={4}>
           <DoughnutStatuses routes={routes} missionType="arrival" header="Global Arrival"/>
         </Col>
-      </Row>
+      </Row> */}
       <Row style={{paddingTop: '15px'}}>
         <Col xs={12}>
           <RoutesList routes={routes} routePerPage={props.routePerPage}/>

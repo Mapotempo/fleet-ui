@@ -33,9 +33,9 @@ const RoutesList = (props) => {
             <th>Email</th>
             <th>Phone</th>
             <th style={{ textAlign: 'center' }}>Departure</th>
-            <th style={{ textAlign: 'center' }}>Arrival</th>
-            <th style={{ textAlign: 'center' }}>Rest</th>
             <th style={{ textAlign: 'center' }}>Missions</th>
+            <th style={{ textAlign: 'center' }}>Rest</th>
+            <th style={{ textAlign: 'center' }}>Arrival</th>
             <th>Estimated Time Advancement</th>
             <th>Estimated Time Arrival (ETA)</th>
           </tr>
@@ -67,33 +67,33 @@ const routeItemPropTypes = {
   route: PropTypes.object
 };
 
+const badgeGenerator = (colors, withTotal = true, withLabels = false, withCount = false) => {
+  let res = colors.reduce((accumulator, color) => {
+    accumulator.push(
+      <Badge key={color.color} style={{ backgroundColor: color.color }}>
+        {(withCount ? color.count : "") + (withLabels && withCount ? " - " : "") + (withLabels ? color.labels : "")}
+      </Badge>);
+    accumulator.push(" ");
+    return accumulator;
+  }, []);
+  if (withTotal)
+    res.push(<Badge key="total">{colors.length}</Badge>);
+  else // Remove last space
+    res.pop();
+  return res;
+};
+
 const style = ['default', 'success', 'warning', 'danger'];
 const RouteItem = (props) => {
-  let departureStatus = props.route.info.departure.doneCount > props.route.info.departure.undoneCount;
-  let arrivalStatus = props.route.info.departure.doneCount > props.route.info.arrival.undoneCount;
   return (
     <tr>
       <td>{props.route.name}</td>
       <td>{props.route.user.email}</td>
       <td >{props.route.user.phone}</td>
-      <td style={{ textAlign: 'center' }}>
-        <Label bsStyle={arrivalStatus ? "success" : "danger"}>{departureStatus ? "Done" : "Undone"}</Label>
-      </td>
-      <td style={{ textAlign: 'center' }}>
-        <Label bsStyle={arrivalStatus ? "success" : "danger"}>{arrivalStatus ? "Done" : "Undone"}</Label>
-      </td>
-      <td style={{ textAlign: 'center' }}>
-        <Badge style={{ backgroundColor: "red" }}>{props.route.info.rest.doneCount}</Badge>
-        {" "}
-        <Badge style={{ backgroundColor: "green" }}>{props.route.info.rest.undoneCount}</Badge>
-      </td>
-      <td style={{ textAlign: 'center' }}>
-        <Badge style={{ backgroundColor: "red" }}>{props.route.info.mission.doneCount}</Badge>
-        {" "}
-        <Badge style={{ backgroundColor: "green" }}>{props.route.info.mission.undoneCount}</Badge>
-        {" "}
-        <Badge>{props.route.missions.length}</Badge>
-      </td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.departure, false, true)}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.mission, false, false, true)}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.rest, false, true)}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.arrival, false, true)}</td>
       <td ><ProgressBar style={{ margin: 0 }} now={props.route.info.advancing} label={`${props.route.info.advancing}%`} title={`${props.route.info.advancing}%`}/></td>
       <td ><Label bsStyle={style[Math.floor(Math.random() * style.length)]}>{new Date(props.route.info.eta).toLocaleString()}</Label></td>
     </tr>);

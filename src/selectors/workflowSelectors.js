@@ -39,39 +39,3 @@ export const missionActionsTypesMapper = createSelector(
     return res;
   }
 );
-
-// ===========================
-// finalMissionStatusTypeInfo:
-// 
-// Compute workflow statusTypeInfo
-// doneIDs => reference contain _done string
-// undoneIDs => reference contain _undone string
-// info shape: 
-// {
-//    doneIDs: []
-//    undoneIDs: []
-//    allIDs: []
-// }
-// ===========================
-export const finalMissionStatusTypeInfo = createSelector(
-  missionStatusTypesSelector,
-  (statusTypesList) => statusTypesList.reduce((accumulator, statusType) => {
-    if (statusType.is_last)
-    {
-      accumulator.allIDs.push(statusType.id);
-      if (statusType.reference.includes('_done')) {
-        accumulator.doneIDs.push(statusType.id);
-      }
-      if (statusType.reference.includes('_undone')) {
-        accumulator.undoneIDs.push(statusType.id);
-      }
-    }
-    return accumulator;
-  },
-  {
-    doneIDs: [],
-    undoneIDs: [],
-    allIDs: []
-  })
-);
-

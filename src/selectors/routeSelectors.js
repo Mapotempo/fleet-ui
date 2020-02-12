@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { usersMapper } from './userSelectors';
-import { finalMissionStatusTypeInfo } from './workflowSelectors';
+import { missionStatusTypesMapper } from './workflowSelectors';
 
 // =========
 // Selectors
@@ -14,27 +14,27 @@ const routesSelector = state => state.fleet.routes.items;
 // Compute and add extra info on each route model
 // info shape:
 // {
-//   doneCount: 0,                    // Number au mission set to XXX_done status
-//   undoneCount: 0,                  // Number au mission set to XXX_undone status
-//   missionStatusTypeIdsCounter: {}, // A map au mission_status_id count,
-//                                       shape: {  mission_status_type_XXX: 4,
-//                                                 mission_status_type_XXY: 1,
-//                                                 etc...}
 //   advancing: 0,                    // Advancing of route computed by computeAdvancing()
 //   departure: route.date,           // Route date departure
-//   eta: '1970-01-01T00:00:00.000'   // Route eta (last mission eta or date if missing)
+//   eta: '1970-01-01T00:00:00.000',  // Route eta (last mission eta or date if missing)
+//   colorsMap: {                     // Color status infos by mission_type, shape [{color: #45678, count:4, labels: ['todo','done']}]
+//     "mission": {},
+//     "rest": {},
+//     "departure": {},
+//     "arrival": {}
+//   }
 // }
 // ===============
 export const routesFullInfo = createSelector(
   routesSelector,
   usersMapper,
-  finalMissionStatusTypeInfo,
-  (routes, usersMap, finalMissionStatusTypeInfo) => {
+  missionStatusTypesMapper,
+  (routes, usersMap, missionStatusTypesMap) => {
     return routes.map(route => {
       return {
         ...route,
         user: usersMap[route.user_id],
-        info: computeRouteInfo(route, finalMissionStatusTypeInfo) // Shape: {advancing, departure, eta},
+        info: computeRouteInfo(route, missionStatusTypesMap) // Shape: {advancing, departure, eta},
       };
     });
   }
@@ -53,9 +53,9 @@ const computeAdvancing = (actualDate, departureDate, eta) => {
     return 0;
 };
 
-const computeRouteInfo = (route, finalMissionStatusTypeInfo) => {
+const computeRouteInfo = (route, missionStatusTypesMap) => {
   let actualDate = new Date();
-  return route.missions.reduce((accumulator, mission) => {
+  let res = route.missions.reduce((accumulator, mission) => {
     // Find arrival date
     if (mission.date > accumulator.scheduledArrival)
       accumulator.scheduledArrival = mission.date;
@@ -67,40 +67,41 @@ const computeRouteInfo = (route, finalMissionStatusTypeInfo) => {
       accumulator.advancing = computeAdvancing(actualDate, new Date(route.date), new Date(accumulator.eta));
     }
 
-    // Increment number of done and undone status if necessary
-    if (finalMissionStatusTypeInfo.doneIDs.includes(mission.mission_status_type_id))
-      accumulator[mission.mission_type].doneCount++;
-    if (finalMissionStatusTypeInfo.undoneIDs.includes(mission.mission_status_type_id))
-      accumulator[mission.mission_type].undoneCount++;
-
-    // Increment the status id
-    let count = accumulator[mission.mission_type].missionStatusTypeIdsCounter[mission.mission_status_type_id] ? accumulator[mission.mission_type].missionStatusTypeIdsCounter[mission.mission_status_type_id] : 0;
-    accumulator[mission.mission_type].missionStatusTypeIdsCounter[mission.mission_status_type_id] = count + 1;
+    // =============
+    // Specific Type
+    // =============
+    let missionStatusType = missionStatusTypesMap[mission.mission_status_type_id];
+    if (missionStatusType) {
+      let colorsMap = accumulator.colors[mission.mission_type][missionStatusType.color];
+      colorsMap = colorsMap ? colorsMap : { count: 0, labels: [] };
+      colorsMap.count++;
+      if (!colorsMap.labels.includes(missionStatusType.label))
+        colorsMap.labels.push(missionStatusType.label);
+      accumulator.colors[mission.mission_type][missionStatusType.color] = colorsMap;
+    }
+    else {
+      // TODO: USER LOGGER
+      console.warn('Status type:',mission.mission_status_type_id ,' not found');
+    }
     return accumulator;
   },
   {
-    "mission": {
-      doneCount: 0,
-      undoneCount: 0,
-      missionStatusTypeIdsCounter: {},
-    },
-    "rest": {
-      doneCount: 0,
-      undoneCount: 0,
-      missionStatusTypeIdsCounter: {},
-    },
-    "departure": {
-      doneCount: 0,
-      undoneCount: 0,
-      missionStatusTypeIdsCounter: {},
-    },
-    "arrival": {
-      doneCount: 0,
-      undoneCount: 0,
-      missionStatusTypeIdsCounter: {},
-    },
     advancing: 0,
     scheduledArrival: '1970-01-01T00:00:00.000',
-    eta: '1970-01-01T00:00:00.000'
+    eta: '1970-01-01T00:00:00.000',
+    colors: {
+      // Generate map to incress performance, (convert into array next step)
+      "mission": {},
+      "rest": {},
+      "departure": {},
+      "arrival": {}
+    }
   });
+
+  // convert maps {#45678: {count:4, labels: ['todo','done']}} to arrays => [{color: #45678, count:4, labels: ['todo','done']}]
+  res.colors.mission = Object.keys(res.colors.mission).map((key) => { return { color: key, count: res.colors.mission[key].count, labels: res.colors.mission[key].labels}; });
+  res.colors.rest = Object.keys(res.colors.rest).map((key) => { return { color: key, count: res.colors.rest[key].count, labels: res.colors.rest[key].labels}; });
+  res.colors.departure = Object.keys(res.colors.departure).map((key) => { return { color: key, count: res.colors.departure[key].count, labels: res.colors.departure[key].labels}; });
+  res.colors.arrival = Object.keys(res.colors.arrival).map((key) => { return { color: key, count: res.colors.arrival[key].count, labels: res.colors.arrival[key].labels}; });
+  return res;
 };
