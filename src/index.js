@@ -10,8 +10,6 @@ export { default as fleetReducer } from './reducers/rootReducer';
 export { default as fleetMiddleware } from 'redux-thunk';
 
 // Components
-import _UserListComponent from './components/user/user-list';
-export const UserListComponent = FleetGuard(_UserListComponent);
 
 // Views
 import _LiveView from './views/LiveView';

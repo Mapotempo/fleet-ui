@@ -10,7 +10,6 @@ import { fetchRoutes, fetchWorkflow, fetchUsers } from '../actions';
 import { routesFullInfo } from '../selectors';
 
 import RoutesList from '../components/route/RouteList';
-import DoughnutStatuses from '../components/route/DoughnutStatuses';
 import Loader from '../components/utils/loader';
 
 const propTypes = {
