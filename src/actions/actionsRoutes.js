@@ -1,5 +1,9 @@
 import { ApiRoutes } from '../api';
 
+// ######
+// ROUTES
+// ######
+
 export const REQUEST_ROUTES = 'REQUEST_ROUTES';
 const requestRoutes = () => {
   return {
@@ -27,6 +31,7 @@ export const fetchRoutes = () => {
   return (dispatch, getState) => {
     dispatch(requestRoutes());
     ApiRoutes.apiFetchRoute(
+      true,
       {
         host: getState().fleet.fleetHost,
         apiKey: getState().fleet.auth.user.api_key,
@@ -38,3 +43,23 @@ export const fetchRoutes = () => {
     );
   };
 };
+
+// ###################
+// ROUTE WITH MISSIONS
+// ###################
+
+export const REQUEST_ROUTES_WITH_MISSIONS = 'REQUEST_ROUTES_WITH_MISSIONS';
+export const requestRoutesWithMissions = (routeIds) => {
+  return {
+    type: REQUEST_ROUTES_WITH_MISSIONS,
+    routeIds
+  };
+};
+
+export const RECEIVE_ROUTE_WITH_MISSIONS = 'RECEIVE_ROUTE_WITH_MISSIONS';
+
+// export const fetchRouteMissions = (routeId) => {
+//   return (dispatch) => {
+//     dispatch(requestRouteWithMissions(routeId));
+//   };
+// };

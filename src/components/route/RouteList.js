@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Table, ProgressBar, Label, Badge, Pager } from 'react-bootstrap';
+
+import { requestRoutesWithMissions } from '../../actions';
 
 // ==========
 // ROUTE LIST
@@ -19,10 +22,23 @@ const defaultProps = {
 };
 
 const RoutesList = (props) => {
+  const dispatch = useDispatch();
+  const [mounted, setMounted] = useState(false);
+
   const [page, setPage] = useState(0);
   let startSlicer = page * props.routePerPage;
   let endSlicer = (page + 1) * props.routePerPage;
   let slicedRoute = props.routes.slice(startSlicer, endSlicer);
+
+  // if (!mounted)
+  //   dispatch(requestRoutesWithMissions(slicedRoute.map(route => route.id)));
+
+  // useEffect(() => {
+  //   if (!mounted)
+  //     setMounted(true);
+  //   const interval = setInterval(()=>{}, 30000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <div>

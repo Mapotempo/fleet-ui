@@ -25,6 +25,7 @@ const routesSelector = state => state.fleet.routes.items;
 //   }
 // }
 // ===============
+
 export const routesFullInfo = createSelector(
   routesSelector,
   usersMapper,

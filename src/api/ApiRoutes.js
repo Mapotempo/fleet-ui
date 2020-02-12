@@ -1,7 +1,7 @@
 import { doGet } from './ApiCommon';
 
 export default {
-  apiFetchRoute({ host, apiKey, onSuccess, onError }) {
+  apiFetchRoute(withMissions, { host, apiKey, onSuccess, onError }) {
     let from = new Date();
     from.setUTCHours(0, 0, 0, 0);
     doGet(host, {
@@ -10,7 +10,7 @@ export default {
       onError: (error) => onError(error),
       apiKey,
       parameters: {
-        'with_missions': true,
+        'with_missions': withMissions,
         'from': from.toISOString()
       }
     });

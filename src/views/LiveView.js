@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Grid, Row, Col } from 'react-bootstrap';
-// import DatePicker from "react-bootstrap-date-picker";
 
 import { fetchRoutes, fetchWorkflow, fetchUsers } from '../actions';
 import { routesFullInfo } from '../selectors';
@@ -38,7 +37,7 @@ const LiveView = (props) => {
   useEffect(() => {
     if (!mounted)
       setMounted(true);
-    const interval = setInterval(() => dispatch(fetchRoutes()), 60000);
+    const interval = setInterval(() => dispatch(fetchRoutes()), 10000);
     return () => clearInterval(interval);
   }, []);
 
