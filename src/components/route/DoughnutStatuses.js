@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { routeInfoSelector } from '../../selectors';
 
 import { missionStatusTypesMapper } from '../../selectors';
 
@@ -26,12 +27,13 @@ const DoughnutStatuses = (props) => {
   let missionStatusTypesMap = useSelector(missionStatusTypesMapper);
   let fullMissionStatusTypeIdsCounter = {};
   props.routes.forEach(route => {
-    Object.keys(route.info[props.missionType].missionStatusTypeIdsCounter).forEach((id) => {
-      let count = fullMissionStatusTypeIdsCounter[id] ? fullMissionStatusTypeIdsCounter[id] : 0;
-      fullMissionStatusTypeIdsCounter[id] = count + route.info[props.missionType].missionStatusTypeIdsCounter[id];
+    let routeInfo = useSelector(state => routeInfoSelector(state, route.id));
+    routeInfo[props.missionType].missionStatusTypeCountByIds.forEach(({id, count}) => {
+      let fullCount = fullMissionStatusTypeIdsCounter[id] ? fullMissionStatusTypeIdsCounter[id] : 0;
+      fullMissionStatusTypeIdsCounter[id] = fullCount + count;
     });
   });
-
+  // console.log(fullMissionStatusTypeIdsCounter);
   let dataset = [1];
   let backgroundColor = [];
   let labels = [""];

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+
+import { routeInfoSelector } from '../../selectors';
+import { usersMapper } from '../../selectors';
 
 import { Table, ProgressBar, Label, Badge, Pager } from 'react-bootstrap';
-
-import { requestRoutesWithMissions } from '../../actions';
 
 // ==========
 // ROUTE LIST
@@ -22,24 +23,10 @@ const defaultProps = {
 };
 
 const RoutesList = (props) => {
-  const dispatch = useDispatch();
-  const [mounted, setMounted] = useState(false);
-
   const [page, setPage] = useState(0);
   let startSlicer = page * props.routePerPage;
   let endSlicer = (page + 1) * props.routePerPage;
   let slicedRoute = props.routes.slice(startSlicer, endSlicer);
-
-  // if (!mounted)
-  //   dispatch(requestRoutesWithMissions(slicedRoute.map(route => route.id)));
-
-  // useEffect(() => {
-  //   if (!mounted)
-  //     setMounted(true);
-  //   const interval = setInterval(()=>{}, 30000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   return (
     <div>
       <Table hover responsive striped >
@@ -99,19 +86,30 @@ const badgeGenerator = (colors, withTotal = true, withLabels = false, withCount 
   return res;
 };
 
-const style = ['default', 'success', 'warning', 'danger'];
 const RouteItem = (props) => {
+  //TODO: Check nullity of user and routeInfo
+  let user = useSelector(usersMapper)[props.route.user_id];
+  let routeInfo = useSelector(state => routeInfoSelector(state, props.route.id));
+
+  var style = 'default';
+  if (routeInfo.delay < 15)
+    style = "success";
+  else if (routeInfo.delay < 30)
+    style = "warning";
+  else if (routeInfo.delay < 60)
+    style = "danger";
+
   return (
     <tr>
       <td>{props.route.name}</td>
-      <td>{props.route.user.email}</td>
-      <td >{props.route.user.phone}</td>
-      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.departure, false, true)}</td>
-      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.mission, false, false, true)}</td>
-      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.rest, false, true)}</td>
-      <td style={{ textAlign: 'center' }}>{badgeGenerator(props.route.info.colors.arrival, false, true)}</td>
-      <td ><ProgressBar style={{ margin: 0 }} now={props.route.info.advancing} label={`${props.route.info.advancing}%`} title={`${props.route.info.advancing}%`}/></td>
-      <td ><Label bsStyle={style[Math.floor(Math.random() * style.length)]}>{new Date(props.route.info.eta).toLocaleString()}</Label></td>
+      <td>{user.email}</td>
+      <td >{user.phone}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(routeInfo.departure.colors, false, true)}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(routeInfo.mission.colors, false, false, true)}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(routeInfo.rest.colors, false, true)}</td>
+      <td style={{ textAlign: 'center' }}>{badgeGenerator(routeInfo.arrival.colors, false, true)}</td>
+      <td ><ProgressBar style={{ margin: 0 }} now={routeInfo.advancing} label={`${routeInfo.advancing}%`} title={`${routeInfo.advancing}%`}/></td>
+      <td ><Label bsStyle={style}>{new Date(routeInfo.eta).toLocaleString()}</Label></td>
     </tr>);
 };
 

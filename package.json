@@ -64,7 +64,10 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "chart.js": "^2.9.3",
+    "re-reselect": "^3.4.0",
     "react-bootstrap": "^0.33.1",
+    "react-chartjs-2": "^2.9.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0"
   }

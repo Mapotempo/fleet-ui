@@ -73,7 +73,7 @@ const receiveRouteMissions = (route) => {
   };
 };
 
-const STEP = 2;
+const STEP = 20;
 
 const _fetchRoutesMissions = (routes, index = 0) => {
   return (dispatch, getState) => {

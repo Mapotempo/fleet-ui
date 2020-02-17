@@ -1,44 +1,25 @@
-import { createSelector } from 'reselect';
-import { usersMapper } from './userSelectors';
+import createCachedSelector from 're-reselect';
 import { missionStatusTypesMapper } from './workflowSelectors';
 
 // =========
 // Selectors
 // =========
+export const routesSelector = state => state.fleet.routes.items;
 
-const routesSelector = state => state.fleet.routes.items;
-
-// ===============
-// routesFullInfo:
+// ==================
+// routeInfoSelector:
 //
-// Compute and add extra info on each route model
-// info shape:
-// {
-//   advancing: 0,                    // Advancing of route computed by computeAdvancing()
-//   departure: route.date,           // Route date departure
-//   eta: '1970-01-01T00:00:00.000',  // Route eta (last mission eta or date if missing)
-//   colorsMap: {                     // Color status infos by mission_type, shape [{color: #45678, count:4, labels: ['todo','done']}]
-//     "mission": {},
-//     "rest": {},
-//     "departure": {},
-//     "arrival": {}
-//   }
-// }
-// ===============
+// Compute and Cached extra information of route
+// ps: use re-reselec to cache informations
+// -> https://github.com/toomuchdesign/re-reselect
+// ==================
 
-export const routesFullInfo = createSelector(
-  routesSelector,
-  usersMapper,
+export const routeInfoSelector = createCachedSelector(
   missionStatusTypesMapper,
-  (routes, usersMap, missionStatusTypesMap) => {
-    return routes.map(route => {
-      return {
-        ...route,
-        user: usersMap[route.user_id],
-        info: computeRouteInfo(route, missionStatusTypesMap) // Shape: {advancing, departure, eta},
-      };
-    });
-  }
+  (state, routeId) => state.fleet.routes.items.find((route) => route.id === routeId),
+  (missionStatusTypesMap, route) => computeRouteInfo(route, missionStatusTypesMap)
+)(
+  (state, routeId) => routeId
 );
 
 // ==================
@@ -55,6 +36,7 @@ const computeAdvancing = (actualDate, departureDate, eta) => {
 };
 
 const computeRouteInfo = (route, missionStatusTypesMap) => {
+
   let actualDate = new Date();
   let res = route.missions.reduce((accumulator, mission) => {
     // Find arrival date
@@ -73,16 +55,23 @@ const computeRouteInfo = (route, missionStatusTypesMap) => {
     // =============
     let missionStatusType = missionStatusTypesMap[mission.mission_status_type_id];
     if (missionStatusType) {
-      let colorsMap = accumulator.colors[mission.mission_type][missionStatusType.color];
+      // Color process
+      let typeInfo = accumulator[mission.mission_type];
+      let colorsMap = typeInfo.colors[missionStatusType.color];
       colorsMap = colorsMap ? colorsMap : { count: 0, labels: [] };
       colorsMap.count++;
       if (!colorsMap.labels.includes(missionStatusType.label))
         colorsMap.labels.push(missionStatusType.label);
-      accumulator.colors[mission.mission_type][missionStatusType.color] = colorsMap;
+      typeInfo.colors[missionStatusType.color] = colorsMap;
+      // Map type process
+      let count = typeInfo.missionStatusTypeCountByIds[mission.mission_status_type_id];
+      count = count ? count : 0;
+      count++;
+      typeInfo.missionStatusTypeCountByIds[mission.mission_status_type_id] = count;
     }
     else {
-      // TODO: USER LOGGER
-      console.warn('Status type:',mission.mission_status_type_id ,' not found');
+      // TODO: USE LOGGER
+      console.warn('Status type:', mission.mission_status_type_id, ' not found');
     }
     return accumulator;
   },
@@ -90,19 +79,43 @@ const computeRouteInfo = (route, missionStatusTypesMap) => {
     advancing: 0,
     scheduledArrival: '1970-01-01T00:00:00.000',
     eta: '1970-01-01T00:00:00.000',
-    colors: {
-      // Generate map to incress performance, (convert into array next step)
-      "mission": {},
-      "rest": {},
-      "departure": {},
-      "arrival": {}
-    }
+    // Generate map to incress performance, (convert into array next step)
+    "mission": {
+      colors: {},
+      missionStatusTypeCountByIds: {}
+    },
+    "rest": {
+      colors: {},
+      missionStatusTypeCountByIds: {}
+    },
+    "departure": {
+      colors: {},
+      missionStatusTypeCountByIds: {}
+    },
+    "arrival": {
+      colors: {},
+      missionStatusTypeCountByIds: {}
+    },
+    delay: Math.floor(Math.random() * 60)
   });
 
   // convert maps {#45678: {count:4, labels: ['todo','done']}} to arrays => [{color: #45678, count:4, labels: ['todo','done']}]
-  res.colors.mission = Object.keys(res.colors.mission).map((key) => { return { color: key, count: res.colors.mission[key].count, labels: res.colors.mission[key].labels}; });
-  res.colors.rest = Object.keys(res.colors.rest).map((key) => { return { color: key, count: res.colors.rest[key].count, labels: res.colors.rest[key].labels}; });
-  res.colors.departure = Object.keys(res.colors.departure).map((key) => { return { color: key, count: res.colors.departure[key].count, labels: res.colors.departure[key].labels}; });
-  res.colors.arrival = Object.keys(res.colors.arrival).map((key) => { return { color: key, count: res.colors.arrival[key].count, labels: res.colors.arrival[key].labels}; });
+  res.mission.colors = colorMapToArray(res.mission.colors);
+  res.rest.colors = colorMapToArray(res.rest.colors);
+  res.departure.colors = colorMapToArray(res.departure.colors);
+  res.arrival.colors = colorMapToArray(res.arrival.colors);
+
+  res.mission.missionStatusTypeCountByIds = missionStatusTypeCountByIdsMapToArray(res.mission.missionStatusTypeCountByIds);
+  res.rest.missionStatusTypeCountByIds = missionStatusTypeCountByIdsMapToArray(res.rest.missionStatusTypeCountByIds);
+  res.departure.missionStatusTypeCountByIds = missionStatusTypeCountByIdsMapToArray(res.departure.missionStatusTypeCountByIds);
+  res.arrival.missionStatusTypeCountByIds = missionStatusTypeCountByIdsMapToArray(res.arrival.missionStatusTypeCountByIds);
+
   return res;
+};
+
+const colorMapToArray = (colorMap) => {
+  return Object.keys(colorMap).map(key => { return { color: key, count: colorMap[key].count, labels: colorMap[key].labels}; });
+};
+const missionStatusTypeCountByIdsMapToArray = (missionStatusTypeCountByIdsMap) => {
+  return Object.keys(missionStatusTypeCountByIdsMap).map(key => { return { id: key, count: missionStatusTypeCountByIdsMap[key] };});
 };
