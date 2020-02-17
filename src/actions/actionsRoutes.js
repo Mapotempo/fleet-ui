@@ -6,6 +6,7 @@ import { ApiRoutes } from '../api';
 
 export const REQUEST_ROUTES = 'REQUEST_ROUTES';
 const requestRoutes = () => {
+  console.log(REQUEST_ROUTES);
   return {
     type: REQUEST_ROUTES
   };
@@ -30,17 +31,18 @@ const errorsRoutes = (errors) => {
 export const fetchRoutes = () => {
   return (dispatch, getState) => {
     dispatch(requestRoutes());
-    ApiRoutes.apiFetchRoute(
-      true,
+    ApiRoutes.apiFetchRoutes(
+      false,
       {
         host: getState().fleet.fleetHost,
         apiKey: getState().fleet.auth.user.api_key,
-        onSuccess: (routes) => {
-          dispatch(receiveRoutes(routes));
-        },
-        onError: (errors) => errorsRoutes(errors)
       }
-    );
+    )
+      .then((routes) => {
+        dispatch(receiveRoutes(routes));
+        routes.forEach((route)=> dispatch(fetchRouteMission(route)));
+      })
+      .catch((errors) => dispatch(errorsRoutes(errors)));
   };
 };
 
@@ -48,18 +50,31 @@ export const fetchRoutes = () => {
 // ROUTE WITH MISSIONS
 // ###################
 
-export const REQUEST_ROUTES_WITH_MISSIONS = 'REQUEST_ROUTES_WITH_MISSIONS';
-export const requestRoutesWithMissions = (routeIds) => {
+export const REQUEST_ROUTE_MISSION = 'REQUEST_ROUTE_MISSION';
+export const requestRouteMissions = (route) => {
   return {
-    type: REQUEST_ROUTES_WITH_MISSIONS,
-    routeIds
+    type: REQUEST_ROUTE_MISSION,
+    route
   };
 };
 
-export const RECEIVE_ROUTE_WITH_MISSIONS = 'RECEIVE_ROUTE_WITH_MISSIONS';
+export const RECEIVE_ROUTE_MISSIONS = 'RECEIVE_ROUTE_MISSIONS';
+export const receiveRouteMissions = (route) => {
+  return {
+    type: RECEIVE_ROUTE_MISSIONS,
+    route
+  };
+};
 
-// export const fetchRouteMissions = (routeId) => {
-//   return (dispatch) => {
-//     dispatch(requestRouteWithMissions(routeId));
-//   };
-// };
+export const fetchRouteMission = (route) => {
+  return (dispatch, getState) => {
+    ApiRoutes.apiFetchRoute(
+      route.id,
+      {
+        host: getState().fleet.fleetHost,
+        apiKey: getState().fleet.auth.user.api_key
+      })
+      .then((route) => dispatch(receiveRouteMissions(route)))
+      .catch((errors) => dispatch(errorsRoutes(errors)));
+  };
+};

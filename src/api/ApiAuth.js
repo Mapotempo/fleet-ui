@@ -1,11 +1,10 @@
 import { doGet } from './ApiCommon';
 
 export default {
-  apiFetchAuthUser(syncUser, {host, apiKey, onSuccess, onError }) {
-    doGet(host, {
-      url: 'api/0.1/users/' + syncUser,
-      onSuccess: (data) => onSuccess(data.user),
-      onError: (error) => {
+  apiFetchAuthUser(syncUser, { host, apiKey }) {
+    return doGet(host, { url: `api/0.1/users/${syncUser}` ,apiKey })
+      .then((data) => Promise.resolve(data.user))
+      .catch((error) => {
         switch (error.status) {
           case 401:
             error.message = 'Credential invalid';
@@ -16,9 +15,7 @@ export default {
           default:
             error.message = 'Erreur inconnue';
         }
-        onError(error);
-      },
-      apiKey
-    });
+        return Promise.reject(error);
+      });
   }
 };

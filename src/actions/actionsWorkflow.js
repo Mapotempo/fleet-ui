@@ -46,10 +46,10 @@ const fetchMissionStatusTypes = () => {
       {
         host: getState().fleet.fleetHost,
         apiKey: getState().fleet.auth.user.api_key,
-        onSuccess: (missionStatusTypes) => dispatch(receiveMissionStatusType(missionStatusTypes)),
-        onError: (errors) => errorsMissionStatusType(errors)
       }
-    );
+    )
+      .then((missionActionTypes) => dispatch(receiveMissionStatusType(missionActionTypes)))
+      .catch((errors) => dispatch(errorsMissionStatusType(errors)));
   };
 };
 
@@ -87,10 +87,9 @@ const fetchMissionActionTypes = () => {
       getState().fleet.auth.user.sync_user,
       {
         host: getState().fleet.fleetHost,
-        apiKey: getState().fleet.auth.user.api_key,
-        onSuccess: (missionActionTypes) => dispatch(receiveMissionActionType(missionActionTypes)),
-        onError: (errors) => errorsMissionActionType(errors)
-      }
-    );
+        apiKey: getState().fleet.auth.user.api_key
+      })
+      .then((missionActionTypes) => dispatch(receiveMissionActionType(missionActionTypes)))
+      .catch((errors) => dispatch(errorsMissionActionType(errors)));
   };
 };

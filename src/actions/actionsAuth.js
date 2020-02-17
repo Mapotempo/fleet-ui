@@ -29,12 +29,9 @@ export const signInUsers = (syncUser, apiKey) => {
     ApiAuth.apiFetchAuthUser(syncUser,
       {
         host: getState().fleet.fleetHost,
-        apiKey,
-        onSuccess: (user) => {
-          dispatch(receiveAuthUser(user));
-        },
-        onError: (errors) => dispatch(errorAuthUser(errors))
-      }
-    );
+        apiKey
+      })
+      .then((user) => dispatch(receiveAuthUser(user)))
+      .catch((errors) => dispatch(errorAuthUser(errors)));
   };
 };

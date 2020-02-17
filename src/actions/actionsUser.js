@@ -29,10 +29,9 @@ export const fetchUsers = () => {
     ApiUsers.apiFetchUser(
       {
         host: getState().fleet.fleetHost,
-        apiKey: getState().fleet.auth.user.api_key,
-        onSuccess: (users) => dispatch(receiveUsers(users)),
-        onError: (errors) => errorsUsers(errors)
-      }
-    );
+        apiKey: getState().fleet.auth.user.api_key
+      })
+      .then((users) => dispatch(receiveUsers(users)))
+      .catch((errors) => dispatch(errorsUsers(errors)));
   };
 };
