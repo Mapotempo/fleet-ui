@@ -1,12 +1,13 @@
 import {
   REQUEST_ROUTES, RECEIVE_ROUTES, ERRORS_ROUTES,
-  REQUEST_ROUTE_MISSION, RECEIVE_ROUTE_MISSIONS
+  RECEIVE_ROUTE_MISSIONS, REQUEST_ROUTES_MISSIONS_BEGIN, REQUEST_ROUTES_MISSIONS_END
 } from '../actions';
 
 const initState = {
   isFetching: false,
   errors: null,
-  items: []
+  items: [],
+  isFetchingRoutesMissions: false,
 };
 
 export default function routesReducer(state = initState, action) {
@@ -27,10 +28,11 @@ export default function routesReducer(state = initState, action) {
     case ERRORS_ROUTES:
       state = { ...state, errors: action.errors, isFetching: false };
       break;
-    case REQUEST_ROUTE_MISSION:
-      // state = { ...state };
-      // state.errors = null;
-      // state.items = action.routes.map(route => {return {missions: [], ...route};});
+    case REQUEST_ROUTES_MISSIONS_BEGIN:
+      state = { ...state, isFetchingRoutesMissions: true };
+      break;
+    case REQUEST_ROUTES_MISSIONS_END:
+      state = { ...state, isFetchingRoutesMissions: false };
       break;
     case RECEIVE_ROUTE_MISSIONS:
       var index = state.items.findIndex(route => route.id == action.route.id);

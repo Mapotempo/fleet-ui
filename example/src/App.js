@@ -8,6 +8,7 @@ import { LiveView } from 'fleet-ui';
 
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers('7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', 'jJjAc6u1pQMkuOjBDRRVQwtt'));
+// store.dispatch(fleet_actions.signInUsers('df3db529625c0b235a31710d086934b87bbdccde7c4a4e4eed4b665d354ad94d', 'k7sc1tgKhOkMZkAszMTfYAtt'));
 
 store.dispatch(app_actions.setAppInfo({
   app_name: 'Exemple App',

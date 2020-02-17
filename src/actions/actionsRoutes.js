@@ -6,7 +6,6 @@ import { ApiRoutes } from '../api';
 
 export const REQUEST_ROUTES = 'REQUEST_ROUTES';
 const requestRoutes = () => {
-  console.log(REQUEST_ROUTES);
   return {
     type: REQUEST_ROUTES
   };
@@ -40,7 +39,7 @@ export const fetchRoutes = () => {
     )
       .then((routes) => {
         dispatch(receiveRoutes(routes));
-        routes.forEach((route)=> dispatch(fetchRouteMission(route)));
+        dispatch(fetchRoutesMissions(routes));
       })
       .catch((errors) => dispatch(errorsRoutes(errors)));
   };
@@ -50,31 +49,58 @@ export const fetchRoutes = () => {
 // ROUTE WITH MISSIONS
 // ###################
 
-export const REQUEST_ROUTE_MISSION = 'REQUEST_ROUTE_MISSION';
-export const requestRouteMissions = (route) => {
+export const REQUEST_ROUTES_MISSIONS_BEGIN = 'REQUEST_ROUTES_MISSIONS_BEGIN';
+const requestRouteMissionsBegin = (route) => {
   return {
-    type: REQUEST_ROUTE_MISSION,
+    type: REQUEST_ROUTES_MISSIONS_BEGIN,
+    route
+  };
+};
+
+export const REQUEST_ROUTES_MISSIONS_END = 'REQUEST_ROUTES_MISSIONS_END';
+const requestRouteMissionsEnd = (route) => {
+  return {
+    type: REQUEST_ROUTES_MISSIONS_END,
     route
   };
 };
 
 export const RECEIVE_ROUTE_MISSIONS = 'RECEIVE_ROUTE_MISSIONS';
-export const receiveRouteMissions = (route) => {
+const receiveRouteMissions = (route) => {
   return {
     type: RECEIVE_ROUTE_MISSIONS,
     route
   };
 };
 
-export const fetchRouteMission = (route) => {
+const STEP = 2;
+
+const _fetchRoutesMissions = (routes, index = 0) => {
   return (dispatch, getState) => {
-    ApiRoutes.apiFetchRoute(
-      route.id,
-      {
-        host: getState().fleet.fleetHost,
-        apiKey: getState().fleet.auth.user.api_key
-      })
-      .then((route) => dispatch(receiveRouteMissions(route)))
-      .catch((errors) => dispatch(errorsRoutes(errors)));
+    dispatch(requestRouteMissionsBegin());
+    var promises = [];
+    routes.slice(index, index + STEP).forEach((route) => {
+      let p = ApiRoutes.apiFetchRoute(route.id,
+        {
+          host: getState().fleet.fleetHost,
+          apiKey: getState().fleet.auth.user.api_key
+        })
+        .then((route) => dispatch(receiveRouteMissions(route)))
+        .catch((errors) => dispatch(errorsRoutes(errors)));
+      promises.push(p);
+    });
+    if (promises.length > 0)
+      return Promise.all(promises).finally(() => dispatch(_fetchRoutesMissions(routes, index + STEP)));
+    else
+      return dispatch(requestRouteMissionsEnd());
+  };
+};
+
+export const fetchRoutesMissions = (routes) => {
+  return (dispatch ,getState) => {
+    if (!getState().fleet.routes.isFetchingRoutesMissions) {
+      dispatch(requestRouteMissionsBegin());
+      dispatch(_fetchRoutesMissions(routes, 0));
+    }
   };
 };
