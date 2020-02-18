@@ -1,5 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { fleetReducer, fleetMiddleware } from 'fleet-ui';
+import thunk from 'redux-thunk';
+
+import { fleetReducer } from 'fleet-ui';
 import appReducer from './reducer/appReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -12,6 +14,6 @@ export const rootReducer = combineReducers({
 export default function configureStore() {
   return createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(fleetMiddleware))
+    composeWithDevTools(applyMiddleware(thunk))
   );
 }
