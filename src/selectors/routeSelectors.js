@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect';
 import { missionStatusTypesMapper } from './workflowSelectors';
 
@@ -6,6 +7,11 @@ import { missionStatusTypesMapper } from './workflowSelectors';
 // =========
 export const routesSelector = state => state.fleet.routes.items;
 
+export const missionsDowloadProgressSelector = createSelector(
+  routesSelector,
+  routes => (routes.filter(route => route.missions.length > 0).length / routes.length) * 100
+);
+
 // ==================
 // routeInfoSelector:
 //
@@ -13,7 +19,6 @@ export const routesSelector = state => state.fleet.routes.items;
 // ps: use re-reselec to cache informations
 // -> https://github.com/toomuchdesign/re-reselect
 // ==================
-
 export const routeInfoSelector = createCachedSelector(
   missionStatusTypesMapper,
   (state, routeId) => state.fleet.routes.items.find((route) => route.id === routeId),
