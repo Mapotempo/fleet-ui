@@ -1,10 +1,13 @@
 {
   "name": "fleet-ui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Fleet React Component",
   "author": "",
-  "license": "",
-  "repository": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/mapotempo/fleet-ui.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -72,5 +75,12 @@
     "react-chartjs-2": "^2.9.0",
     "react-top-loading-bar": "^1.2.0",
     "reselect": "^4.0.0"
-  }
+  },
+  "directories": {
+    "example": "example"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/mapotempo/fleet-ui/issues"
+  },
+  "homepage": "https://gitlab.com/mapotempo/fleet-ui#readme"
 }
