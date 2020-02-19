@@ -62,17 +62,18 @@ const computeRouteInfo = (route, missionStatusTypesMap) => {
     if (missionStatusType) {
       // Color process
       let typeInfo = accumulator[mission.mission_type];
-      let colorsMap = typeInfo.colors[missionStatusType.color];
-      colorsMap = colorsMap ? colorsMap : { count: 0, labels: [] };
+      let colorsMap = typeInfo.colors[missionStatusType.color] || { count: 0, labels: [] };
       colorsMap.count++;
       if (!colorsMap.labels.includes(missionStatusType.label))
         colorsMap.labels.push(missionStatusType.label);
       typeInfo.colors[missionStatusType.color] = colorsMap;
+
       // Map type process
-      let count = typeInfo.missionStatusTypeCountByIds[mission.mission_status_type_id];
-      count = count ? count : 0;
-      count++;
-      typeInfo.missionStatusTypeCountByIds[mission.mission_status_type_id] = count;
+      let info = typeInfo.missionStatusTypeCountByIds[missionStatusType.reference] || { label: '', count: 0, color: '' };
+      info.label = missionStatusType.label; // Last found
+      info.color = missionStatusType.color; // Last found
+      info.count++;
+      typeInfo.missionStatusTypeCountByIds[missionStatusType.reference] = info;
     }
     else {
       // TODO: USE LOGGER
@@ -122,5 +123,5 @@ const colorMapToArray = (colorMap) => {
   return Object.keys(colorMap).map(key => { return { color: key, count: colorMap[key].count, labels: colorMap[key].labels}; });
 };
 const missionStatusTypeCountByIdsMapToArray = (missionStatusTypeCountByIdsMap) => {
-  return Object.keys(missionStatusTypeCountByIdsMap).map(key => { return { id: key, count: missionStatusTypeCountByIdsMap[key] };});
+  return Object.keys(missionStatusTypeCountByIdsMap).map(key => { return { reference: key, ...missionStatusTypeCountByIdsMap[key] };});
 };

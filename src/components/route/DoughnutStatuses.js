@@ -24,23 +24,23 @@ const defaultProps = {
 };
 
 const DoughnutStatuses = (props) => {
-  let missionStatusTypesMap = useSelector(missionStatusTypesMapper);
-  let fullMissionStatusTypeIdsCounter = {};
-  props.routes.forEach(route => {
+  let fullMissionStatusTypeIdsCounter = props.routes.reduce((accumulator, route) => {
     let routeInfo = useSelector(state => routeInfoSelector(state, route.id));
-    routeInfo[props.missionType].missionStatusTypeCountByIds.forEach(({id, count}) => {
-      let fullCount = fullMissionStatusTypeIdsCounter[id] ? fullMissionStatusTypeIdsCounter[id] : 0;
-      fullMissionStatusTypeIdsCounter[id] = fullCount + count;
+    routeInfo[props.missionType].missionStatusTypeCountByIds.forEach(info => {
+      let lastCount = accumulator[info.reference] ? accumulator[info.reference].count : 0;
+      accumulator[info.reference] = {...info, count: (lastCount + info.count)};
     });
-  });
-  // console.log(fullMissionStatusTypeIdsCounter);
+    return accumulator;
+  },{});
+
   let dataset = [1];
   let backgroundColor = [];
   let labels = [""];
+
   if (Object.keys(fullMissionStatusTypeIdsCounter).length > 0) {
-    dataset = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id]);
-    backgroundColor = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => missionStatusTypesMap[id].color);
-    labels = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => missionStatusTypesMap[id].label);
+    dataset = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id].count);
+    backgroundColor = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id].color);
+    labels = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id].label);
   }
   let data = {
     datasets: [{
