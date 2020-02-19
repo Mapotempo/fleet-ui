@@ -1,37 +1,42 @@
 import { ApiAuth } from '../api';
 
-export const REQUEST_AUTH_USER = 'REQUEST_AUTH_USER';
-const requestAuthUser = () => {
+export const REQUEST_AUTH_USERS = 'REQUEST_AUTH_USERS';
+const requestAuthUsers = (isFetching) => {
   return {
-    type: REQUEST_AUTH_USER
+    type: REQUEST_AUTH_USERS,
+    isFetching: isFetching
   };
 };
 
-export const RECEIVE_AUTH_USER = 'RECEIVE_AUTH_USER';
-const receiveAuthUser = (user) => {
+export const RECEIVE_AUTH_USERS = 'RECEIVE_AUTH_USERS';
+const receiveAuthUsers = (users) => {
   return {
-    type: RECEIVE_AUTH_USER,
-    user
+    type: RECEIVE_AUTH_USERS,
+    users
   };
 };
 
-export const ERRORS_AUTH_USER = 'ERRORS_AUTH_USER';
-const errorAuthUser = (errors) => {
+export const ERRORS_AUTH_USERS = 'ERRORS_AUTH_USERS';
+const errorAuthUsers = (errors) => {
   return {
-    type: ERRORS_AUTH_USER,
+    type: ERRORS_AUTH_USERS,
     errors
   };
 };
 
-export const signInUsers = (syncUser, apiKey) => {
+// {syncUser, apiKey}
+export const signInUsers = (connexions) => {
   return (dispatch, getState) => {
-    dispatch(requestAuthUser());
-    ApiAuth.apiFetchAuthUser(syncUser,
-      {
-        host: getState().fleet.fleetHost,
-        apiKey
-      })
-      .then((user) => dispatch(receiveAuthUser(user)))
-      .catch((errors) => dispatch(errorAuthUser(errors)));
+    dispatch(requestAuthUsers(true));
+    return Promise
+      .all(connexions.map(({ syncUser, apiKey }) => {
+        return ApiAuth.apiFetchAuthUser(syncUser,
+          {
+            host: getState().fleet.fleetHost,
+            apiKey: apiKey
+          });
+      }))
+      .then(users => dispatch(receiveAuthUsers(users)))
+      .catch((errors) => dispatch(errorAuthUsers(errors)));
   };
 };

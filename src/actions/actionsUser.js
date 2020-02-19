@@ -26,11 +26,13 @@ const errorsUsers = (errors) => {
 export const fetchUsers = () => {
   return (dispatch, getState) => {
     dispatch(requestUsers());
-    ApiUsers.apiFetchUser(
-      {
-        host: getState().fleet.fleetHost,
-        apiKey: getState().fleet.auth.user.api_key
-      })
+    return Promise
+      .all(getState().fleet.auth.users.map((authUser) => ApiUsers.apiFetchUser(
+        {
+          host: getState().fleet.fleetHost,
+          apiKey: authUser.api_key
+        })))
+      .then(res => res.flat())
       .then((users) => dispatch(receiveUsers(users)))
       .catch((errors) => dispatch(errorsUsers(errors)));
   };

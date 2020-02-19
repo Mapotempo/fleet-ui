@@ -1,38 +1,27 @@
-import { REQUEST_AUTH_USER, RECEIVE_AUTH_USER, ERRORS_AUTH_USER } from '../actions';
+import { REQUEST_AUTH_USERS, RECEIVE_AUTH_USERS, ERRORS_AUTH_USERS } from '../actions';
 
 const initState = {
   isFetching: false,
   isConnected: false,
   errors: null,
-  user: {
-    'id': -1,
-    'company_id': '',
-    'email': '',
-    'sync_user': '',
-    'name': '',
-    'vehicle': false,
-    'api_key': ''
-  }
+  // shape: [{'id': -1, 'company_id': '', 'email': '','sync_user': '', 'name': '', 'vehicle': false, 'api_key': '' }]
+  users: []
 };
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
-    case REQUEST_AUTH_USER:
-      state = {
-        ...state,
-        isFetching: true,
-        isConnected: false
-      };
+    case REQUEST_AUTH_USERS:
+      state = {...initState, isFetching: true};
       break;
-    case RECEIVE_AUTH_USER:
+    case RECEIVE_AUTH_USERS:
       state = {
         ...state,
         isFetching: false,
         isConnected: true,
-        user: { ...state.user, ...action.user }
+        users: action.users
       };
       break;
-    case ERRORS_AUTH_USER:
+    case ERRORS_AUTH_USERS:
       state = {
         ...state,
         isFetching: false,

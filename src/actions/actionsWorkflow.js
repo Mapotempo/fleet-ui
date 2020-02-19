@@ -41,15 +41,17 @@ const errorsMissionStatusType = (errors) => {
 const fetchMissionStatusTypes = () => {
   return (dispatch, getState) => {
     dispatch(requestMissionStatusType());
-    ApiWorkflow.apiFetchMissionStatusTypes(
-      getState().fleet.auth.user.sync_user,
-      {
-        host: getState().fleet.fleetHost,
-        apiKey: getState().fleet.auth.user.api_key,
-      }
-    )
-      .then((missionActionTypes) => dispatch(receiveMissionStatusType(missionActionTypes)))
-      .catch((errors) => dispatch(errorsMissionStatusType(errors)));
+    return Promise
+      .all(getState().fleet.auth.users.map((authUser) => ApiWorkflow.apiFetchMissionStatusTypes(
+        authUser.sync_user,
+        {
+          host: getState().fleet.fleetHost,
+          apiKey: authUser.api_key,
+        }
+      )))
+      .then(res => res.flat())
+      .then(missionStatusTypes => dispatch(receiveMissionStatusType(missionStatusTypes)))
+      .catch(errors => dispatch(errorsMissionStatusType(errors)));
   };
 };
 
@@ -83,13 +85,16 @@ const errorsMissionActionType = (errors) => {
 const fetchMissionActionTypes = () => {
   return (dispatch, getState) => {
     dispatch(requestMissionActionType());
-    ApiWorkflow.apiFetchMissionActionTypes(
-      getState().fleet.auth.user.sync_user,
-      {
-        host: getState().fleet.fleetHost,
-        apiKey: getState().fleet.auth.user.api_key
-      })
-      .then((missionActionTypes) => dispatch(receiveMissionActionType(missionActionTypes)))
-      .catch((errors) => dispatch(errorsMissionActionType(errors)));
+    return Promise
+      .all(getState().fleet.auth.users.map((authUser) => ApiWorkflow.apiFetchMissionActionTypes(
+        authUser.sync_user,
+        {
+          host: getState().fleet.fleetHost,
+          apiKey: authUser.api_key,
+        }
+      )))
+      .then(res => res.flat())
+      .then(missionActionTypes => dispatch(receiveMissionActionType(missionActionTypes)))
+      .catch(errors => dispatch(errorsMissionActionType(errors)));
   };
 };
