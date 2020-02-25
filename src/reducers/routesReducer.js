@@ -16,9 +16,7 @@ export default function routesReducer(state = initState, action) {
       state = { ...state, isFetching: true };
       break;
     case RECEIVE_ROUTES:
-      state = { ...state };
-      state.isFetching = false;
-      state.errors = null;
+      state = { ...state, isFetching: false, errors: null };
       state.items = action.routes.map(newRoute => {
         let oldRoute = state.items.find(oldRoute => oldRoute.id == newRoute.id);
         let missions = (oldRoute && oldRoute.missions) ? oldRoute.missions : [];

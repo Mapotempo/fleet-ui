@@ -1,9 +1,32 @@
 import { ApiRoutes } from '../api';
 import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 
-// ######
-// ROUTES
-// ######
+// ##########
+// ALL ROUTES
+// ##########
+export const fetchRoutes = () => {
+  return (dispatch, getState) => {
+    // Prevent multi fetching
+    if (getState().fleet.routes.isFetching ||
+        getState().fleet.routes.isFetchingRoutesMissions)
+      return Promise.resolve();
+
+    dispatch(requestRoutes());
+    return Promise.all(
+      getState().fleet.auth.users.map((authUser) =>
+        ApiRoutes.apiFetchRoutes(false,
+          {
+            host: getState().fleet.fleetHost,
+            apiKey: authUser.api_key,
+          })))
+      .then(res => res.flat())
+      .then(routes => {
+        dispatch(receiveRoutes(routes));
+        dispatch(fetchRoutesMissions(routes));
+      })
+      .catch(errors => dispatch(errorsRoutes(errors)));
+  };
+};
 
 export const REQUEST_ROUTES = 'REQUEST_ROUTES';
 const requestRoutes = () => {
@@ -28,28 +51,42 @@ const errorsRoutes = (errors) => {
   };
 };
 
-export const fetchRoutes = () => {
-  return (dispatch, getState) => {
-    dispatch(requestRoutes());
-    return Promise.all(
-      getState().fleet.auth.users.map((authUser) =>
-        ApiRoutes.apiFetchRoutes(false,
-          {
-            host: getState().fleet.fleetHost,
-            apiKey: authUser.api_key,
-          })))
-      .then(res => res.flat())
-      .then(routes => {
-        dispatch(receiveRoutes(routes));
-        dispatch(fetchRoutesMissions(routes));
-      })
-      .catch(errors => dispatch(errorsRoutes(errors)));
-  };
-};
-
 // ###################
 // ROUTE WITH MISSIONS
 // ###################
+
+const ROUTES_BY_STEP = 20;
+
+export const fetchRoutesMissions = (routes) => {
+  return async(dispatch, getState) => {
+    // Prevent multi fetching
+    if (getState().fleet.routes.isFetchingRoutesMissions)
+      return;
+
+    dispatch(requestRouteMissionsBegin());
+    var index = 0;
+    while (index < routes.length) {
+      let routeSliced = routes.slice(index, index + ROUTES_BY_STEP);
+      await dispatch(_fetchRoutesMissions(routeSliced));
+      index += ROUTES_BY_STEP;
+    }
+    dispatch(requestRouteMissionsEnd());
+  };
+};
+
+const _fetchRoutesMissions = (routes) => {
+  return (dispatch, getState) => {
+    return Promise
+      .all(routes.map((route) => ApiRoutes
+        .apiFetchRoute(route.id, {
+          host: getState().fleet.fleetHost,
+          apiKey: tokenBySyncUserSelector(getState(), route.sync_user)
+        })
+        .then(route => dispatch(receiveRouteMissions(route)))
+        .catch(errors => dispatch(errorsRoutes(errors)))
+      ));
+  };
+};
 
 export const REQUEST_ROUTES_MISSIONS_BEGIN = 'REQUEST_ROUTES_MISSIONS_BEGIN';
 const requestRouteMissionsBegin = (route) => {
@@ -75,34 +112,3 @@ const receiveRouteMissions = (route) => {
   };
 };
 
-const STEP = 20;
-
-const _recursiveFetchRoutesMissions = (routes, index = 0) => {
-  return (dispatch, getState) => {
-    return Promise
-      .all(
-        routes.slice(index, index + STEP).map((route) => ApiRoutes.apiFetchRoute(route.id,
-          {
-            host: getState().fleet.fleetHost,
-            apiKey: tokenBySyncUserSelector(getState(), route.sync_user)
-          })
-          .then(route => dispatch(receiveRouteMissions(route)))
-          .catch(errors => dispatch(errorsRoutes(errors)))
-        ))
-      .finally(() => {
-        if (index + STEP < routes.length)
-          dispatch(_recursiveFetchRoutesMissions(routes, index + STEP));
-        else
-          dispatch(requestRouteMissionsEnd());
-      });
-  };
-};
-
-export const fetchRoutesMissions = (routes) => {
-  return (dispatch ,getState) => {
-    if (!getState().fleet.routes.isFetchingRoutesMissions) {
-      dispatch(requestRouteMissionsBegin());
-      dispatch(_recursiveFetchRoutesMissions(routes, 0));
-    }
-  };
-};

@@ -1,6 +1,6 @@
 var axios = require('axios');
 
-axios.interceptors.response.use((response) => Promise.resolve(response.data),
+axios.interceptors.response.use((response) => response.data,
   (error) => {
     let resError = { status: -1, message: '' };
     if (error.response && error.response.data) {
@@ -14,7 +14,7 @@ axios.interceptors.response.use((response) => Promise.resolve(response.data),
       console.error(error);
       resError.message = error.toString();
     }
-    return Promise.reject(resError);
+    throw resError;
   }
 );
 
