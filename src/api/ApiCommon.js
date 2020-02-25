@@ -2,19 +2,15 @@ var axios = require('axios');
 
 axios.interceptors.response.use((response) => response.data,
   (error) => {
-    let resError = { status: -1, message: '' };
-    if (error.response && error.response.data) {
-      if (error.response.data.errors)
-        resError.message = error.response.data.errors;
-      else
-        resError.message = error.response.data;
-      resError.status = error.response.status;
+    let message = error ? error.toString() : 'Unknow Error';
+    let status = -1;
+    if (error && error.response && error.response.status > -1) {
+      status = error.response.status;
+      message = error.response.data.error;
     }
-    else {
-      console.error(error);
-      resError.message = error.toString();
-    }
-    throw resError;
+    if (process.env.NODE_ENV == 'development')
+      message = 'Error, call your support team'; //FIXME: translate;
+    throw {message, status};
   }
 );
 

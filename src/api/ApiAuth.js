@@ -7,15 +7,15 @@ export default {
       .catch((error) => {
         switch (error.status) {
           case 401:
-            error.message = 'Credential invalid';
+            error.message = 'Credential invalid'; //FIXME: translate;
             break;
           case 404:
-            error.message = 'Utilisateur inconnue';
+            error.message = 'Utilisateur inconnue'; //FIXME: translate;
             break;
           default:
-            error.message = 'Erreur inconnue';
+            error.message = 'Erreur inconnue'; //FIXME: translate;
         }
-        return Promise.reject(error);
+        throw error;
       });
   }
 };
