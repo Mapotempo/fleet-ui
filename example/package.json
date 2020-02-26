@@ -8,6 +8,7 @@
     "chart.js": "^2.9.3",
     "fleet-ui": "file:..",
     "prop-types": "^15.7.2",
+    "react-bootstrap-table-next": "^3.3.5",
     "react-scripts": "3.3.0",
     "redux-devtools-extension": "^2.13.8"
   },

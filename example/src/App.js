@@ -8,6 +8,7 @@ import * as app_actions from './actions';
 import { LiveView } from 'fleet-ui';
 
 import "react-datepicker/dist/react-datepicker.css";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers([
@@ -26,7 +27,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <LiveView routePerPage={10} />
+        <LiveView />
       </Provider>
     );
   }

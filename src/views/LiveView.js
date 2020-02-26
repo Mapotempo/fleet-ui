@@ -14,14 +14,6 @@ import DoughnutStatuses from '../components/route/DoughnutStatuses';
 
 import DatePicker from "react-datepicker";
 
-const propTypes = {
-  routePerPage: PropTypes.number
-};
-
-const defaultProps = {
-  routePerPage: 8
-};
-
 const LiveView = (props) => {
   const [date, setDate] = useState(null);
   const dispatch = useDispatch();
@@ -40,7 +32,7 @@ const LiveView = (props) => {
   if (!date) {
     handleChange(new Date());
   }
-    
+
   return (
     <React.Fragment>
       <LoadingBar
@@ -81,7 +73,6 @@ const LiveView = (props) => {
           <Col xs={12}>
             <RoutesList
               routes={routes}
-              routePerPage={props.routePerPage}
               locale="fr"
             />
           </Col>
@@ -90,9 +81,6 @@ const LiveView = (props) => {
     </React.Fragment>
   );
 };
-
-LiveView.propTypes = propTypes;
-LiveView.defaultProps = defaultProps;
 
 export default LiveView;
 
