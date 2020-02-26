@@ -1,5 +1,5 @@
 import {
-  REQUEST_ROUTES, RECEIVE_ROUTES, ERRORS_ROUTES,
+  REQUEST_ROUTES, RECEIVE_ROUTES, ERRORS_ROUTES, CLEAR_ROUTES,
   RECEIVE_ROUTE_MISSIONS, REQUEST_ROUTES_MISSIONS_BEGIN, REQUEST_ROUTES_MISSIONS_END
 } from '../actions';
 
@@ -22,6 +22,9 @@ export default function routesReducer(state = initState, action) {
         let missions = (oldRoute && oldRoute.missions) ? oldRoute.missions : [];
         return {missions: missions, ...newRoute};
       });
+      break;
+    case CLEAR_ROUTES:
+      state = { ...initState };
       break;
     case ERRORS_ROUTES:
       state = { ...state, errors: action.errors, isFetching: false };

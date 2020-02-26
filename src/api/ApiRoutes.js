@@ -1,15 +1,14 @@
 import { doGet } from './ApiCommon';
 
 export default {
-  apiFetchRoutes(withMissions, { host, apiKey }) {
-    let from = new Date();
-    from.setUTCHours(0, 0, 0, 0);
+  apiFetchRoutes(withMissions, from, to, { host, apiKey }) {
     return doGet(host, {
       url: 'api/0.1/routes/',
       apiKey,
       parameters: {
         'with_missions': withMissions,
-        'from': from.toISOString()
+        'from': from,
+        'to': to
       }
     })
       .then((data) => Promise.resolve(data.routes));

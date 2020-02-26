@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { routeInfoSelector } from '../../selectors';
-
-import { missionStatusTypesMapper } from '../../selectors';
-
 import { Doughnut } from 'react-chartjs-2';
 
 // ==========
@@ -24,14 +21,14 @@ const defaultProps = {
 };
 
 const DoughnutStatuses = (props) => {
-  let fullMissionStatusTypeIdsCounter = props.routes.reduce((accumulator, route) => {
-    let routeInfo = useSelector(state => routeInfoSelector(state, route.id));
+  let fullMissionStatusTypeIdsCounter = useSelector(state => props.routes.reduce((accumulator, route) => {
+    let routeInfo = routeInfoSelector(state, route.id);
     routeInfo[props.missionType].missionStatusTypeCountByIds.forEach(info => {
       let lastCount = accumulator[info.reference] ? accumulator[info.reference].count : 0;
       accumulator[info.reference] = {...info, count: (lastCount + info.count)};
     });
     return accumulator;
-  },{});
+  },{}));
 
   let dataset = [1];
   let backgroundColor = [];

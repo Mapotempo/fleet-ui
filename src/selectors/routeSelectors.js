@@ -21,7 +21,7 @@ export const missionsDowloadProgressSelector = createSelector(
 // ==================
 export const routeInfoSelector = createCachedSelector(
   missionStatusTypesMapper,
-  (state, routeId) => state.fleet.routes.items.find((route) => route.id === routeId),
+  (state, routeId) => routesSelector(state).find((route) => route.id === routeId),
   (missionStatusTypesMap, route) => computeRouteInfo(route, missionStatusTypesMap)
 )(
   (state, routeId) => routeId
@@ -41,7 +41,6 @@ const computeAdvancing = (actualDate, departureDate, eta) => {
 };
 
 const computeRouteInfo = (route, missionStatusTypesMap) => {
-
   let actualDate = new Date();
   let res = route.missions.reduce((accumulator, mission) => {
     // Find arrival date

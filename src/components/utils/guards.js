@@ -17,10 +17,18 @@ const FleetGuard = (Component) => {
       return (<div>ERROR: global store must be integrate fleet store !</div>);
 
     let isConnected = useSelector(state => state.fleet.auth.isConnected);
-    let isFetching = useSelector(state => state.fleet.auth.isFetching);
+    let isFetchingAuth = useSelector(state => state.fleet.auth.isFetching);
+    let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
+    let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
+    let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
+
     let errors = useSelector(state => state.fleet.auth.errors);
-    if (isFetching)
-      return <Loader message='Mapotempo Live Server - connexion pending'/>;
+    if (isFetchingAuth)
+      return <Loader message='Mapotempo Live Server - connexion pending' />;
+    if (!isConnected)
+      return <NotConnected errors={errors ? errors.message : ''}/>;
+    if (isFetchingMST || isFetchingMAT || isFetchingUser)
+      return (<Loader message='Loading data' />);
     if (!isConnected)
       return <NotConnected errors={errors ? errors.message : ''}/>;
     return (<Component {...props}/>);

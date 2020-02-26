@@ -1,4 +1,5 @@
 import { ApiAuth } from '../api';
+import { fetchWorkflow, fetchUsers } from '../actions';
 
 export const REQUEST_AUTH_USERS = 'REQUEST_AUTH_USERS';
 const requestAuthUsers = (isFetching) => {
@@ -36,7 +37,11 @@ export const signInUsers = (connexions) => {
             apiKey: apiKey
           });
       }))
-      .then(users => dispatch(receiveAuthUsers(users)))
+      .then(users => {
+        dispatch(receiveAuthUsers(users));
+        dispatch(fetchWorkflow());
+        dispatch(fetchUsers());
+      })
       .catch((errors) => dispatch(errorAuthUsers(errors)));
   };
 };

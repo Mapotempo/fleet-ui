@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 
-import { fetchRoutes, fetchWorkflow, fetchUsers } from '../actions';
+import { fetchRoutes } from '../actions';
 import { routesSelector, missionsDowloadProgressSelector } from '../selectors';
 
 import RoutesList from '../components/route/RouteList';
-import Loader from '../components/utils/loader';
 import DoughnutStatuses from '../components/route/DoughnutStatuses';
+
+import DatePicker from "react-datepicker";
 
 const propTypes = {
   routePerPage: PropTypes.number
@@ -22,34 +23,26 @@ const defaultProps = {
 };
 
 const LiveView = (props) => {
+  const [date, setDate] = useState(null);
   const dispatch = useDispatch();
-  const [mounted, setMounted] = useState(false);
   let routes = useSelector(routesSelector);
   let missionsDownloadProgress = useSelector(missionsDowloadProgressSelector);
 
-  // Fetch Statuses
-  let isFetchingRoute = useSelector(state => state.fleet.routes.isFetching);
-  let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
-  let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
-  let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
+  const handleChange = (value) => {
+    let from = new Date(value);
+    from.setUTCHours(0, 0, 0, 0);
+    var to = new Date(from);
+    to.setDate(from.getDate() + 1);
+    setDate(from);
+    dispatch(fetchRoutes(from, to));
+  };
 
-  if (!mounted) {
-    dispatch(fetchRoutes());
-    dispatch(fetchWorkflow());
-    dispatch(fetchUsers());
+  if (!date) {
+    handleChange(new Date());
   }
-
-  useEffect(() => {
-    if (!mounted)
-      setMounted(true);
-    const interval = setInterval(() => dispatch(fetchRoutes()), 120000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (isFetchingMST || isFetchingMAT || isFetchingUser || (isFetchingRoute && routes.length === 0))
-    return (<Loader message='Loading data' />);
+    
   return (
-    <div>
+    <React.Fragment>
       <LoadingBar
         progress={missionsDownloadProgress}
         height={3}
@@ -76,18 +69,25 @@ const LiveView = (props) => {
               header="Global Arrival" />
           </Col>
         </Row>
-        {/* <Row>
-        <Col xs={12}>
-          <ProgressBar active={missionsDownloadProgress < 100 ? true : false} bsStyle="info" now={missionsDownloadProgress}></ProgressBar>
-        </Col>
-      </Row> */}
         <Row>
           <Col xs={12}>
-            <RoutesList routes={routes} routePerPage={props.routePerPage} />
+            <DatePicker
+              selected={date}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12}>
+            <RoutesList
+              routes={routes}
+              routePerPage={props.routePerPage}
+              locale="fr"
+            />
           </Col>
         </Row>
       </Grid>
-    </div>
+    </React.Fragment>
   );
 };
 
@@ -95,3 +95,4 @@ LiveView.propTypes = propTypes;
 LiveView.defaultProps = defaultProps;
 
 export default LiveView;
+

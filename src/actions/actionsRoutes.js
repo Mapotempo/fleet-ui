@@ -4,7 +4,7 @@ import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 // ##########
 // ALL ROUTES
 // ##########
-export const fetchRoutes = () => {
+export const fetchRoutes = (from, to) => {
   return (dispatch, getState) => {
     // Prevent multi fetching
     if (getState().fleet.routes.isFetching ||
@@ -14,7 +14,7 @@ export const fetchRoutes = () => {
     dispatch(requestRoutes());
     return Promise.all(
       getState().fleet.auth.users.map((authUser) =>
-        ApiRoutes.apiFetchRoutes(false,
+        ApiRoutes.apiFetchRoutes(false, from ,to,
           {
             host: getState().fleet.fleetHost,
             apiKey: authUser.api_key,
@@ -25,6 +25,13 @@ export const fetchRoutes = () => {
         dispatch(fetchRoutesMissions(routes));
       })
       .catch(errors => dispatch(errorsRoutes(errors)));
+  };
+};
+
+export const CLEAR_ROUTES = 'CLEAR_ROUTES';
+export const clearRoutes = () => {
+  return {
+    type: CLEAR_ROUTES
   };
 };
 
