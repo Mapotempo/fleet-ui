@@ -1,3 +1,10 @@
+
+/* ##########
+   #        #
+   # Loader #
+   #        #
+   ##########*/
+
 .loader {
   margin: auto;
   margin-top: 10px;
@@ -13,4 +20,96 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* #####################
+   #                   #
+   # Table Route Style #
+   #                   #
+   #####################*/
+
+  .route-list-container {
+    background: #f1f1f1;
+    border-radius:10px;
+    padding: 10px;
+  }
+
+  .route-list-table-wrapper {
+    overflow: auto;
+    height: 444px;
+
+  }
+  /*
+
+  .route-list-table-head>tr>th {
+    position: sticky;
+    top: 0;
+    background: white;
+  } */
+
+  .route-list-header>th {
+    position: sticky;
+    background: #c1c1c1;
+    top: 0;
+    z-index: 500;
+  }
+
+  td.expanding-routes
+  {
+    background: #fefefe;
+  }
+
+  .route-list-column.overflow,
+  .mission-list-column.overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* #######################
+     #                     #
+     # Table Mission Style #
+     #                     #
+     #######################*/
+
+  .mission-list {
+    /* border: 1px solid #ddd; */
+  }
+
+  .mission-list-table-wrapper {
+    overflow: auto;
+    max-height: 370px;
+    padding-left: 50px;
+  }
+
+  .mission-list-table-wrapper>table {
+    margin: 0;
+  }
+
+  .mission-list-header>th {
+    position: sticky;
+    top: 0;
+    background-color: #a8c7cc !important;
+    z-index: 499;
+  }
+
+  /* .mission-list-body {
+    background-color: #f4fdff !important;
+  }
+  .mission-list-body>tr :hover {
+    background-color: #dce2e4 !important;
+  } */
+
+  /* ##################
+     #                #
+     # LiveView Style #
+     #                #
+     ##################*/
+
+#LiveView {
+  height: 100%;
+}
+
+.LiveViewPart {
+  height: 50%;
 }

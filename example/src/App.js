@@ -9,6 +9,7 @@ import { LiveView } from 'fleet-ui';
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'fleet-ui/src/styles.css';
 
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers([

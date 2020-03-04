@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { routeInfoSelector } from '../../selectors';
+import { routeInfoSelector } from '../selectors';
 import { Doughnut } from 'react-chartjs-2';
 
 // ==========

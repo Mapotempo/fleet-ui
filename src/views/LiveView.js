@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -9,12 +8,12 @@ import LoadingBar from 'react-top-loading-bar';
 import { fetchRoutes } from '../actions';
 import { routesSelector, missionsDowloadProgressSelector } from '../selectors';
 
-import RoutesList from '../components/route/RouteList';
-import DoughnutStatuses from '../components/route/DoughnutStatuses';
+import RoutesList from '../components/RouteList';
+import DoughnutStatuses from '../components/DoughnutStatuses';
 
 import DatePicker from "react-datepicker";
 
-const LiveView = (props) => {
+const LiveView = () => {
   const [date, setDate] = useState(null);
   const dispatch = useDispatch();
   let routes = useSelector(routesSelector);
@@ -40,7 +39,38 @@ const LiveView = (props) => {
         height={3}
         color='#00AAC2'
       />
+      {/* <div id='LiveView'>
+        <div style={{height: '20%'}}>
+          <DoughnutStatuses
+            routes={routes}
+            missionType="departure"
+            header="Global Departure"/>
+          <DoughnutStatuses
+            routes={routes}
+            missionType="mission"
+            header="Global Mission"/>
+          <DoughnutStatuses
+            routes={routes}
+            missionType="arrival"
+            header="Global Arrival" />
+        </div>
+        <div style={{height: '80%'}}>
+          <DatePicker
+            selected={date}
+            onChange={handleChange}
+          />
+        </div>
+      </div> */}
+
       <Grid fluid>
+        <Row>
+          <Col xs={12}>
+            <DatePicker
+              selected={date}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
         <Row className="show-grid" style={{padding: '20px'}}>
           <Col xs={6} md={4}>
             <DoughnutStatuses
@@ -63,14 +93,6 @@ const LiveView = (props) => {
         </Row>
         <Row>
           <Col xs={12}>
-            <DatePicker
-              selected={date}
-              onChange={handleChange}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
             <RoutesList
               routes={routes}
               locale="fr"
@@ -78,6 +100,7 @@ const LiveView = (props) => {
           </Col>
         </Row>
       </Grid>
+
     </React.Fragment>
   );
 };
