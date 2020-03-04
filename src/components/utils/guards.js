@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { useSelector } from 'react-redux';
-import Loader from './loader';
 
 import { Jumbotron, Glyphicon } from 'react-bootstrap';
+
+import Loader from './loader';
+
+import { isReadyData } from '../../selectors';
 
 // ====================
 // FleetGuard Component
@@ -21,15 +23,14 @@ const FleetGuard = (Component) => {
     let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
     let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
     let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
+    let readyData = useSelector(isReadyData);
 
     let errors = useSelector(state => state.fleet.auth.errors);
     if (isFetchingAuth)
       return <Loader message='Mapotempo Live Server - connexion pending' />;
-    if (!isConnected)
-      return <NotConnected errors={errors ? errors.message : ''}/>;
     if (isFetchingMST || isFetchingMAT || isFetchingUser)
       return (<Loader message='Loading data' />);
-    if (!isConnected)
+    if (!isConnected || !readyData)
       return <NotConnected errors={errors ? errors.message : ''}/>;
     return (<Component {...props}/>);
   };

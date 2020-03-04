@@ -13,30 +13,28 @@ const initState = {
   errorsMST: null,
   errorsMAT: null,
   missionStatusTypeItems: [],
-  missionActionTypeItems: []
+  missionActionTypeItems: [],
+  readyMST: false,
+  readyMAT: false
 };
 
 export default function workflowReducer(state = initState, action) {
   switch (action.type) {
     case REQUEST_MISSION_STATUS_TYPE:
-      state = { ...state, isFetchingMST: true };
+      state = { ...state, isFetchingMST: true, readyMST: false };
       break;
     case RECEIVE_MISSION_STATUS_TYPE:
-      state = { ...state };
-      state.isFetchingMST = false;
-      state.errorsMST = null;
+      state = { ...state, isFetchingMST: false, errorsMST: false, readyMST: true };
       state.missionStatusTypeItems = [...action.missionStatusTypes];
       break;
     case ERRORS_MISSION_STATUS_TYPE:
       state = { ...state, errorsMST: action.errors, isFetching: false };
       break;
     case REQUEST_MISSION_ACTION_TYPE:
-      state = { ...state, isFetchingMAT: true };
+      state = { ...state, isFetchingMAT: true, readyMAT: false};
       break;
     case RECEIVE_MISSION_ACTION_TYPE:
-      state = { ...state };
-      state.isFetchingMAT = false;
-      state.errorsMAT = null;
+      state = { ...state, isFetchingMAT: false, errorsMAT: null, readyMAT: true };
       state.missionActionTypeItems = [...action.missionActionTypes];
       break;
     case ERRORS_MISSION_ACTION_TYPE:

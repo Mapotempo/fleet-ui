@@ -39,29 +39,6 @@ const LiveView = () => {
         height={3}
         color='#00AAC2'
       />
-      {/* <div id='LiveView'>
-        <div style={{height: '20%'}}>
-          <DoughnutStatuses
-            routes={routes}
-            missionType="departure"
-            header="Global Departure"/>
-          <DoughnutStatuses
-            routes={routes}
-            missionType="mission"
-            header="Global Mission"/>
-          <DoughnutStatuses
-            routes={routes}
-            missionType="arrival"
-            header="Global Arrival" />
-        </div>
-        <div style={{height: '80%'}}>
-          <DatePicker
-            selected={date}
-            onChange={handleChange}
-          />
-        </div>
-      </div> */}
-
       <Grid fluid>
         <Row>
           <Col xs={12}>
@@ -100,7 +77,6 @@ const LiveView = () => {
           </Col>
         </Row>
       </Grid>
-
     </React.Fragment>
   );
 };

@@ -14,7 +14,7 @@ const defaultProps = {
 
 const Loader = (props) => {
   return (
-    <Jumbotron>
+    <Jumbotron style={{height: '100%', margin: '0'}}>
       <div className={styles.loader} />
       <p style={{textAlign: 'center'}}>{props.message}</p>
     </Jumbotron>);

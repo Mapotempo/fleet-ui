@@ -193,7 +193,6 @@ const RouteStatusColors = ({routeId, type='mission', withCount=true, withLabels=
 
 const Advancement = ({routeId}) => {
   let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
-  // console.log(routeInfo);
   return <ProgressBar style={{ margin: 0 }} now={routeInfo.advancing} label={`${routeInfo.advancing}%`} title={`${routeInfo.advancing}%`}/>;
 };
 
