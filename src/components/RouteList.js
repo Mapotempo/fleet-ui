@@ -25,9 +25,6 @@ const defaultProps = {
 const RoutesList = (props) => {
   const [wideScreen, setWideScreen] = useState(true);
   let usersMap = useSelector(usersMapper);
-  // let routes = useSelector(state => props.routes.map(route => {
-  //   return {...route, user: usersMap[route.user_id], routeInfo: routeInfoSelector(state, route.id)};
-  // }));
 
   useEffect(() => {
     const reportWindowSize = () => {
@@ -48,12 +45,6 @@ const RoutesList = (props) => {
     headerClasses: 'route-list-column overflow'
   },
   {
-    dataField: 'duration',
-    text: 'Duration',
-    classes: 'route-list-column overflow',
-    headerClasses: 'route-list-column overflow'
-  },
-  {
     dataField: '',
     isDummyField: true,
     text: 'Email',
@@ -65,7 +56,7 @@ const RoutesList = (props) => {
   },
   {
     dataField: 'user_phone',
-    //isDummyField: true,
+    isDummyField: true,
     text: 'Phone',
     formatter: userPhoneFormatter,
     formatExtraData: usersMap,
@@ -88,7 +79,7 @@ const RoutesList = (props) => {
     dataField: 'routeInfoMission',
     isDummyField: true,
     text: 'Missions',
-    formatter: statusFormatter,
+    formatter: missionStatusFormatter,
     formatExtraData: 'mission',
     headerAlign: 'center',
     align: 'center',
@@ -118,7 +109,7 @@ const RoutesList = (props) => {
   },
   {
     dataField: 'advancement',
-    // isDummyField: true,
+    isDummyField: true,
     text: 'Estimated Time Advancement',
     formatter: advancementFormatter,
     classes: 'route-list-column',
@@ -127,7 +118,7 @@ const RoutesList = (props) => {
   },
   {
     dataField: 'eta',
-    // isDummyField: true,
+    isDummyField: true,
     text: 'Estimated Time Arrival (ETA)',
     formatter: ETAFormatter,
     classes: 'route-list-column',
@@ -170,6 +161,8 @@ export default RoutesList;
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].email;
 const userPhoneFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].phone;
 const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors routeId={row.id} type={formatExtraData} withLabels withCount={false}/>);
+const missionStatusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors routeId={row.id} type={formatExtraData}/>);
+
 const advancementFormatter = (cell, row) => (<Advancement routeId={row.id}/>);
 const ETAFormatter = (cell, row) => (<ETA routeId={row.id}/>);
 
@@ -196,7 +189,7 @@ const Advancement = ({routeId}) => {
   return <ProgressBar style={{ margin: 0 }} now={routeInfo.advancing} label={`${routeInfo.advancing}%`} title={`${routeInfo.advancing}%`}/>;
 };
 
-const ETA = ({eta, routeId}) => {
+const ETA = ({routeId}) => {
   let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
   var style = 'default';
   if (routeInfo.delay < 15)
