@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Jumbotron, Glyphicon } from 'react-bootstrap';
 
@@ -14,6 +15,8 @@ import { isReadyData } from '../../selectors';
 
 const FleetGuard = (Component) => {
   let newFunc = (props) => {
+    const { t } = useTranslation();
+
     let fleetStore = useSelector(state => state.fleet);
     if (!fleetStore)
       return (<div>ERROR: global store must be integrate fleet store !</div>);
@@ -27,9 +30,9 @@ const FleetGuard = (Component) => {
 
     let errors = useSelector(state => state.fleet.auth.errors);
     if (isFetchingAuth)
-      return <Loader message='Mapotempo Live Server - connexion pending' />;
+      return <Loader message={t('mapotempo_live_server_connection_pending')} />;
     if (isFetchingMST || isFetchingMAT || isFetchingUser)
-      return (<Loader message='Loading data' />);
+      return (<Loader message={t('mapotempo_live_server_loading_data')} />);
     if (!isConnected || !readyData)
       return <NotConnected errors={errors ? errors.message : ''}/>;
     return (<Component {...props}/>);
@@ -52,11 +55,14 @@ const defaultProps = {
 };
 
 const NotConnected = (props) => {
+  const { t } = useTranslation();
+
   return (
     <Jumbotron style={{textAlign: 'center'}}>
       <p style={{ fontSize: '5em', color: '#d9534f' }} ><Glyphicon glyph="alert"/></p>
-      <p>Unconnected to Mapotempo Live Server</p>
-      <p>Error: {props.errors}</p>
+
+      <p>{t('mapotempo_live_server_unconnected')}</p>
+      <p>{t('mapotempo_live_server_error')}: {props.errors}</p>
     </Jumbotron>);
 };
 

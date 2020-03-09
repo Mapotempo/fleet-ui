@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { missionStatusTypesMapper } from '../selectors';
 
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Label, Badge, Glyphicon } from 'react-bootstrap';
+import { Label, Badge, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 
 // =============
 // MISSIONS LIST
@@ -20,30 +21,31 @@ const defaultProps = {
 };
 
 const MissionsList = props => {
+  const { t } = useTranslation();
   let missionStatusTypeMap = useSelector(missionStatusTypesMapper);
 
   const columns = [{
     dataField: 'name',
-    text: 'Name',
+    text: t('mapotempo_mission_name'),
     formatter: NameFormater,
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }, {
     dataField: 'mission_status_type_id',
-    text: 'Status',
+    text: t('mapotempo_mission_status'),
     formatter: MissionStatusFormater,
     formatExtraData: missionStatusTypeMap,
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }, {
     dataField: 'date',
-    text: 'ETA',
+    text: t('mapotempo_mission_estimated_time_arrival'),
     formatter: ETAFormater,
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }, {
     dataField: 'attachment',
-    text: 'attachment',
+    text: t('mapotempo_mission_proof_of_delivery'),
     formatter: AttachmentFormater,
     headerAlign: 'right',
     align: 'right',

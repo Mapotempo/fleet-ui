@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
@@ -14,6 +15,8 @@ import DoughnutStatuses from '../components/DoughnutStatuses';
 import DatePicker from "react-datepicker";
 
 const LiveView = () => {
+  const { t } = useTranslation();
+
   const [date, setDate] = useState(null);
   const dispatch = useDispatch();
   let routes = useSelector(routesSelector);
@@ -53,19 +56,19 @@ const LiveView = () => {
             <DoughnutStatuses
               routes={routes}
               missionType="departure"
-              header="Global Departure"/>
+              header={t("mapotempo_route_global_status_departure")}/>
           </Col>
           <Col xs={6} md={4}>
             <DoughnutStatuses
               routes={routes}
               missionType="mission"
-              header="Global Mission"/>
+              header={t("mapotempo_route_global_status_missions")}/>
           </Col>
           <Col xs={6} md={4}>
             <DoughnutStatuses
               routes={routes}
               missionType="arrival"
-              header="Global Arrival" />
+              header={t("mapotempo_route_global_status_arrival")}/>
           </Col>
         </Row>
         <Row>

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { routeInfoSelector } from '../selectors';
 import { usersMapper } from '../selectors';
@@ -23,6 +24,7 @@ const defaultProps = {
 };
 
 const RoutesList = (props) => {
+  const { t } = useTranslation();
   const [wideScreen, setWideScreen] = useState(true);
   let usersMap = useSelector(usersMapper);
 
@@ -40,14 +42,14 @@ const RoutesList = (props) => {
 
   const columnsBase = [{
     dataField: 'name',
-    text: 'Name',
+    text: t('mapotempo_route_name'),
     classes: 'route-list-column overflow',
     headerClasses: 'route-list-column overflow'
   },
   {
     dataField: '',
     isDummyField: true,
-    text: 'Email',
+    text: t('mapotempo_route_email'),
     formatter: userEmailFormatter,
     formatExtraData: usersMap,
     classes: 'route-list-column overflow',
@@ -57,7 +59,7 @@ const RoutesList = (props) => {
   {
     dataField: 'user_phone',
     isDummyField: true,
-    text: 'Phone',
+    text: t('mapotempo_route_phone'),
     formatter: userPhoneFormatter,
     formatExtraData: usersMap,
     classes: 'route-list-column overflow',
@@ -67,7 +69,7 @@ const RoutesList = (props) => {
   {
     dataField: 'routeInfoDeparture',
     isDummyField: true,
-    text: 'Departures',
+    text: t('mapotempo_route_departure'),
     formatter: statusFormatter,
     formatExtraData: 'departure',
     headerAlign: 'center',
@@ -78,7 +80,7 @@ const RoutesList = (props) => {
   {
     dataField: 'routeInfoMission',
     isDummyField: true,
-    text: 'Missions',
+    text: t('mapotempo_route_missions'),
     formatter: missionStatusFormatter,
     formatExtraData: 'mission',
     headerAlign: 'center',
@@ -88,7 +90,7 @@ const RoutesList = (props) => {
   }, {
     dataField: 'routeInfoRest',
     isDummyField: true,
-    text: 'Rests',
+    text: t('mapotempo_route_rests'),
     formatter: statusFormatter,
     formatExtraData: 'rest',
     headerAlign: 'center',
@@ -99,7 +101,7 @@ const RoutesList = (props) => {
   {
     dataField: 'routeInfoArrival',
     isDummyField: true,
-    text: 'Arrivals',
+    text: t('mapotempo_route_arrivals'),
     formatter: statusFormatter,
     formatExtraData: 'arrival',
     headerAlign: 'center',
@@ -110,7 +112,7 @@ const RoutesList = (props) => {
   {
     dataField: 'advancement',
     isDummyField: true,
-    text: 'Estimated Time Advancement',
+    text: t('mapotempo_route_estimated_advancement'),
     formatter: advancementFormatter,
     classes: 'route-list-column',
     headerClasses: 'route-list-column',
@@ -119,7 +121,7 @@ const RoutesList = (props) => {
   {
     dataField: 'eta',
     isDummyField: true,
-    text: 'Estimated Time Arrival (ETA)',
+    text: t('mapotempo_route_estimated_time_arrival'),
     formatter: ETAFormatter,
     classes: 'route-list-column',
     headerClasses: 'route-list-column',
