@@ -88,11 +88,13 @@ const ETAFormater = (cell) => {
 };
 
 const AttachmentFormater = () => {
-  return <React.Fragment>
-    <Glyphicon glyph="camera" />
-    <Glyphicon glyph="pencil" />
-    <Glyphicon glyph="align-right" />
-  </React.Fragment>;
+  return <ButtonGroup>
+    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="camera" /></Button>
+    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="pencil" /></Button>
+    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="comment" /></Button>
+    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="barcode" /></Button>
+    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="inbox" /></Button>
+  </ButtonGroup>;
 };
 
 MissionsList.propTypes = propTypes;
