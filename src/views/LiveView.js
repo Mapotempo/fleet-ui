@@ -22,7 +22,7 @@ const LiveView = () => {
   const handleChange = (value) => {
     let from = new Date(value);
     from.setUTCHours(0, 0, 0, 0);
-    var to = new Date(from);
+    let to = new Date(from);
     to.setDate(from.getDate() + 1);
     setDate(from);
     dispatch(fetchRoutes(from, to));

@@ -1,4 +1,4 @@
-var axios = require('axios');
+let axios = require('axios');
 
 axios.interceptors.response.use((response) => response.data,
   (error) => {

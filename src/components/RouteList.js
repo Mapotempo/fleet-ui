@@ -191,7 +191,7 @@ const Advancement = ({routeId}) => {
 
 const ETA = ({routeId}) => {
   let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
-  var style = 'default';
+  let style = 'default';
   if (routeInfo.delay < 15)
     style = "success";
   else if (routeInfo.delay < 30)

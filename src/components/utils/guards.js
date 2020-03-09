@@ -13,7 +13,7 @@ import { isReadyData } from '../../selectors';
 // ====================
 
 const FleetGuard = (Component) => {
-  var newFunc = (props) => {
+  let newFunc = (props) => {
     let fleetStore = useSelector(state => state.fleet);
     if (!fleetStore)
       return (<div>ERROR: global store must be integrate fleet store !</div>);

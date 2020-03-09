@@ -10,13 +10,13 @@ const missionActionsTypesSelector = state => state.fleet.workflow.missionStatusT
 
 // =========================
 // missionStatusTypesMapper:
-// 
+//
 // Create missionStatusType map for fast ID matching
 // =========================
 export const missionStatusTypesMapper = createSelector(
   missionStatusTypesSelector,
   (statusTypesList) => {
-    var res = {};
+    let res = {};
     statusTypesList.forEach((statusType) => {
       res[statusType.id] = statusType;
     });
@@ -26,13 +26,13 @@ export const missionStatusTypesMapper = createSelector(
 
 // =========================
 // missionActionsTypesMapper:
-// 
+//
 // Create missionActionType map for fast ID matching
 // =========================
 export const missionActionsTypesMapper = createSelector(
   missionActionsTypesSelector,
   (actionTypesList) => {
-    var res = {};
+    let res = {};
     actionTypesList.forEach((actionType) => {
       res[actionType.id] = actionType;
     });
