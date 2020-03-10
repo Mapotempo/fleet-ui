@@ -16,11 +16,15 @@ import MissionsList from './MissionList';
 // ==========
 
 const propTypes = {
-  routes: PropTypes.array
+  routes: PropTypes.array,
+  expandable: PropTypes.bool,
+  onRouteSelected: PropTypes.func
 };
 
 const defaultProps = {
   routes: [],
+  expandable: false,
+  onRouteSelected: () => {}
 };
 
 const RoutesList = (props) => {
@@ -44,17 +48,20 @@ const RoutesList = (props) => {
     dataField: 'name',
     text: t('mapotempo_route_name'),
     classes: 'route-list-column overflow',
-    headerClasses: 'route-list-column overflow'
+    headerClasses: 'route-list-column overflow',
+    sort: true
   },
   {
-    dataField: '',
+    dataField: 'user_email',
+    href: 'totototo',
     isDummyField: true,
     text: t('mapotempo_route_email'),
     formatter: userEmailFormatter,
     formatExtraData: usersMap,
     classes: 'route-list-column overflow',
     headerClasses: 'route-list-column overflow',
-    wideScreenOnly: true
+    wideScreenOnly: true,
+    sort: true
   },
   {
     dataField: 'user_phone',
@@ -64,7 +71,8 @@ const RoutesList = (props) => {
     formatExtraData: usersMap,
     classes: 'route-list-column overflow',
     headerClasses: 'route-list-column overflow',
-    wideScreenOnly: true
+    wideScreenOnly: true,
+    sort: true
   },
   {
     dataField: 'routeInfoDeparture',
@@ -131,25 +139,32 @@ const RoutesList = (props) => {
 
   let columns = columnsBase.filter((item) => !item.wideScreenOnly || item.wideScreenOnly == wideScreen);
 
-  return <div className='route-list-container'>
-    <BootstrapTable
-      wrapperClasses="route-list-table-wrapper"
-      headerWrapperClasses="route-list-table-head"
-      headerClasses="route-list-header"
-      keyField='id'
-      data={props.routes}
-      columns={columns}
-      hover
-      bordered={ false }
-      pagination={ paginationFactory() }
-      noDataIndication="No Route found"
-      expandRow={{
-        onlyOneExpanding: true,
-        className: 'expanding-routes',
-        renderer: expandFormater
-      }}
-    />
-  </div>;
+  const rowEvents = {
+    onClick: (e, row) => {
+      props.onRouteSelected(row.id);
+    },
+    onMouseEnter: (/*e, row, rowIndex */) => {    }
+  };
+
+  return <BootstrapTable
+    wrapperClasses="route-list-table-wrapper"
+    headerWrapperClasses="route-list-table-head"
+    headerClasses="route-list-header"
+    rowClasses="route-list-row"
+    keyField='id'
+    data={props.routes}
+    columns={columns}
+    hover
+    bordered={ false }
+    pagination={ paginationFactory() }
+    noDataIndication="No Route found"
+    expandRow={{
+      onlyOneExpanding: true,
+      className: 'route-expanding',
+      renderer: props.expandable ?  expandFormater : null
+    }}
+    rowEvents={ rowEvents }
+  />;
 };
 
 RoutesList.propTypes = propTypes;
@@ -160,11 +175,11 @@ export default RoutesList;
 // ========
 // Formater
 // ========
+
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].email;
 const userPhoneFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].phone;
 const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors routeId={row.id} type={formatExtraData} withLabels withCount={false}/>);
 const missionStatusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors routeId={row.id} type={formatExtraData}/>);
-
 const advancementFormatter = (cell, row) => (<Advancement routeId={row.id}/>);
 const ETAFormatter = (cell, row) => (<ETA routeId={row.id}/>);
 
@@ -191,6 +206,8 @@ const Advancement = ({routeId}) => {
   return <ProgressBar style={{ margin: 0 }} now={routeInfo.advancing} label={`${routeInfo.advancing}%`} title={`${routeInfo.advancing}%`}/>;
 };
 
+Advancement.propTypes = {routeId: PropTypes.string};
+
 const ETA = ({routeId}) => {
   let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
   let style = 'default';
@@ -203,9 +220,14 @@ const ETA = ({routeId}) => {
   return <Label bsStyle={style}>{new Date(routeInfo.eta).toLocaleString()}</Label>;
 };
 
+ETA.propTypes = {routeId: PropTypes.string};
+
 // =========
 // ExpandRow
 // =========
 
-const expandFormater = row => <MissionsList
-  missions={row.missions} />;
+const expandFormater = row =>
+  <div style={{height: '370px'}}>
+    <MissionsList
+      missions={row.missions} />;
+  </div>;

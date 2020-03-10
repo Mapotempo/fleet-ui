@@ -9,7 +9,12 @@ export * from './actions';
 // Expose Reducers
 export { default as fleetReducer } from './reducers/rootReducer';
 
-// Expose Views
+// Exposed Views
 import _LiveView from './views/LiveView';
 export const LiveView = FleetGuard(_LiveView);
 
+import _RouteListLiveView from './views/RouteListLiveView';
+export const RouteListLiveView = FleetGuard(_RouteListLiveView);
+
+import _RouteDetailLiveView from './views/RouteDetailLiveView';
+export const RouteDetailLiveView = FleetGuard(_RouteDetailLiveView);

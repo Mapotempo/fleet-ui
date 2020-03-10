@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {useState} from 'react';
 import { Provider } from 'react-redux';
 
 import configureStore from './store';
@@ -24,12 +24,14 @@ store.dispatch(app_actions.setAppInfo({
   lib_version: '0.0.1'
 }));
 
-export default class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <LiveView />
-      </Provider>
-    );
-  }
-}
+const App = (props) => {
+  const [routeId, setRouteId] = useState(null);
+  return (
+    <Provider store={store}>
+      {/* <RouteListLiveView /> */}
+      <LiveView onRouteSelected={routeId => setRouteId(routeId)} routeId={routeId}/>
+    </Provider>
+  );
+};
+
+export default App;

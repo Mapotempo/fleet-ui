@@ -88,12 +88,17 @@ const ETAFormater = (cell) => {
 };
 
 const AttachmentFormater = () => {
+  let picture = Math.random() >= 0.5;
+  let signature = Math.random() >= 0.5;
+  let comment = Math.random() >= 0.5;
+  let barcode = Math.random() >= 0.5;
+  let quantity = Math.random() >= 0.5;
   return <ButtonGroup>
-    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="camera" /></Button>
-    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="pencil" /></Button>
-    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="comment" /></Button>
-    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="barcode" /></Button>
-    <Button disabled={Math.random() >= 0.5}><Glyphicon glyph="inbox" /></Button>
+    <Button bsStyle={picture ? "info": "default"} disabled={!picture}><Glyphicon glyph="camera" /></Button>
+    <Button bsStyle={signature ? "info": "default"} disabled={!signature}><Glyphicon glyph="pencil" /></Button>
+    <Button bsStyle={comment ? "info": "default"} disabled={!comment}><Glyphicon glyph="comment" /></Button>
+    <Button bsStyle={barcode ? "info": "default"} disabled={!barcode}><Glyphicon glyph="barcode" /></Button>
+    <Button bsStyle={quantity ? "info": "default"} disabled={!quantity}><Glyphicon glyph="inbox" /></Button>
   </ButtonGroup>;
 };
 

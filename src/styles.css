@@ -28,24 +28,16 @@
    #                   #
    #####################*/
 
-  .route-list-container {
+  .fleet-container {
     background: #f1f1f1;
-    border-radius:10px;
+    border-radius:5px;
     padding: 10px;
   }
 
   .route-list-table-wrapper {
     overflow: auto;
-    height: 444px;
-
+    max-height: 512px;
   }
-  /*
-
-  .route-list-table-head>tr>th {
-    position: sticky;
-    top: 0;
-    background: white;
-  } */
 
   .route-list-header>th {
     position: sticky;
@@ -54,7 +46,11 @@
     z-index: 500;
   }
 
-  td.expanding-routes
+  .route-list-row {
+    cursor: pointer;
+  }
+
+  td.route-expanding
   {
     background: #fefefe;
   }
@@ -78,8 +74,7 @@
 
   .mission-list-table-wrapper {
     overflow: auto;
-    max-height: 370px;
-    padding-left: 50px;
+    max-height: 100%;
   }
 
   .mission-list-table-wrapper>table {
