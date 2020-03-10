@@ -22,6 +22,10 @@
   100% { transform: rotate(360deg); }
 }
 
+.grid-row {
+  margin-bottom: 10px;
+}
+
 /* #####################
    #                   #
    # Table Route Style #

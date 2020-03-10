@@ -11,7 +11,8 @@ import { fetchRoutes } from '../actions';
 import { routesSelector, missionsDowloadProgressSelector } from '../selectors';
 
 import RoutesList from '../components/RouteList';
-import DoughnutStatuses from '../components/DoughnutStatuses';
+import DoughnutStatuses from '../components/RouteDoughnutStatuses';
+import { TotalFinishedRouteCard, TotalDelayedCard, TotalDistanceTraveledCard, TotalFinishedMission } from '../components/RouteCards';
 
 import DatePicker from "react-datepicker";
 
@@ -52,62 +53,63 @@ const RouteListLiveView = (props) => {
         height={3}
         color='#00AAC2'
       />
-      <DatePicker
-        selected={date}
-        onChange={handleChange}
-      />
-      <RoutesList
-        routes={routes}
-        expandable={false}
-        onRouteSelected={props.onRouteSelected}
-      />
+      <Grid fluid>
+        <Row className="grid-row">
+          <Col xs={12}>
+            <DatePicker
+              selected={date}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
+
+        <Row className="grid-row">
+          <Col md={3}>
+            <TotalFinishedRouteCard />
+          </Col>
+          <Col md={3} xsHidden>
+            <TotalFinishedMission />
+          </Col>
+          <Col md={3}>
+            <TotalDistanceTraveledCard />
+          </Col>
+          <Col md={3} xsHidden>
+            <TotalDelayedCard />
+          </Col>
+        </Row>
+
+        <Row className="show-grid" style={{padding: '20px'}}>
+          <Col md={4} xsHidden>
+            <DoughnutStatuses
+              routes={routes}
+              missionType="departure"
+              header={t("mapotempo_route_global_status_departure")}/>
+          </Col>
+          <Col md={4}>
+            <DoughnutStatuses
+              routes={routes}
+              missionType="mission"
+              header={t("mapotempo_route_global_status_missions")}/>
+          </Col>
+          <Col md={4} xsHidden>
+            <DoughnutStatuses
+              routes={routes}
+              missionType="arrival"
+              header={t("mapotempo_route_global_status_arrival")}/>
+          </Col>
+        </Row>
+
+        <Row className="grid-row">
+          <Col xs={12}>
+            <RoutesList
+              routes={routes}
+              expandable={false}
+              onRouteSelected={props.onRouteSelected}
+            />
+          </Col>
+        </Row>
+      </Grid>
     </React.Fragment>
-    // <React.Fragment>
-    //   <LoadingBar
-    //     progress={missionsDownloadProgress}
-    //     height={3}
-    //     color='#00AAC2'
-    //   />
-    //   <Grid fluid>
-    //     <Row>
-    //       <Col xs={12}>
-    //         <DatePicker
-    //           selected={date}
-    //           onChange={handleChange}
-    //         />
-    //       </Col>
-    //     </Row>
-    //     <Row className="show-grid" style={{padding: '20px'}}>
-    //       <Col xs={6} md={4}>
-    //         <DoughnutStatuses
-    //           routes={routes}
-    //           missionType="departure"
-    //           header={t("mapotempo_route_global_status_departure")}/>
-    //       </Col>
-    //       <Col xs={6} md={4}>
-    //         <DoughnutStatuses
-    //           routes={routes}
-    //           missionType="mission"
-    //           header={t("mapotempo_route_global_status_missions")}/>
-    //       </Col>
-    //       <Col xs={6} md={4}>
-    //         <DoughnutStatuses
-    //           routes={routes}
-    //           missionType="arrival"
-    //           header={t("mapotempo_route_global_status_arrival")}/>
-    //       </Col>
-    //     </Row>
-    //     <Row>
-    //       <Col xs={12}>
-    //         <RoutesList
-    //           routes={routes}
-    //           expandable={false}
-    //           onRouteSelected={props.onRouteSelected}
-    //         />
-    //       </Col>
-    //     </Row>
-    //   </Grid>
-    // </React.Fragment>
   );
 };
 
