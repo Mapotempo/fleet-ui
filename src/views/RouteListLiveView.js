@@ -33,6 +33,12 @@ const RouteListLiveView = (props) => {
   let routes = useSelector(routesSelector);
   let missionsDownloadProgress = useSelector(missionsDowloadProgressSelector);
 
+  // console.log('---------- test BEGIN');
+  // let fullRouteInfo = useSelector(state => routeFullInfoSelector(state, routes));
+  // fullRouteInfo = useSelector(state => routeFullInfoSelector(state, routes));
+  // console.log('res', fullRouteInfo.totalDistance);
+  // console.log('---------- test END');
+
   const handleChange = (value) => {
     let from = new Date(value);
     from.setUTCHours(0, 0, 0, 0);

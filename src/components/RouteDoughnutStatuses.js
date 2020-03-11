@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { routeInfoSelector } from '../selectors';
+import { missionStatusTypesMapper } from '../selectors';
 
 import { Doughnut } from 'react-chartjs-2';
 
@@ -22,23 +22,29 @@ const defaultProps = {
 };
 
 const DoughnutStatuses = (props) => {
-  let fullMissionStatusTypeIdsCounter = useSelector(state => props.routes.reduce((accumulator, route) => {
-    let routeInfo = routeInfoSelector(state, route.id);
-    routeInfo[props.missionType].missionStatusTypeCountByIds.forEach(info => {
-      let lastCount = accumulator[info.reference] ? accumulator[info.reference].count : 0;
-      accumulator[info.reference] = {...info, count: (lastCount + info.count)};
-    });
-    return accumulator;
-  },{}));
+  let missionStatusTypes = useSelector(missionStatusTypesMapper);
+  let statusesCountByRef = props.routes.reduce((resMap, route) => {
+    for (let [missionStatusTypeId, value] of Object.entries(route.extraInfo[props.missionType].statusCounter)) {
+      let missionStatusType = missionStatusTypes[missionStatusTypeId];
+      if (!missionStatusType) {
+        console.warn('MissionStatusTypeId not found', missionStatusType);
+        continue;
+      }
+      let entry = resMap[missionStatusType.reference] ? resMap[missionStatusType.reference] : {count: 0, color: missionStatusType.color, label: missionStatusType.label};
+      entry.count += value;
+      resMap[missionStatusType.reference] = entry;
+    }
+    return resMap;
+  }, {});
 
   let dataset = [1];
   let backgroundColor = [];
   let labels = [""];
 
-  if (Object.keys(fullMissionStatusTypeIdsCounter).length > 0) {
-    dataset = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id].count);
-    backgroundColor = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id].color);
-    labels = Object.keys(fullMissionStatusTypeIdsCounter).map((id) => fullMissionStatusTypeIdsCounter[id].label);
+  if (Object.keys(statusesCountByRef).length > 0) {
+    dataset = Object.keys(statusesCountByRef).map((id) => statusesCountByRef[id].count);
+    backgroundColor = Object.keys(statusesCountByRef).map((id) => statusesCountByRef[id].color);
+    labels = Object.keys(statusesCountByRef).map((id) => statusesCountByRef[id].label);
   }
   let data = {
     datasets: [{

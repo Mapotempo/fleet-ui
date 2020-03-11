@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { routeInfoSelector } from '../selectors';
+import { missionStatusTypesMapper } from '../selectors';
 import { usersMapper } from '../selectors';
 
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -118,8 +118,7 @@ const RoutesList = (props) => {
     headerClasses: 'route-list-column overflow'
   },
   {
-    dataField: 'advancement',
-    isDummyField: true,
+    dataField: 'extraInfo.advancing',
     text: t('mapotempo_route_estimated_advancement'),
     formatter: advancementFormatter,
     classes: 'route-list-column',
@@ -127,8 +126,7 @@ const RoutesList = (props) => {
     wideScreenOnly: true
   },
   {
-    dataField: 'eta',
-    isDummyField: true,
+    dataField: 'extraInfo.eta',
     text: t('mapotempo_route_estimated_time_arrival'),
     formatter: ETAFormatter,
     classes: 'route-list-column',
@@ -178,49 +176,40 @@ export default RoutesList;
 
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].email;
 const userPhoneFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].phone;
-const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors routeId={row.id} type={formatExtraData} withLabels withCount={false}/>);
-const missionStatusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors routeId={row.id} type={formatExtraData}/>);
-const advancementFormatter = (cell, row) => (<Advancement routeId={row.id}/>);
-const ETAFormatter = (cell, row) => (<ETA routeId={row.id}/>);
+const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData} withLabels withCount={false}/>);
+const missionStatusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData}/>);
+const advancementFormatter = cell => (<ProgressBar style={{ margin: 0 }} now={cell} label={`${cell}%`} title={`${cell}%`}/>);
+const ETAFormatter = (cell, row) => {
+  let style = 'default';
+  if (row.extraInfo.delay < 15)
+    style = "success";
+  else if (row.extraInfo.delay < 30)
+    style = "warning";
+  else if (row.extraInfo.delay < 60)
+    style = "danger";
+  return <Label bsStyle={style}>{new Date(cell).toLocaleString()}</Label>;
+};
 
 // ==================
 // Formater Component
 // ==================
 
-const RouteStatusColors = ({routeId, type='mission', withCount=true, withLabels=false}) => {
-  let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
-  if (!routeInfo && routeInfo[type])
-    return;
-  return routeInfo[type].colors.reduce((accumulator, color) => {
+const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=false}) => {
+  let missionStatusTypesMap = useSelector(missionStatusTypesMapper);
+  return Object.entries(route.extraInfo[type].statusCounter).reduce((accumulator, [missionStatusTypeId, value]) => {
+    let missionStatusType = missionStatusTypesMap[missionStatusTypeId];
+    if (!missionStatusType) {
+      console.warn('MissionStatusTypeId not found', missionStatusType);
+      return accumulator;
+    }
     accumulator.push(
-      <Badge key={color.color} style={{ backgroundColor: color.color }}>
-        {(withCount ? color.count : "") + (withLabels && withCount ? " - " : "") + (withLabels ? color.labels : "")}
+      <Badge key={missionStatusType.color} style={{ backgroundColor: missionStatusType.color }}>
+        {(withCount ? value : "") + (withLabels && withCount ? " - " : "") + (withLabels ? missionStatusType.label : "")}
       </Badge>);
     accumulator.push(" ");
     return accumulator;
   }, []);
 };
-
-const Advancement = ({routeId}) => {
-  let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
-  return <ProgressBar style={{ margin: 0 }} now={routeInfo.advancing} label={`${routeInfo.advancing}%`} title={`${routeInfo.advancing}%`}/>;
-};
-
-Advancement.propTypes = {routeId: PropTypes.string};
-
-const ETA = ({routeId}) => {
-  let routeInfo = useSelector(state => routeInfoSelector(state, routeId));
-  let style = 'default';
-  if (routeInfo.delay < 15)
-    style = "success";
-  else if (routeInfo.delay < 30)
-    style = "warning";
-  else if (routeInfo.delay < 60)
-    style = "danger";
-  return <Label bsStyle={style}>{new Date(routeInfo.eta).toLocaleString()}</Label>;
-};
-
-ETA.propTypes = {routeId: PropTypes.string};
 
 // =========
 // ExpandRow

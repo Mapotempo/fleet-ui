@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { useSelector } from 'react-redux';
-// import { routeInfoSelector } from '../../selectors';
+import { useSelector } from 'react-redux';
+import { globalRoutesInfoSelector, routesSelector } from '../selectors';
 
 import { Panel, Glyphicon } from 'react-bootstrap';
 
@@ -10,10 +10,11 @@ const BasicRouteCard = (props) => {
     <Panel bsStyle={props.style}>
       <Panel.Heading>
         <Panel.Title style={{overflow: 'hidden', display: 'block', height: 'auto'}}>
-          <Glyphicon glyph={props.glyph} style={{fontSize: '4.5em', float: 'left'}}/>
+          <Glyphicon glyph={props.glyph} style={{fontSize: '4em', float: 'left'}}/>
           <div style={{textAlign: 'right', float: 'right '}}>
-            <b  style={{margin: 0, fontSize: '2em'}}>{props.value}</b>
-            <p  style={{margin: 0, fontSize: '1.2em'}}>{props.info}</p>
+            <p style={{margin: 0, fontSize: '1em'}}>
+              <b style={{margin: 0, fontSize: '2em'}}>{props.value}</b><br/>{props.info}
+            </p>
           </div>
         </Panel.Title>
       </Panel.Heading>
@@ -30,7 +31,7 @@ BasicRouteCard.propTypes = {
   style: PropTypes.string
 };
 BasicRouteCard.defaultProps = {
-  glyph: 'info',
+  glyph: 'info-sign',
   value: [],
   info: '',
   subinfo: '',
@@ -41,68 +42,55 @@ BasicRouteCard.defaultProps = {
 // TOTAL ROUTE FINISHED
 // ====================
 
-const propTypes = {
-  routes: PropTypes.array,
-  header: PropTypes.string
-};
-
-const defaultProps = {
-  routes: [],
-  header: ''
-};
-
-export const TotalFinishedRouteCard = (props) => {
+export const TotalFinishedRouteCard = (/*props*/) => {
+  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  let routes = useSelector(routesSelector);
   return <BasicRouteCard
-    value={3}
+    glyph='tasks'
+    value={routesglobalRoutesInfo.finishedRoutesCount}
     info='tournées terminées'
-    subinfo='5 planifiés'
+    subinfo={routes.length + ' planifiés'}
     style='success'/>;
 };
-
-TotalFinishedRouteCard.propTypes = propTypes;
-TotalFinishedRouteCard.defaultProps = defaultProps;
 
 // ======================
 // TOTAL FINISHED MISSION
 // ======================
 
-export const TotalFinishedMission = (props) => {
+export const TotalFinishedMission = (/*props*/) => {
+  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
-    value={3}
+    glyph='flag'
+    value={routesglobalRoutesInfo.finishedMissionCount}
     info='missions terminées'
-    subinfo='550 prévues'
+    subinfo={routesglobalRoutesInfo.missionsCount + ' prévues'}
     style='success'/>;
 };
-
-TotalFinishedMission.propTypes = propTypes;
-TotalFinishedMission.defaultProps = defaultProps;
 
 // =======================
 // TOTAL DISTANCE TRAVELED
 // =======================
 
-export const TotalDistanceTraveledCard = (props) => {
+export const TotalDistanceTraveledCard = (/*props*/) => {
+  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
-    value={0}
+    glyph='road'
+    value={routesglobalRoutesInfo.globalDistanceReal}
     info='KM parcourue'
-    subinfo='550 prévues'
+    subinfo={Math.round(routesglobalRoutesInfo.globalDistancePlanned / 1000) + ' prévues'}
     style='info'/>;
 };
-
-TotalDistanceTraveledCard.propTypes = propTypes;
-TotalDistanceTraveledCard.defaultProps = defaultProps;
 
 // =============
 // TOTAL DELAYED
 // =============
 
-export const TotalDelayedCard = (props) => {
+export const TotalDelayedCard = (/*props*/) => {
+  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
-    value={5}
+    glyph='time'
+    value={routesglobalRoutesInfo.routeDelay}
     info='tournées en retards'
-    subinfo='3 de plus de 30min'
+    subinfo={routesglobalRoutesInfo.routeDelayOver30 + ' de plus de 30min'}
     style='warning'/>;
 };
-
-TotalDelayedCard.propTypes = propTypes;
-TotalDelayedCard.defaultProps = defaultProps;
