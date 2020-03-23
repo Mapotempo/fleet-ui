@@ -49,7 +49,7 @@ export const TotalFinishedRouteCard = (/*props*/) => {
     glyph='tasks'
     value={routesglobalRoutesInfo.finishedRoutesCount}
     info='tournées terminées'
-    subinfo={routes.length + ' planifiés'}
+    subinfo={(routes.length - routesglobalRoutesInfo.finishedRoutesCount) + ' restantes'}
     style='success'/>;
 };
 
@@ -63,8 +63,36 @@ export const TotalFinishedMission = (/*props*/) => {
     glyph='flag'
     value={routesglobalRoutesInfo.finishedMissionCount}
     info='missions terminées'
-    subinfo={routesglobalRoutesInfo.missionsCount + ' prévues'}
+    subinfo={(routesglobalRoutesInfo.missionsCount - routesglobalRoutesInfo.finishedMissionCount) + ' restantes'}
     style='success'/>;
+};
+
+// =============
+// TOTAL DELAYED
+// =============
+
+export const TotalDelayedCard = (/*props*/) => {
+  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  return <BasicRouteCard
+    glyph='time'
+    value={routesglobalRoutesInfo.routeDelay}
+    info='missions en retards'
+    subinfo={routesglobalRoutesInfo.routeDelayOver30 + ' prevus en retards'}
+    style='warning'/>;
+};
+
+// =======================
+// TOTAL DISTANCE TRAVELED
+// =======================
+
+export const TotalUndoneMissionCard = (/*props*/) => {
+  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  return <BasicRouteCard
+    glyph='share'
+    value={routesglobalRoutesInfo.globalDistanceReal}
+    info='missions échouées'
+    subinfo={Math.round(routesglobalRoutesInfo.globalDistancePlanned / 1000) + ' missions réussies'}
+    style='danger'/>;
 };
 
 // =======================
@@ -79,18 +107,4 @@ export const TotalDistanceTraveledCard = (/*props*/) => {
     info='KM parcourue'
     subinfo={Math.round(routesglobalRoutesInfo.globalDistancePlanned / 1000) + ' prévues'}
     style='info'/>;
-};
-
-// =============
-// TOTAL DELAYED
-// =============
-
-export const TotalDelayedCard = (/*props*/) => {
-  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
-  return <BasicRouteCard
-    glyph='time'
-    value={routesglobalRoutesInfo.routeDelay}
-    info='tournées en retards'
-    subinfo={routesglobalRoutesInfo.routeDelayOver30 + ' de plus de 30min'}
-    style='warning'/>;
 };

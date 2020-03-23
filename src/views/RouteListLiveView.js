@@ -12,7 +12,7 @@ import { routesSelector, missionsDowloadProgressSelector } from '../selectors';
 
 import RoutesList from '../components/RouteList';
 import DoughnutStatuses from '../components/RouteDoughnutStatuses';
-import { TotalFinishedRouteCard, TotalDelayedCard, TotalDistanceTraveledCard, TotalFinishedMission } from '../components/RouteCards';
+import { TotalFinishedRouteCard, TotalDelayedCard, TotalUndoneMissionCard, TotalFinishedMission } from '../components/RouteCards';
 
 import DatePicker from "react-datepicker";
 
@@ -76,11 +76,11 @@ const RouteListLiveView = (props) => {
           <Col md={3} xsHidden>
             <TotalFinishedMission />
           </Col>
-          <Col md={3}>
-            <TotalDistanceTraveledCard />
-          </Col>
           <Col md={3} xsHidden>
             <TotalDelayedCard />
+          </Col>
+          <Col md={3}>
+            <TotalUndoneMissionCard />
           </Col>
         </Row>
 

@@ -1,5 +1,7 @@
 import { ApiRoutes } from '../api';
+import { computeExtraInfo } from '../lib/extraInfo';
 import { tokenBySyncUserSelector } from '../selectors/authSelectors';
+import { missionStatusTypesMapper } from '../selectors/workflowSelectors';
 
 // ##########
 // ALL ROUTES
@@ -19,8 +21,15 @@ export const fetchRoutes = (from, to) => {
             host: getState().fleet.fleetHost,
             apiKey: authUser.api_key,
           })))
-      .then(res => res.flat())
-      .then(routes => {
+      .then(res => res.flat())          // flat routes arrays
+      .then(routes => {                 // remove duplicate route (multi same account case)
+        let routeIds = {};
+        return routes.filter(route => {
+          let res = !routeIds[route.id];
+          routeIds[route.id] = route.id;
+          return res;
+        });})
+      .then(routes => {                 // proccess receive route action and multi route_mission fetch
         dispatch(receiveRoutes(routes));
         dispatch(fetchRoutesMissions(routes));
       })
@@ -83,13 +92,14 @@ export const fetchRoutesMissions = (routes) => {
 
 const _fetchRoutesMissions = (routes) => {
   return (dispatch, getState) => {
+    let missionStatusTypesMap = missionStatusTypesMapper(getState());
     return Promise
       .all(routes.map((route) => ApiRoutes
         .apiFetchRoute(route.id, {
           host: getState().fleet.fleetHost,
           apiKey: tokenBySyncUserSelector(getState(), route.sync_user)
         })
-        .then(route => dispatch(receiveRouteMissions(route)))
+        .then(route => dispatch(receiveRouteMissions(route, computeExtraInfo(route, missionStatusTypesMap))))
         .catch(errors => dispatch(errorsRoutes(errors)))
       ));
   };
@@ -112,10 +122,10 @@ const requestRouteMissionsEnd = (route) => {
 };
 
 export const RECEIVE_ROUTE_MISSIONS = 'RECEIVE_ROUTE_MISSIONS';
-const receiveRouteMissions = (route) => {
+const receiveRouteMissions = (route, extraInfo) => {
   return {
     type: RECEIVE_ROUTE_MISSIONS,
-    route
+    route,
+    extraInfo: extraInfo
   };
 };
-
