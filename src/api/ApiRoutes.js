@@ -11,7 +11,7 @@ export default {
         'to': to
       }
     })
-      .then((data) => Promise.resolve(data.routes));
+      .then(data => Promise.resolve(data.routes));
   },
   apiFetchRoute(routeId, { host, apiKey }) {
     return doGet(host, {

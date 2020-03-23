@@ -24,7 +24,7 @@ export default function workflowReducer(state = initState, action) {
       state = { ...state, isFetchingMST: true, readyMST: false };
       break;
     case RECEIVE_MISSION_STATUS_TYPE:
-      state = { ...state, isFetchingMST: false, errorsMST: false, readyMST: true };
+      state = { ...state, isFetchingMST: false, errorsMST: null, readyMST: true };
       state.missionStatusTypeItems = [...action.missionStatusTypes];
       break;
     case ERRORS_MISSION_STATUS_TYPE:

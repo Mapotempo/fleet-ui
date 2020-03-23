@@ -1,12 +1,12 @@
-let axios = require('axios');
+const axios = require('axios');
 
 axios.interceptors.response.use((response) => response.data,
-  (error) => {
+  error => {
     let message = error ? error.toString() : 'Unknow Error';
     let status = -1;
     if (error && error.response && error.response.status > -1) {
       status = error.response.status;
-      message = error.response.data.error;
+      message = error.response.data ? error.response.data.error : error.toString();
     }
     if (process.env.NODE_ENV == 'development')
       message = 'Error, call your support team'; //FIXME: translate;

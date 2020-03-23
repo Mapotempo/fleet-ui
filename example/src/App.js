@@ -13,9 +13,10 @@ import 'fleet-ui/src/styles.css';
 
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers([
-  { syncUser: '7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', apiKey: 'jJjAc6u1pQMkuOjBDRRVQwtt' },
+  {syncUser: '82fb10aa79fecae40b3687957611b32fe7a4be7698498c233b6c9675178a6914' , apiKey: 'abcdef123456'},
+  // { syncUser: '7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', apiKey: 'jJjAc6u1pQMkuOjBDRRVQwtt' },
   // { syncUser: 'df3db529625c0b235a31710d086934b87bbdccde7c4a4e4eed4b665d354ad94d', apiKey: 'k7sc1tgKhOkMZkAszMTfYAtt' },
-  { syncUser: 'b6a474d88271e861db0b7b8405188be85d4a91ab21fc709c3e9e8d4c2a617997', apiKey: 'u3Luojq7ryWuJhYoZASJXQtt' }
+  // { syncUser: 'b6a474d88271e861db0b7b8405188be85d4a91ab21fc709c3e9e8d4c2a617997', apiKey: 'u3Luojq7ryWuJhYoZASJXQtt' }
 ]));
 
 store.dispatch(app_actions.setAppInfo({
