@@ -4,13 +4,12 @@ import sha256 from 'js-sha256';
 const generateCompanyData = (companyId, email, apiKey) =>
 {
   let today = new Date();
-  let users = [generateUser(companyId, false, email, apiKey), generateUser(companyId), generateUser(companyId), generateUser(companyId), generateUser(companyId),  generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId),generateUser(companyId)];
+  let users = [generateUser(companyId, false, email, apiKey), generateUser(companyId)];
   let workflow = {
     missionActionTypes: generateMissionActionsType('XXX'),
     missionStatusTypes: generateMissionStatusType('XXX')
   };
   let routes = users.filter(user => user.vehicle).map(user => generateRoute(user, today, workflow));
-  console.log(routes);
   return {
     users: users,
     workflow: workflow,
@@ -21,7 +20,7 @@ const generateCompanyData = (companyId, email, apiKey) =>
 const generateMissionStatusType = (companyId) => {
   return [
     {
-      id: 'mission_status_type-18295k6uE1T',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'mission_to_do',
       color: '#337AB7',
@@ -29,7 +28,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18295kBqJbI',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'mission_in_progress',
       color: '#F0AD4E',
@@ -37,7 +36,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18295kE_ETj',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'mission_done',
       color: '#5CB85C',
@@ -45,7 +44,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: true
     },
     {
-      id: 'mission_status_type-18295kGqkwB',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'mission_undone',
       color: '#D9534F',
@@ -53,7 +52,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: true
     },
     {
-      id: 'mission_status_type-18296l-xuls',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'departure_to_do',
       color: '#337AB7',
@@ -61,7 +60,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18296m0sLZT',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'departure_in_progress',
       color: '#F0AD4E',
@@ -69,7 +68,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18296m2oFv6',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'departure_done',
       color: '#5CB85C',
@@ -77,7 +76,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: true
     },
     {
-      id: 'mission_status_type-18297l-IA3U',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'arrival_to_do',
       color: '#337AB7',
@@ -85,7 +84,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18297m00jVD',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'arrival_in_progress',
       color: '#F0AD4E',
@@ -93,7 +92,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18297m1TPft',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'arrival_done',
       color: '#5CB85C',
@@ -101,7 +100,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: true
     },
     {
-      id: 'mission_status_type-18298YqMmle',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'rest_to_do',
       color: '#337AB7',
@@ -109,7 +108,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18298Ysb3jX',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'rest_in_progress',
       color: '#F0AD4E',
@@ -117,7 +116,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: null
     },
     {
-      id: 'mission_status_type-18298Yucxa3',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'rest_done',
       color: '#5CB85C',
@@ -125,7 +124,7 @@ const generateMissionStatusType = (companyId) => {
       is_last: true
     },
     {
-      id: 'mission_status_type-18298YwfgND',
+      id: 'mission_status_type-' + makeid(11),
       company_id: companyId,
       reference: 'rest_undone',
       color: '#D9534F',
@@ -139,7 +138,7 @@ const generateMissionStatusType = (companyId) => {
 const generateMissionActionsType = (companyId) => {
   return [
     {
-      id: 'mission_action_type-18295kLb6Gh',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295k6uE1T',
       next_mission_status_type_id: 'mission_status_type-18295kBqJbI',
@@ -147,7 +146,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18295kM_vD3',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295k6uE1T',
       next_mission_status_type_id: 'mission_status_type-18295kGqkwB',
@@ -155,7 +154,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18295kPa2H3',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295kBqJbI',
       next_mission_status_type_id: 'mission_status_type-18295kE_ETj',
@@ -163,7 +162,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18295kRIe9L',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295kBqJbI',
       next_mission_status_type_id: 'mission_status_type-18295k6uE1T',
@@ -171,7 +170,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18295kSn73c',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295kBqJbI',
       next_mission_status_type_id: 'mission_status_type-18295kGqkwB',
@@ -179,7 +178,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18295kZs-Go',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295kE_ETj',
       next_mission_status_type_id: 'mission_status_type-18295kBqJbI',
@@ -187,7 +186,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18295kb8nu4',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18295kGqkwB',
       next_mission_status_type_id: 'mission_status_type-18295k6uE1T',
@@ -195,7 +194,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18296m4kN3d',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18296l-xuls',
       next_mission_status_type_id: 'mission_status_type-18296m0sLZT',
@@ -203,7 +202,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18296m6bdCK',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18296l-xuls',
       next_mission_status_type_id: 'mission_status_type-18296m2oFv6',
@@ -211,7 +210,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18296m8_goD',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18296m0sLZT',
       next_mission_status_type_id: 'mission_status_type-18296m2oFv6',
@@ -219,7 +218,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18296mBO1Ig',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18296m0sLZT',
       next_mission_status_type_id: 'mission_status_type-18296l-xuls',
@@ -227,7 +226,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18296mC_qgA',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18296m2oFv6',
       next_mission_status_type_id: 'mission_status_type-18296m0sLZT',
@@ -235,7 +234,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18296mEWcr9',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18296m2oFv6',
       next_mission_status_type_id: 'mission_status_type-18296l-xuls',
@@ -243,7 +242,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18297m3dSem',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18297l-IA3U',
       next_mission_status_type_id: 'mission_status_type-18297m00jVD',
@@ -251,7 +250,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18297m52TV_',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18297l-IA3U',
       next_mission_status_type_id: 'mission_status_type-18297m1TPft',
@@ -259,7 +258,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18297m6BHca',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18297m00jVD',
       next_mission_status_type_id: 'mission_status_type-18297m1TPft',
@@ -267,7 +266,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18297m7GePY',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18297m00jVD',
       next_mission_status_type_id: 'mission_status_type-18297l-IA3U',
@@ -275,7 +274,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18297m8sMry',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18297m1TPft',
       next_mission_status_type_id: 'mission_status_type-18297m00jVD',
@@ -283,7 +282,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18297mAPDkL',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18297m1TPft',
       next_mission_status_type_id: 'mission_status_type-18297l-IA3U',
@@ -291,7 +290,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298YySOPf',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298YqMmle',
       next_mission_status_type_id: 'mission_status_type-18298Ysb3jX',
@@ -299,7 +298,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298YzvUHD',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298YqMmle',
       next_mission_status_type_id: 'mission_status_type-18298Yucxa3',
@@ -307,7 +306,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298Z4v8po',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298YqMmle',
       next_mission_status_type_id: 'mission_status_type-18298YwfgND',
@@ -315,7 +314,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298Z82FaO',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298Ysb3jX',
       next_mission_status_type_id: 'mission_status_type-18298YqMmle',
@@ -323,7 +322,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298Z9zV3l',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298Ysb3jX',
       next_mission_status_type_id: 'mission_status_type-18298Yucxa3',
@@ -331,7 +330,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298ZGygQL',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298Yucxa3',
       next_mission_status_type_id: 'mission_status_type-18298Ysb3jX',
@@ -339,7 +338,7 @@ const generateMissionActionsType = (companyId) => {
       label: null
     },
     {
-      id: 'mission_action_type-18298ZK_H8_',
+      id: 'mission_action_type-' + makeid(11),
       company_id: companyId,
       previous_mission_status_type_id: 'mission_status_type-18298YwfgND',
       next_mission_status_type_id: 'mission_status_type-18298YqMmle',
@@ -411,7 +410,6 @@ const generateMissionSet = (routeId, user, date, workflow) => {
 };
 
 const generateMission = (routeid, user, date, mission_type, missionStatusType) => {
-  console.log('->', missionStatusType);
   mission_type = ['mission', 'departure', 'arrival', 'rest'].includes(mission_type) ? mission_type : 'mission';
   return    {
     "id": 'mission-' + makeid(10),
