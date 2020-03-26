@@ -47,9 +47,9 @@ export const TotalFinishedRouteCard = (/*props*/) => {
   let routes = useSelector(routesSelector);
   return <BasicRouteCard
     glyph='tasks'
-    value={routesglobalRoutesInfo.finishedRoutesCount}
+    value={routesglobalRoutesInfo.globalFinishedRoutes}
     info='tournées terminées'
-    subinfo={(routes.length - routesglobalRoutesInfo.finishedRoutesCount) + ' restantes'}
+    subinfo={(routes.length - routesglobalRoutesInfo.globalFinishedRoutes) + ' restantes'}
     style='success'/>;
 };
 
@@ -61,10 +61,10 @@ export const TotalFinishedMission = (/*props*/) => {
   let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='flag'
-    value={routesglobalRoutesInfo.finishedMissionCount}
+    value={routesglobalRoutesInfo.globalFinishedMissions}
     info='missions terminées'
-    subinfo={(routesglobalRoutesInfo.missionsCount - routesglobalRoutesInfo.finishedMissionCount) + ' restantes'}
-    style='success'/>;
+    subinfo={(routesglobalRoutesInfo.globalMissions - routesglobalRoutesInfo.globalFinishedMissions) + ' restantes'}
+    style='info'/>;
 };
 
 // =============
@@ -72,12 +72,12 @@ export const TotalFinishedMission = (/*props*/) => {
 // =============
 
 export const TotalDelayedCard = (/*props*/) => {
-  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='time'
-    value={routesglobalRoutesInfo.routeDelay}
-    info='missions en retards'
-    subinfo={routesglobalRoutesInfo.routeDelayOver30 + ' prevus en retards'}
+    value={globalRoutesInfo.globalMissionDelays.finished}
+    info='missions en retard'
+    subinfo={globalRoutesInfo.globalMissionDelays.planned + ' prevus en retard'}
     style='warning'/>;
 };
 
@@ -89,9 +89,9 @@ export const TotalUndoneMissionCard = (/*props*/) => {
   let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='share'
-    value={routesglobalRoutesInfo.globalDistanceReal}
-    info='missions échouées'
-    subinfo={Math.round(routesglobalRoutesInfo.globalDistancePlanned / 1000) + ' missions réussies'}
+    value={routesglobalRoutesInfo.globalFinishedMissionsUndone}
+    info='anomalies'
+    subinfo={routesglobalRoutesInfo.globalFinishedMissions - routesglobalRoutesInfo.globalFinishedMissionsUndone + ' sans anomalies'}
     style='danger'/>;
 };
 

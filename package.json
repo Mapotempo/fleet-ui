@@ -12,8 +12,9 @@
     "npm": ">=5"
   },
   "scripts": {
-    "test": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom",
+    "react-test": "cross-env CI=1 react-scripts test --env=jsdom",
+    "react-test:watch": "react-scripts test --env=jsdom",
+    "test": "mocha --require @babel/register \"test/**/*.spec.js\"",
     "build": "rollup -c",
     "start": "rollup -c -w",
     "prepare": "npm run build",
@@ -33,6 +34,7 @@
     "@babel/polyfill": "^7.7.0",
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
+    "@babel/register": "^7.9.0",
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-json": "^4.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
@@ -50,7 +52,9 @@
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-standard": "^4.0.1",
     "gh-pages": "^2.2.0",
+    "js-sha256": "^0.9.0",
     "miragejs": "^0.1.35",
+    "mocha": "^7.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-bootstrap": "^0.33.1",
@@ -59,10 +63,12 @@
     "react-scripts": "3.3.0",
     "redux": "4.0.5",
     "redux-thunk": "^2.3.0",
+    "rewire": "^5.0.0",
     "rollup": "^1.29.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-peer-deps-external": "^2.2.0",
-    "rollup-plugin-postcss": "^2.0.3"
+    "rollup-plugin-postcss": "^2.0.3",
+    "should": "^13.2.3"
   },
   "files": [
     "dist"
@@ -72,7 +78,6 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "i18next": "^19.3.2",
-    "js-sha256": "^0.9.0",
     "re-reselect": "^3.4.0",
     "react-bootstrap-table2-paginator": "^2.1.0",
     "react-chartjs-2": "^2.9.0",

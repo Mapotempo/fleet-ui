@@ -33,7 +33,8 @@ export default {
     svgr(),
     babel({
       exclude: 'node_modules/**',
-      plugins: []
+      plugins: [],
+      runtimeHelpers: true
     }),
     resolve(),
     commonjs()
