@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { globalRoutesInfoSelector, routesSelector } from '../selectors';
 
 import { Panel, Glyphicon } from 'react-bootstrap';
@@ -43,13 +44,14 @@ BasicRouteCard.defaultProps = {
 // ====================
 
 export const TotalFinishedRouteCard = (/*props*/) => {
-  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  const { t } = useTranslation();
+  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   let routes = useSelector(routesSelector);
   return <BasicRouteCard
     glyph='tasks'
-    value={routesglobalRoutesInfo.globalFinishedRoutes}
-    info='tournées terminées'
-    subinfo={(routes.length - routesglobalRoutesInfo.globalFinishedRoutes) + ' restantes'}
+    value={globalRoutesInfo.globalFinishedRoutes}
+    info={t('card.finished_routes.info', {count: globalRoutesInfo.globalFinishedRoutes})}
+    subinfo={t('card.finished_routes.subinfo', {count: routes.length - globalRoutesInfo.globalFinishedRoutes})}
     style='success'/>;
 };
 
@@ -58,53 +60,43 @@ export const TotalFinishedRouteCard = (/*props*/) => {
 // ======================
 
 export const TotalFinishedMission = (/*props*/) => {
-  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  const { t } = useTranslation();
+  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='flag'
-    value={routesglobalRoutesInfo.globalFinishedMissions}
-    info='missions terminées'
-    subinfo={(routesglobalRoutesInfo.globalMissions - routesglobalRoutesInfo.globalFinishedMissions) + ' restantes'}
+    value={globalRoutesInfo.globalFinishedMissions}
+    info={t('card.finished_missions.info', {count: globalRoutesInfo.globalFinishedMissions})}
+    subinfo={t('card.finished_missions.subinfo', {count: globalRoutesInfo.globalMissions - globalRoutesInfo.globalFinishedMissions})}
+
     style='info'/>;
 };
 
-// =============
-// TOTAL DELAYED
-// =============
+// =====================
+// TOTAL DELAYED MISSION
+// =====================
 
 export const TotalDelayedCard = (/*props*/) => {
+  const { t } = useTranslation();
   let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='time'
     value={globalRoutesInfo.globalMissionDelays.finished}
-    info='missions en retard'
-    subinfo={globalRoutesInfo.globalMissionDelays.planned + ' prevus en retard'}
+    info={t('card.delay_missions.info', {count: globalRoutesInfo.globalMissionDelays.finished})}
+    subinfo={t('card.delay_missions.subinfo', {count: globalRoutesInfo.globalMissionDelays.planned})}
     style='warning'/>;
 };
 
-// =======================
-// TOTAL DISTANCE TRAVELED
-// =======================
+// ====================
+// TOTAL UNDONE MISSION
+// ====================
 
 export const TotalUndoneMissionCard = (/*props*/) => {
-  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
+  const { t } = useTranslation();
+  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='share'
-    value={routesglobalRoutesInfo.globalFinishedMissionsUndone}
-    info='anomalies'
-    subinfo={routesglobalRoutesInfo.globalFinishedMissions - routesglobalRoutesInfo.globalFinishedMissionsUndone + ' sans anomalies'}
+    value={globalRoutesInfo.globalFinishedMissionsUndone}
+    info={t('card.undone_missions.info', {count: globalRoutesInfo.globalFinishedMissionsUndone})}
+    subinfo={t('card.undone_missions.subinfo', {count: globalRoutesInfo.globalFinishedMissions - globalRoutesInfo.globalFinishedMissionsUndone})}
     style='danger'/>;
-};
-
-// =======================
-// TOTAL DISTANCE TRAVELED
-// =======================
-
-export const TotalDistanceTraveledCard = (/*props*/) => {
-  let routesglobalRoutesInfo = useSelector(globalRoutesInfoSelector);
-  return <BasicRouteCard
-    glyph='road'
-    value={routesglobalRoutesInfo.globalDistanceReal}
-    info='KM parcourue'
-    subinfo={Math.round(routesglobalRoutesInfo.globalDistancePlanned / 1000) + ' prévues'}
-    style='info'/>;
 };

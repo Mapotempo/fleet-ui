@@ -17,9 +17,9 @@ export const globalRoutesInfoSelector = createSelector(
   missionStatusTypesMapper,
   (routes) => (routes.reduce((accumulator, route) => {
     // Count
-    if (route.extraInfo.advancing > 99.9)
+    if (route.extraInfo.progress > 99.9)
       accumulator.globalFinishedRoutes++;
-    accumulator.globalMissions += route.extraInfo.mission.count;
+    accumulator.globalMissions += route.missions.length;
     accumulator.globalFinishedMissions += route.extraInfo.finishedMissions;
     accumulator.globalFinishedMissionsUndone += route.extraInfo.finishedMissionsUndone;
 

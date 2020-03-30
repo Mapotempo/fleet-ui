@@ -50,15 +50,21 @@ const DoughnutStatuses = (props) => {
     datasets: [{
       data: dataset,
       backgroundColor: backgroundColor,
-      hoverBackgroundColor: backgroundColor,
+      hoverBackgroundColor: backgroundColor
     }],
     labels: labels
   };
+  let options = {
+    title: {
+      display: true,
+      text: props.header,
+      fontSize: 16
+    },
+    legend: {
+      position: 'right'
+    }};
   return (
-    <div>
-      <Doughnut data={data} />
-      <h3 style={{ textAlign: 'center' }}>{ props.header }</h3>
-    </div>
+    <Doughnut data={data} options={options}/>
   );
 };
 

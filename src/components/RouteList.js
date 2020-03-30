@@ -63,17 +63,17 @@ const RoutesList = (props) => {
     wideScreenOnly: true,
     sort: true
   },
-  {
-    dataField: 'user_phone',
-    isDummyField: true,
-    text: t('mapotempo_route_phone'),
-    formatter: userPhoneFormatter,
-    formatExtraData: usersMap,
-    classes: 'route-list-column overflow',
-    headerClasses: 'route-list-column overflow',
-    wideScreenOnly: true,
-    sort: true
-  },
+  // {
+  //   dataField: 'user_phone',
+  //   isDummyField: true,
+  //   text: t('mapotempo_route_phone'),
+  //   formatter: userPhoneFormatter,
+  //   formatExtraData: usersMap,
+  //   classes: 'route-list-column overflow',
+  //   headerClasses: 'route-list-column overflow',
+  //   wideScreenOnly: true,
+  //   sort: true
+  // },
   {
     dataField: 'routeInfoDeparture',
     isDummyField: true,
@@ -118,8 +118,8 @@ const RoutesList = (props) => {
     headerClasses: 'route-list-column overflow'
   },
   {
-    dataField: 'extraInfo.advancing',
-    text: t('mapotempo_route_estimated_advancement'),
+    dataField: 'extraInfo.progress',
+    text: t('mapotempo_route_progress'),
     formatter: advancementFormatter,
     classes: 'route-list-column',
     headerClasses: 'route-list-column',

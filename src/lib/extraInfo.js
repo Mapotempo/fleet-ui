@@ -7,7 +7,7 @@ const DELAY_HIGHT_THREASHOLD = 30; //min
 
 export const initialExtraInfo = () => {
   return {
-    advancing: 0,
+    progress: 0,
     scheduledArrival: 0,
     eta: '1970-01-01T00:00:00.000',
     finishedMissions: 0,
@@ -131,7 +131,7 @@ export const computeExtraInfo = (route, missionStatusTypesMap) => {
   }, initialExtraInfo());
 
   if (route.missions.length)
-    res.advancing = Math.floor((res.finishedMissions / route.missions.length) * 100);
+    res.progress = Math.floor((res.finishedMissions / route.missions.length) * 100);
 
   return res;
 };

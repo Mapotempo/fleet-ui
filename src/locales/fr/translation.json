@@ -13,10 +13,36 @@
   "mapotempo_route_missions": "missions",
   "mapotempo_route_rests": "pauses",
   "mapotempo_route_arrivals": "arrivé",
-  "mapotempo_route_estimated_advancement": "avancement estimé",
+  "mapotempo_route_progress": "avancement",
   "mapotempo_route_estimated_time_arrival": "heure d'arrivée estimée (ETA)",
   "mapotempo_mission_name": "nom",
   "mapotempo_mission_status": "status",
   "mapotempo_mission_estimated_time_arrival": "heure d'arrivée estimée (ETA)",
-  "mapotempo_mission_proof_of_delivery": "preuves de livraison"
+  "mapotempo_mission_proof_of_delivery": "preuves de livraison",
+  "card": {
+    "finished_routes": {
+      "info": "tournée terminée",
+      "info_plural": "tournées terminées",
+      "subinfo": "tournée restante",
+      "subinfo_plural": "tournées restantes"
+    },
+    "finished_missions": {
+      "info": "mission terminée",
+      "info_plural": "missions terminées",
+      "subinfo": "mission restante",
+      "subinfo_plural": "missions restantes"
+    },
+    "delay_missions": {
+      "info": "retard",
+      "info_plural": "retards",
+      "subinfo": "{{count}} mission prévu en retard",
+      "subinfo_plural": "{{count}} missions prévu en retard"
+    },
+    "undone_missions": {
+      "info": "anomalie",
+      "info_plural": "anomalies",
+      "subinfo": "{{count}} mission sans anomalie",
+      "subinfo_plural": "{{count}} missions sans anomalies"
+    }
+  }
 }
