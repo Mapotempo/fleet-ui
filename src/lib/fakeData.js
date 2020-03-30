@@ -396,6 +396,7 @@ const generateRoute = (user, date, workflow) => {
 
 const generateMissionSet = (routeId, user, date, workflow) => {
   date = new Date(date);
+  let eta = new Date(date);
   let departureMissionStatusTypes = workflow.missionStatusTypes.filter(missionStatusType => missionStatusType.reference.includes("departure"));
   let missionMissionStatusTypes = workflow.missionStatusTypes.filter(missionStatusType => missionStatusType.reference.includes("mission"));
   // let restMissionStatusTypes = workflow.missionStatusTypes.filter(missionStatusType => missionStatusType.reference.includes("rest"));
@@ -406,14 +407,16 @@ const generateMissionSet = (routeId, user, date, workflow) => {
   let isLast = lastify(true);
   let isInProgress = isLast;
   // 1 - Generate Departure
-  res.push(generateMission(routeId, user, date, 'departure', getRandomStatus(departureMissionStatusTypes, isLast, isInProgress)));
+  res.push(generateMission(routeId, user, date, eta, 'departure', getRandomStatus(departureMissionStatusTypes, isLast, isInProgress)));
   // 2 - Generate Missions
   for (let i = 0; i < setSize; i++) {
     date.setTime(date.getTime() + Math.random() * 3600000); // Incress date
+    eta.setTime(date.getTime() + getRandomInt(-15 * 60 * 1000, 30 * 15 * 1000)); // Incress eta
     isLast = lastify(isLast);                               // randomly lastify next mission
     res.push(generateMission(routeId,                       // Generate and push new mission
       user,
       date,
+      eta,
       'mission',
       getRandomStatus(missionMissionStatusTypes,
         isLast,
@@ -423,19 +426,21 @@ const generateMissionSet = (routeId, user, date, workflow) => {
   // 3 - Generate Arrival
   isLast = lastify(isLast);
   date.setTime(date.getTime() + Math.random() * 3600000); // Incress date
-  res.push(generateMission(routeId, user, date, 'arrival', getRandomStatus(arrivalMissionStatusTypes, isLast, isInProgress)));
+  eta.setTime(date.getTime() + getRandomInt(-30 * 60 * 1000, 30 * 60 * 1000)); // Incress eta
+  res.push(generateMission(routeId, user, date, eta, 'arrival', getRandomStatus(arrivalMissionStatusTypes, isLast, isInProgress)));
   return res;
 };
 
-const generateMission = (routeid, user, date, mission_type, missionStatusType) => {
+const generateMission = (routeid, user, date, eta, mission_type, missionStatusType) => {
   mission_type = ['mission', 'departure', 'arrival', 'rest'].includes(mission_type) ? mission_type : 'mission';
+  let mission_status_type_last_date = !missionStatusType.reference.includes('todo')  ? generateMissionStatusTypeLastDate(eta, missionStatusType.reference) : null;
   return    {
     "id": 'mission-' + getRandomUUID(10),
     "company_id": user.company_id,
     "route_id": routeid,
     "user_id": user.id,
     "mission_status_type_id": missionStatusType.id,
-    "mission_status_type_last_date": generateMissionStatusTypeLastDate(date, missionStatusType.reference),
+    "mission_status_type_last_date": mission_status_type_last_date,
     "status_type_reference": missionStatusType.reference,
     "status_type_label": missionStatusType.label,
     "status_type_color": missionStatusType.color,
@@ -444,7 +449,7 @@ const generateMission = (routeid, user, date, mission_type, missionStatusType) =
     "external_ref": mission_type + '-4025-2020_03_18-2286795',
     "name": mission_type === 'mission' ? faker.Name.findName : mission_type,
     "date": dateToLocalISO(date),
-    "eta": null,
+    "eta": dateToLocalISO(eta),
     "eta_computed_at": null,
     "eta_computed_mode": null,
     "location": {
@@ -481,26 +486,26 @@ const computeDuration = (missions) => {
 };
 
 const generateMissionStatusTypeLastDate = (missionDate, statusRef) => {
-  return statusRef.includes('to_do') ? undefined : dateToLocalISO(new Date(missionDate.getTime() + getRandomInt(-20 * 60 * 1000, 20 * 60 * 1000)));
+  return statusRef.includes('to_do') ? undefined : dateToLocalISO(new Date(missionDate.getTime() + getRandomInt(-15 * 60 * 1000, 15 * 60 * 1000)));
 };
 
 // TODO:
-const generateTimeWindows = (missionDate, missionType) => {
-  if (missionType !== 'mission')
-    return [];
-  let timeWindow  = new Date(missionDate);
-  timeWindow.setMilliseconds(0);
-  timeWindow.setSeconds(0);
-  timeWindow.setMinutes(0);
-  const windows = [15,30,60];
-  let randWindows = windows[Math.floor(Math.random() * windows.length)];
-  return [
-    {
-      start: dateToLocalISO(new Date(timeWindow.getTime() - randWindows * 60 * 1000)),
-      end: dateToLocalISO(new Date(timeWindow.getTime() + randWindows * 60 * 1000)),
-    }
-  ];
-};
+// const generateTimeWindows = (missionDate, missionType) => {
+//   if (missionType !== 'mission')
+//     return [];
+//   let timeWindow  = new Date(missionDate);
+//   timeWindow.setMilliseconds(0);
+//   timeWindow.setSeconds(0);
+//   timeWindow.setMinutes(0);
+//   const windows = [15,30,60];
+//   let randWindows = windows[Math.floor(Math.random() * windows.length)];
+//   return [
+//     {
+//       start: dateToLocalISO(new Date(timeWindow.getTime() - randWindows * 60 * 1000)),
+//       end: dateToLocalISO(new Date(timeWindow.getTime() + randWindows * 60 * 1000)),
+//     }
+//   ];
+// };
 
 const lastify = (isLast) => {
   if (!isLast)

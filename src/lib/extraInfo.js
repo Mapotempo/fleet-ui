@@ -115,16 +115,18 @@ export const computeExtraInfo = (route, missionStatusTypesMap) => {
         extraInfo.finishedMissionsUndone++;
     }
     let delay = computeMissionDelay(mission, missionStatus);
-    if (missionStatus.is_last)
+    if (missionStatus.is_last) {
       if (delay > DELAY_HIGHT_THREASHOLD)
         extraInfo.finishedMissionsDelay.overHightThreashold++;
       else if (delay > DELAY_LOW_THREASHOLD)
         extraInfo.finishedMissionsDelay.overLowThreashold++;
-      else
+    }
+    else {
       if (delay > DELAY_HIGHT_THREASHOLD)
         extraInfo.plannedMissionsDelay.overHightThreashold++;
       else if (delay > DELAY_LOW_THREASHOLD)
         extraInfo.plannedMissionsDelay.overLowThreashold++;
+    }
     return extraInfo;
   }, initialExtraInfo());
 

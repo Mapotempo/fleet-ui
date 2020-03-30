@@ -43,11 +43,14 @@ export default (dataSet) => {
       // ####################
       // # Route API
       // ####################
+
       this.get("https://fleet.beta.mapotempo.com/api/0.1/routes/", (schema, request) => {
         if (!checkCredential(dataSet, request.queryParams.api_key))
           return new Response(401, {"errors": "Your are not authorized to perform this action"});
         return {"routes": dataSet[request.queryParams.api_key].routes.map(route => {return {...route, missions: undefined};})};
-      });
+      },
+      { timing: 1000 }
+      );
 
       this.get("https://fleet.beta.mapotempo.com/api/0.1/routes/:id", (schema, request) => {
         if (!checkCredential(dataSet, request.queryParams.api_key))
@@ -56,7 +59,8 @@ export default (dataSet) => {
         if (!route)
           return new Response(404, {"error": "Cette ressource n'existe pas"});
         return {"route": route};
-      });
+      },
+      { timing: 1200 });
     },
   });
 };

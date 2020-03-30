@@ -145,45 +145,52 @@ describe('Lib - extraInfo', function() {
         .should.be.below(0);
     });
 
-    // it('should return negative when timewindow exist delay value and mission_status_type_last_date and is_last false > end', function() {
-    //   computeMissionDelay(
-    //     {...missionTemplate,
-    //       mission_status_type_last_date: '2020-03-18T09:30:00.000+01:00',
-    //       time_windows: [{start: '2020-03-18T10:00:00.000+01:00', end: '2020-03-18T11:00:00.000+01:00'}]
-    //     }, {is_last: true})
-    //     .should.be.below(0);
-    // });
 
-    // it('should return delay with mission_status_type_last_date priority on eta', function() {
-    //   computeMissionDelay(
-    //     {...missionTemplate,
-    //       mission_status_type_last_date: '2020-03-18T11:30:00.000+01:00',
-    //       eta: '2020-03-18T08:30:00.000+01:00',
-    //       time_windows: [{start: '2020-03-18T10:00:00.000+01:00', end: '2020-03-18T11:00:00.000+01:00'}]
-    //     }, {is_last: true})
-    //     .should.be.above(0);
-    //   computeMissionDelay(
-    //     {...missionTemplate,
-    //       mission_status_type_last_date: '2020-03-18T08:30:00.000+01:00',
-    //       eta: '2020-03-18T11:30:00.000+01:00',
-    //       time_windows: [{start: '2020-03-18T10:00:00.000+01:00', end: '2020-03-18T11:00:00.000+01:00'}]
-    //     }, {is_last: true})
-    //     .should.be.below(0);
-    // });
+    it('should use mission_status_type_last_date to compute delay when mission_status_type_last_date exist and is_last = True', function() {
+      let m =     {
+        id: 'mission-BMLkkAQ06X',
+        company_id: 'company-abcdef',
+        route_id: 'route-Utpf7SjRkRl',
+        user_id: 'user-GdVhG5WBOv',
+        mission_status_type_id: 'mission_status_type-nuWkL2gtR1P',
+        mission_status_type_last_date: null,
+        status_type_reference: 'mission_to_do',
+        status_type_label: 'À faire',
+        status_type_color: '#337AB7',
+        sync_user: 'b6fd8c2ee5666e998606b883189f9589301fdc1e10866464236c6a60103aaefc',
+        mission_type: 'mission',
+        external_ref: 'mission-4025-2020_03_18-2286795',
+        date: '2020-03-27T10:14:24.531+01:00',
+        eta: '2020-03-27T10:57:26.979+01:00',
+        eta_computed_at: null,
+        eta_computed_mode: null,
+        location: {
+          lat: 44.83423,
+          lon: -0.60068
+        },
+        address: {
+          city: 'Bordeaux',
+          country: 'France',
+          postalcode: null,
+          state: null,
+          street: null
+        },
+        comment: null,
+        phone: '(970)471-3536 x84078',
+        reference: null,
+        duration: null,
+        quantities: null,
+        tags: null,
+        time_windows: []
+      };
+      console.log(computeMissionDelay(
+        m, {is_last: false}));
+    });
 
-    // it('should return delay from date when time_windows empty', function() {
-    //   computeMissionDelay(
-    //     {...missionTemplate,
-    //       date: '2020-03-18T11:00:00.000+01:00',
-    //       mission_status_type_last_date: '2020-03-18T12:00:00.000+01:00'
-    //     }, {is_last: true})
-    //     .should.be.exactly(3600);
-    //   computeMissionDelay(
-    //     {...missionTemplate,
-    //       date: '2020-03-18T12:00:00.000+01:00',
-    //       mission_status_type_last_date: '2020-03-18T11:00:00.000+01:00'
-    //     }, {is_last: true})
-    //     .should.be.exactly(-3600);
-    // });
+
+
+
+
+
   });
 });
