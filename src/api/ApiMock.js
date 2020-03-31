@@ -1,9 +1,8 @@
 import { Server, Response } from "miragejs";
 
-var fleetMockServer = null;
 
-export default (dataSet) => {
-  fleetMockServer = new Server({
+const initMock = (dataSet) => {
+  new Server({
     routes() {
       // this.namespace = "/api";
 
@@ -68,3 +67,5 @@ export default (dataSet) => {
 const checkCredential = (dataSet, syncUser) => {
   return Object.keys(dataSet).includes(syncUser);
 };
+
+export default initMock;

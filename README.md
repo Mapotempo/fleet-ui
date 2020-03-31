@@ -49,6 +49,9 @@ class Example extends Component {
   }
 }
 ```
+## Faker
+In .env project folder add following:
+REACT_APP_USE_FAKER=true
 
 ## License
 

@@ -3,7 +3,9 @@ export { default as ApiUsers }  from './ApiUsers';
 export { default as ApiRoutes }  from './ApiRoutes';
 export { default as ApiWorkflow } from './ApiWorkflow';
 
-// import initMock from './ApiMock';
-// import { dataSet} from '../lib/fakeData';
+import initMock from './ApiMock';
+import { generateFakeData } from './fake/fakeData';
 
-// initMock(dataSet);
+if (process.env.REACT_APP_USE_FAKER === 'true') {
+  initMock(generateFakeData());
+}
