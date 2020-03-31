@@ -23,14 +23,14 @@
     "finished_routes": {
       "info": "tournée terminée",
       "info_plural": "tournées terminées",
-      "subinfo": "tournée restante",
-      "subinfo_plural": "tournées restantes"
+      "subinfo": "{{count}} tournée restante",
+      "subinfo_plural": "{{count}} tournées restantes"
     },
     "finished_missions": {
       "info": "mission terminée",
       "info_plural": "missions terminées",
-      "subinfo": "mission restante",
-      "subinfo_plural": "missions restantes"
+      "subinfo": "{{count}} mission restante",
+      "subinfo_plural": "{{count}} missions restantes"
     },
     "delay_missions": {
       "info": "retard",
