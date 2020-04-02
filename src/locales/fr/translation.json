@@ -12,7 +12,7 @@
   "mapotempo_route_departure": "départ",
   "mapotempo_route_missions": "missions",
   "mapotempo_route_rests": "pauses",
-  "mapotempo_route_arrivals": "arrivé",
+  "mapotempo_route_arrivals": "arrivée",
   "mapotempo_route_progress": "avancement",
   "mapotempo_route_estimated_time_arrival": "heure d'arrivée estimée (ETA)",
   "mapotempo_mission_name": "nom",
@@ -35,13 +35,13 @@
     "delay_missions": {
       "info": "retard",
       "info_plural": "retards",
-      "subinfo": "{{count}} mission prévu en retard",
-      "subinfo_plural": "{{count}} missions prévu en retard"
+      "subinfo": "{{count}} mission prévue en retard",
+      "subinfo_plural": "{{count}} missions prévues en retard"
     },
     "undone_missions": {
       "info": "anomalie",
       "info_plural": "anomalies",
-      "subinfo": "{{count}} mission sans anomalie",
+      "subinfo": "{{count}} mission sans anomalies",
       "subinfo_plural": "{{count}} missions sans anomalies"
     }
   }

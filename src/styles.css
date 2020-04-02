@@ -22,9 +22,12 @@
   100% { transform: rotate(360deg); }
 }
 
-.grid-row {
+.dashboard-row {
   margin-bottom: 10px;
 }
+
+
+
 
 /* #####################
    #                   #
@@ -33,6 +36,7 @@
    #####################*/
 
   .fleet-container {
+    height: 100%;
     background: #f1f1f1;
     border-radius:5px;
     padding: 10px;

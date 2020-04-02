@@ -44,102 +44,92 @@ const RoutesList = (props) => {
     return () => window.removeEventListener('resize', reportWindowSize);
   }, []);
 
-  const columnsBase = [{
-    dataField: 'name',
-    text: t('mapotempo_route_name'),
-    classes: 'route-list-column overflow',
-    headerClasses: 'route-list-column overflow',
-    sort: true
-  },
-  {
-    dataField: 'user_email',
-    href: 'totototo',
-    isDummyField: true,
-    text: t('mapotempo_route_email'),
-    formatter: userEmailFormatter,
-    formatExtraData: usersMap,
-    classes: 'route-list-column overflow',
-    headerClasses: 'route-list-column overflow',
-    wideScreenOnly: true,
-    sort: true
-  },
-  // {
-  //   dataField: 'user_phone',
-  //   isDummyField: true,
-  //   text: t('mapotempo_route_phone'),
-  //   formatter: userPhoneFormatter,
-  //   formatExtraData: usersMap,
-  //   classes: 'route-list-column overflow',
-  //   headerClasses: 'route-list-column overflow',
-  //   wideScreenOnly: true,
-  //   sort: true
-  // },
-  {
-    dataField: 'routeInfoDeparture',
-    isDummyField: true,
-    text: t('mapotempo_route_departure'),
-    formatter: statusFormatter,
-    formatExtraData: 'departure',
-    headerAlign: 'center',
-    align: 'center',
-    classes: 'route-list-column',
-    headerClasses: 'route-list-column overflow'
-  },
-  {
-    dataField: 'routeInfoMission',
-    isDummyField: true,
-    text: t('mapotempo_route_missions'),
-    formatter: missionStatusFormatter,
-    formatExtraData: 'mission',
-    headerAlign: 'center',
-    align: 'center',
-    classes: 'route-list-column',
-    headerClasses: 'route-list-column overflow'
-  }, {
-    dataField: 'routeInfoRest',
-    isDummyField: true,
-    text: t('mapotempo_route_rests'),
-    formatter: statusFormatter,
-    formatExtraData: 'rest',
-    headerAlign: 'center',
-    align: 'center',
-    classes: 'route-list-column',
-    headerClasses: 'route-list-column overflow'
-  },
-  {
-    dataField: 'routeInfoArrival',
-    isDummyField: true,
-    text: t('mapotempo_route_arrivals'),
-    formatter: statusFormatter,
-    formatExtraData: 'arrival',
-    headerAlign: 'center',
-    align: 'center',
-    classes: 'route-list-column',
-    headerClasses: 'route-list-column overflow'
-  },
-  {
-    dataField: 'extraInfo.progress',
-    text: t('mapotempo_route_progress'),
-    formatter: advancementFormatter,
-    classes: 'route-list-column',
-    headerClasses: 'route-list-column',
-    wideScreenOnly: true
-  },
-  {
-    dataField: 'extraInfo.eta',
-    text: t('mapotempo_route_estimated_time_arrival'),
-    formatter: ETAFormatter,
-    classes: 'route-list-column',
-    headerClasses: 'route-list-column',
-    wideScreenOnly: true
-  }
+  const columnsBase = [
+    {
+      dataField: 'extraInfo.eta',
+      text: 'retard - prévu',
+      headerAlign: 'center',
+      align: 'center',
+      formatter: ETAFormatter,
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column'
+    },
+    {
+      dataField: 'name',
+      text: t('mapotempo_route_name'),
+      classes: 'route-list-column overflow',
+      headerClasses: 'route-list-column overflow',
+      sort: true
+    },
+    {
+      dataField: 'user_email',
+      isDummyField: true,
+      text: t('mapotempo_route_email'),
+      formatter: userEmailFormatter,
+      formatExtraData: usersMap,
+      classes: 'route-list-column overflow',
+      headerClasses: 'route-list-column overflow',
+      wideScreenOnly: true,
+      sort: true
+    },
+    {
+      dataField: 'routeInfoDeparture',
+      isDummyField: true,
+      text: t('mapotempo_route_departure'),
+      formatter: statusFormatter,
+      formatExtraData: 'departure',
+      headerAlign: 'center',
+      align: 'center',
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column overflow'
+    },
+    {
+      dataField: 'routeInfoMission',
+      isDummyField: true,
+      text: t('mapotempo_route_missions'),
+      formatter: missionStatusFormatter,
+      formatExtraData: 'mission',
+      headerAlign: 'center',
+      align: 'center',
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column overflow'
+    }, {
+      dataField: 'routeInfoRest',
+      isDummyField: true,
+      text: t('mapotempo_route_rests'),
+      formatter: statusFormatter,
+      formatExtraData: 'rest',
+      headerAlign: 'center',
+      align: 'center',
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column overflow'
+    },
+    {
+      dataField: 'routeInfoArrival',
+      isDummyField: true,
+      text: t('mapotempo_route_arrivals'),
+      formatter: statusFormatter,
+      formatExtraData: 'arrival',
+      headerAlign: 'center',
+      align: 'center',
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column overflow'
+    },
+    {
+      dataField: 'extraInfo.progress',
+      text: t('mapotempo_route_progress'),
+      formatter: advancementFormatter,
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column',
+      wideScreenOnly: true
+    }
   ];
 
   let columns = columnsBase.filter((item) => !item.wideScreenOnly || item.wideScreenOnly == wideScreen);
 
   const rowEvents = {
     onClick: (e, row) => {
-      props.onRouteSelected(row.id);
+      // props.onRouteSelected(row.id);
     },
     onMouseEnter: (/*e, row, rowIndex */) => {    }
   };
@@ -159,7 +149,7 @@ const RoutesList = (props) => {
     expandRow={{
       onlyOneExpanding: true,
       className: 'route-expanding',
-      renderer: props.expandable ?  expandFormater : null
+      renderer: expandFormater
     }}
     rowEvents={ rowEvents }
   />;
@@ -175,21 +165,24 @@ export default RoutesList;
 // ========
 
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].email;
-const userPhoneFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].phone;
 const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData} withLabels withCount={false}/>);
 const missionStatusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData}/>);
 const advancementFormatter = cell => (<ProgressBar style={{ margin: 0 }} now={cell} label={`${cell}%`} title={`${cell}%`}/>);
 const ETAFormatter = (cell, row) => {
+  let delay = row.extraInfo.finishedMissionsDelay.overLowThreashold + row.extraInfo.finishedMissionsDelay.overHightThreashold;
+  let delayPlanned = row.extraInfo.plannedMissionsDelay.overLowThreashold + row.extraInfo.plannedMissionsDelay.overHightThreashold;
   let style = 'default';
-  if (row.extraInfo.delay < 15)
-    style = "success";
-  else if (row.extraInfo.delay < 30)
-    style = "warning";
-  else if (row.extraInfo.delay < 60)
-    style = "danger";
-  return <Label bsStyle={style}>{new Date(cell).toLocaleString()}</Label>;
-};
+  console.log(row.missions.length);
 
+  if (row.missions.length > 0) {
+    let ratio = (delay + delayPlanned) / row.missions.length;
+    if (ratio > 0.2)
+      style = 'warning';
+    if (ratio > 0.5)
+      style = 'danger';
+  }
+  return <Label bsStyle={style} style={{ display: 'block', width: '100%' }}>{delay} - {delayPlanned}</Label>;
+};
 // ==================
 // Formater Component
 // ==================
@@ -216,7 +209,18 @@ const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=fa
 // =========
 
 const expandFormater = row =>
-  <div style={{height: '370px'}}>
-    <MissionsList
-      missions={row.missions} />;
-  </div>;
+{return (
+  <div style={{height: '150px'}}>
+    <UserCard userId={row.user_id}></UserCard>
+  </div>);
+};
+
+const UserCard = ({userId}) => {
+  let usersMap = useSelector(usersMapper);
+  let user = usersMap[userId];
+  return (<div>
+    <p>{user.name}</p>
+    <p>{user.email}</p>
+    <p>{user.phone}</p>
+  </div>);
+};

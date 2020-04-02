@@ -183,8 +183,6 @@ describe('Lib - extraInfo', function() {
         tags: null,
         time_windows: []
       };
-      console.log(computeMissionDelay(
-        m, {is_last: false}));
     });
 
 
