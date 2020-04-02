@@ -8,15 +8,14 @@ import { Panel, Glyphicon } from 'react-bootstrap';
 
 const BasicRouteCard = (props) => {
   return (
-    <Panel bsStyle={props.style}>
+    <Panel bsStyle={props.bsStyle} className='mtf-card'>
       <Panel.Heading>
-        <Panel.Title style={{overflow: 'hidden', display: 'block', height: 'auto'}}>
-          <Glyphicon glyph={props.glyph} style={{fontSize: '4em', float: 'left'}}/>
-          <div style={{textAlign: 'right', float: 'right '}}>
-            <p style={{margin: 0, fontSize: '1em'}}>
-              <b style={{margin: 0, fontSize: '2em'}}>{props.value}</b><br/>{props.info}
-            </p>
-          </div>
+        <Panel.Title>
+          <Glyphicon glyph={props.glyph} className='mtf-card-icon'/>
+          <p className='mtf-card-value'>{props.value}</p>
+          <p className='mtf-card-title' title={props.info}>
+            {props.info}
+          </p>
         </Panel.Title>
       </Panel.Heading>
       <Panel.Body>{props.subinfo}</Panel.Body>
@@ -29,14 +28,14 @@ BasicRouteCard.propTypes = {
   value: PropTypes.number,
   info: PropTypes.string,
   subinfo: PropTypes.string,
-  style: PropTypes.string
+  bsStyle: PropTypes.string
 };
 BasicRouteCard.defaultProps = {
   glyph: 'info-sign',
   value: [],
   info: '',
   subinfo: '',
-  style: 'primary'
+  bsStyle: 'primary'
 };
 
 // ====================
@@ -52,7 +51,7 @@ export const TotalFinishedRouteCard = (/*props*/) => {
     value={globalRoutesInfo.globalFinishedRoutes}
     info={t('card.finished_routes.info', {count: globalRoutesInfo.globalFinishedRoutes})}
     subinfo={t('card.finished_routes.subinfo', {count: routes.length - globalRoutesInfo.globalFinishedRoutes})}
-    style='success'/>;
+    bsStyle='success'/>;
 };
 
 // ======================
@@ -67,8 +66,7 @@ export const TotalFinishedMission = (/*props*/) => {
     value={globalRoutesInfo.globalFinishedMissions}
     info={t('card.finished_missions.info', {count: globalRoutesInfo.globalFinishedMissions})}
     subinfo={t('card.finished_missions.subinfo', {count: globalRoutesInfo.globalMissions - globalRoutesInfo.globalFinishedMissions})}
-
-    style='info'/>;
+    bsStyle='info'/>;
 };
 
 // =====================
@@ -83,7 +81,7 @@ export const TotalDelayedCard = (/*props*/) => {
     value={globalRoutesInfo.globalMissionDelays.finished}
     info={t('card.delay_missions.info', {count: globalRoutesInfo.globalMissionDelays.finished})}
     subinfo={t('card.delay_missions.subinfo', {count: globalRoutesInfo.globalMissionDelays.planned})}
-    style='warning'/>;
+    bsStyle='warning'/>;
 };
 
 // ====================
@@ -98,5 +96,5 @@ export const TotalUndoneMissionCard = (/*props*/) => {
     value={globalRoutesInfo.globalFinishedMissionsUndone}
     info={t('card.undone_missions.info', {count: globalRoutesInfo.globalFinishedMissionsUndone})}
     subinfo={t('card.undone_missions.subinfo', {count: globalRoutesInfo.globalFinishedMissions - globalRoutesInfo.globalFinishedMissionsUndone})}
-    style='danger'/>;
+    bsStyle='danger'/>;
 };

@@ -58,6 +58,7 @@ const DoughnutStatuses = (props) => {
     title: {
       display: true,
       text: props.header,
+      position: 'bottom',
       fontSize: 16
     },
     legend: {

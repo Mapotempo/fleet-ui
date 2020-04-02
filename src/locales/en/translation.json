@@ -1,6 +1,7 @@
 {
-  "mapotempo_live_server_connection_pending": "Mapotempo Live Server - connection pending",
-  "mapotempo_live_server_loading_data": "Mapotempo Live Server - loading data",
+  "mapotempo_live_server": "Mapotempo Live Server",
+  "mapotempo_live_server_connection_pending": "connection pending",
+  "mapotempo_live_server_loading_data": "loading data",
   "mapotempo_live_server_unconnected": "Mapotempo Live Server - unconnected",
   "mapotempo_live_server_error": "Error",
   "mapotempo_route_global_status_departure": "Departure statuses",

@@ -35,7 +35,7 @@ const FleetGuard = (Component) => {
       return (<Loader message={t('mapotempo_live_server_loading_data')} />);
     if (!isConnected || !readyData)
       return <NotConnected errors={errors ? errors.message : ''}/>;
-    return (<div className='fleet-container'><Component {...props}/></div>);
+    return (<Component {...props}/>);
   };
   return newFunc;
 };
@@ -58,7 +58,7 @@ const NotConnected = (props) => {
   const { t } = useTranslation();
 
   return (
-    <Jumbotron  className='fleet-container' style={{height: '100%', textAlign: 'center'}}>
+    <Jumbotron  className='mtf-view-container' style={{height: '100%', textAlign: 'center'}}>
       <p style={{ fontSize: '5em', color: '#d9534f' }} ><Glyphicon glyph="alert"/></p>
 
       <p>{t('mapotempo_live_server_unconnected')}</p>

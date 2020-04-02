@@ -1,3 +1,18 @@
+/* ###########
+   #         #
+   # Commons #
+   #         #
+   ###########*/
+
+.mtf-view-container {
+  height: 100%;
+  background: #f1f1f1;
+  border-radius:5px;
+}
+
+.mtf-dashboard-row {
+  margin-bottom: 20px;
+}
 
 /* ##########
    #        #
@@ -5,7 +20,7 @@
    #        #
    ##########*/
 
-.loader {
+.mtf-loader {
   margin: auto;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -22,25 +37,40 @@
   100% { transform: rotate(360deg); }
 }
 
-.dashboard-row {
-  margin-bottom: 10px;
+/* ########
+   #      #
+   # Card #
+   #      #
+   ########*/
+.mtf-card {
+  margin: 5px
 }
 
+.mtf-card-icon {
+  font-size: 2.5em;
+  float: left;
+}
 
+.mtf-card-value {
+  font-size: 1.8em;
+  font-weight: bold;
+  float: right;
+}
 
+.mtf-card-title {
+  clear: both;
+  font-size: 1.1em;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
 /* #####################
    #                   #
    # Table Route Style #
    #                   #
    #####################*/
-
-  .fleet-container {
-    height: 100%;
-    background: #f1f1f1;
-    border-radius:5px;
-    padding: 10px;
-  }
 
   .route-list-table-wrapper {
     overflow: auto;

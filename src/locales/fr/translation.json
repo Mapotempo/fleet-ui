@@ -1,5 +1,6 @@
 {
-  "mapotempo_live_server_connection_pending": "Serveur Mapotempo Live - connexion pending",
+  "mapotempo_live_server": "Serveur Mapotempo Live",
+  "mapotempo_live_server_connection_pending": "connexion en attente",
   "mapotempo_live_server_loading_data": "Serveur Mapotempo Live - chargement des données",
   "mapotempo_live_server_unconnected": "Serveur Mapotempo Live - non connecté",
   "mapotempo_live_server_error": "Erreur",

@@ -33,12 +33,6 @@ const RouteListLiveView = (props) => {
   let routes = useSelector(routesSelector);
   let missionsDownloadProgress = useSelector(missionsDowloadProgressSelector);
 
-  // console.log('---------- test BEGIN');
-  // let fullRouteInfo = useSelector(state => routeFullInfoSelector(state, routes));
-  // fullRouteInfo = useSelector(state => routeFullInfoSelector(state, routes));
-  // console.log('res', fullRouteInfo.totalDistance);
-  // console.log('---------- test END');
-
   const handleChange = (value) => {
     let from = new Date(value);
     from.setUTCHours(0, 0, 0, 0);
@@ -51,7 +45,6 @@ const RouteListLiveView = (props) => {
   if (!date) {
     handleChange(new Date());
   }
-
   return (
     <React.Fragment>
       <LoadingBar
@@ -60,7 +53,7 @@ const RouteListLiveView = (props) => {
         color='#00AAC2'
       />
       <Grid fluid>
-        <Row className="grid-row">
+        <Row className="mtf-dashboard-row">
           <Col xs={12}>
             <DatePicker
               selected={date}
@@ -69,7 +62,7 @@ const RouteListLiveView = (props) => {
           </Col>
         </Row>
 
-        <Row className="grid-row">
+        <Row className="mtf-dashboard-row">
           <Col md={3}>
             <TotalFinishedRouteCard />
           </Col>
@@ -84,7 +77,7 @@ const RouteListLiveView = (props) => {
           </Col>
         </Row>
 
-        <Row className="show-grid" style={{padding: '20px'}}>
+        <Row className="mtf-dashboard-row">
           <Col md={4} xsHidden>
             <DoughnutStatuses
               routes={routes}
@@ -105,8 +98,8 @@ const RouteListLiveView = (props) => {
           </Col>
         </Row>
 
-        <Row className="grid-row">
-          <Col xs={12}>
+        <Row className="mtf-dashboard-row">
+          <Col md={12}>
             <RoutesList
               routes={routes}
               expandable={false}

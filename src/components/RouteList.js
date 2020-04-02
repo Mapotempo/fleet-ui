@@ -172,8 +172,6 @@ const ETAFormatter = (cell, row) => {
   let delay = row.extraInfo.finishedMissionsDelay.overLowThreashold + row.extraInfo.finishedMissionsDelay.overHightThreashold;
   let delayPlanned = row.extraInfo.plannedMissionsDelay.overLowThreashold + row.extraInfo.plannedMissionsDelay.overHightThreashold;
   let style = 'default';
-  console.log(row.missions.length);
-
   if (row.missions.length > 0) {
     let ratio = (delay + delayPlanned) / row.missions.length;
     if (ratio > 0.2)
