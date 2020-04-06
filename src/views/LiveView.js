@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import RouteDetailLiveView from './RouteDetailLiveView';
 import RouteListLiveView from './RouteListLiveView';
 
+import { useUrlHashParam } from '../lib/urlParams';
+
 const propTypes = {
   routeId: PropTypes.string,
   onRouteSelected: PropTypes.func
@@ -14,9 +16,12 @@ const defaultProps = {
 };
 
 const LiveView = (props) => {
-  if (props.routeId)
-    return <RouteDetailLiveView routeId={props.routeId}> </RouteDetailLiveView>;
-  return <RouteListLiveView onRouteSelected={props.onRouteSelected}></RouteListLiveView>;
+  let [hashRouteId, setHashRouteId] = useUrlHashParam('route_id');
+
+  // let routeId = getUrlHashParam('route_id');
+  if (hashRouteId)
+    return <RouteDetailLiveView routeId={hashRouteId}> </RouteDetailLiveView>;
+  return <RouteListLiveView onRouteSelected={routeId => setHashRouteId(routeId)}></RouteListLiveView>;
 };
 
 LiveView.propTypes = propTypes;
