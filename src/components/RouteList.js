@@ -8,8 +8,7 @@ import { usersMapper } from '../selectors';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { ProgressBar, Label, Badge } from 'react-bootstrap';
-import MissionsList from './MissionList';
+import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
 // ==========
 // ROUTE LIST
@@ -43,6 +42,15 @@ const RoutesList = (props) => {
     window.addEventListener('resize', reportWindowSize);
     return () => window.removeEventListener('resize', reportWindowSize);
   }, []);
+
+
+  // const rowEvents = {
+  //   onClick: (e, row) => {
+  //     // props.onRouteSelected(row.id);
+  //   },
+  //   onMouseEnter: (/*e, row, rowIndex */) => {    }
+  // };
+
 
   const columnsBase = [
     {
@@ -122,17 +130,19 @@ const RoutesList = (props) => {
       classes: 'route-list-column',
       headerClasses: 'route-list-column',
       wideScreenOnly: true
+    },
+    {
+      dataField: 'routeAction',
+      isDummyField: true,
+      text: '',
+      formatter: actionFormatter,
+      formatExtraData: props.onRouteSelected,
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column'
     }
   ];
 
   let columns = columnsBase.filter((item) => !item.wideScreenOnly || item.wideScreenOnly == wideScreen);
-
-  const rowEvents = {
-    onClick: (e, row) => {
-      // props.onRouteSelected(row.id);
-    },
-    onMouseEnter: (/*e, row, rowIndex */) => {    }
-  };
 
   return <BootstrapTable
     wrapperClasses="route-list-table-wrapper"
@@ -151,7 +161,7 @@ const RoutesList = (props) => {
       className: 'route-expanding',
       renderer: expandFormater
     }}
-    rowEvents={ rowEvents }
+    // rowEvents={ rowEvents }
   />;
 };
 
@@ -181,6 +191,12 @@ const ETAFormatter = (cell, row) => {
   }
   return <Label bsStyle={style} style={{ display: 'block', width: '100%' }}>{delay} - {delayPlanned}</Label>;
 };
+const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
+  return (<ButtonGroup justified>
+    <Button onClick={() => formatExtraData(row.id)} href="#"><Glyphicon glyph="map-marker" /></Button>
+    <Button onClick={() => formatExtraData(row.id)} href="#"><Glyphicon glyph="list-alt" /></Button>
+  </ButtonGroup>);
+};
 // ==================
 // Formater Component
 // ==================
@@ -206,9 +222,8 @@ const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=fa
 // ExpandRow
 // =========
 
-const expandFormater = row =>
-{return (
-  <div style={{height: '150px'}}>
+const expandFormater = function(row) {
+  return (<div style={{height: '150px'}}>
     <UserCard userId={row.user_id}></UserCard>
   </div>);
 };

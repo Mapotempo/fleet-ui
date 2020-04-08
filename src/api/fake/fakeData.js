@@ -1,5 +1,5 @@
 import faker from 'Faker';
-import sha256 from '../../lib/sha266';
+import sha256 from '../../lib/sha256';
 
 const MAX_MISSION = 50;
 const LASTIFY_THREASHOLD = 96;

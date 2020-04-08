@@ -184,11 +184,5 @@ describe('Lib - extraInfo', function() {
         time_windows: []
       };
     });
-
-
-
-
-
-
   });
 });
