@@ -74,7 +74,6 @@ describe('Lib - extraInfo', function() {
         .should.be.exactly(0);
     });
 
-
     it('should return positive when timewindow exist and ETA > end and is_last = undefined', function() {
       computeMissionDelay(
         {...missionTemplate,
@@ -147,7 +146,7 @@ describe('Lib - extraInfo', function() {
 
 
     it('should use mission_status_type_last_date to compute delay when mission_status_type_last_date exist and is_last = True', function() {
-      let m =     {
+      let m = {
         id: 'mission-BMLkkAQ06X',
         company_id: 'company-abcdef',
         route_id: 'route-Utpf7SjRkRl',
@@ -183,6 +182,25 @@ describe('Lib - extraInfo', function() {
         tags: null,
         time_windows: []
       };
+    });
+  });
+
+  describe('#computeExtraInfo()', function() {
+    const computeExtraInfo = extraInfoModule.__get__('computeExtraInfo');
+    let route = {
+      "id": 'route-abcdef',
+      "external_ref": 'mapoweb-ext-ref',
+      "name": 'mapotempo driver',
+      "user_id": 'user-abcdef',
+      "user_email": 'test1@mapotempo.com',
+      "sync_user": 'c1e38fd06a2afc0414b551d4ed79e00d508fd9a456e2158eb44a5d6dd95e704c',
+      "duration": 0,
+      "distance": 0,
+      "missions_count": 0,
+      "missions": []
+    };
+    it('should use mission_status_type_last_date to compute delay when mission_status_type_last_date exist and is_last = True', function() {
+      computeExtraInfo(route, []).should.be.Object();
     });
   });
 });

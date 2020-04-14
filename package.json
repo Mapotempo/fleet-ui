@@ -14,7 +14,7 @@
   "scripts": {
     "react-test": "cross-env CI=1 react-scripts test --env=jsdom",
     "react-test:watch": "react-scripts test --env=jsdom",
-    "test": "mocha --require @babel/register \"test/**/*.test.js\"",
+    "test": "nyc --reporter=html mocha --require @babel/register \"test/**/*.test.js\"",
     "build": "rollup -c",
     "start": "rollup -c -w",
     "prepare": "npm run build",
@@ -56,6 +56,7 @@
     "jsdom": "^16.2.2",
     "miragejs": "^0.1.35",
     "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-bootstrap": "^0.33.1",
