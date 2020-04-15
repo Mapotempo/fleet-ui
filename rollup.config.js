@@ -36,7 +36,7 @@ export default {
       plugins: [],
       runtimeHelpers: true
     }),
-    resolve(),
+    resolve({browser: true}),
     commonjs()
   ]
 };
