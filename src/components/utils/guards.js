@@ -35,7 +35,7 @@ const FleetGuard = (Component) => {
       return (<Loader message={t('mapotempo_live_server_loading_data')} />);
     if (!isConnected || !readyData)
       return <NotConnected errors={errors ? errors.message : ''}/>;
-    return (<Component {...props}/>);
+    return (<div className="mtf-view-container"><Component {...props}/></div>);
   };
   return newFunc;
 };
