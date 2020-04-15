@@ -26,9 +26,12 @@ export default {
   plugins: [
     json(),
     external(),
-    postcss({
-      modules: true
-    }),
+    postcss(
+      {
+        extract: true ,
+        modules: false,
+        use: ['sass'],
+      }),
     url(),
     svgr(),
     babel({
@@ -38,5 +41,6 @@ export default {
     }),
     resolve({browser: true}),
     commonjs()
-  ]
+  ],
+  external: ['bootstrap']
 };
