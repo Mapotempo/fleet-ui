@@ -8,8 +8,8 @@ const DELAY_HIGHT_THREASHOLD = 30; //min
 export const initialExtraInfo = () => {
   return {
     progress: 0,
-    scheduledArrival: 0,
-    eta: '1970-01-01T00:00:00.000',
+    routeArrivalDate: '1970-01-01T00:00:00.000',
+    routeArrivalETA: '1970-01-01T00:00:00.000',
     finishedMissions: 0,
     finishedMissionsUndone: 0,
     finishedMissionsDelay: {
@@ -76,8 +76,9 @@ export const computeMissionDelay = (mission, missionStatus) => {
 
   if (mission.time_windows && mission.time_windows.length) { // Delay with time windows
     let plannedTimeWindow = getPlannedTimeWindow(mission);
-    if (!plannedTimeWindow)
+    if (!plannedTimeWindow) {
       return 0;
+    }
     return delayDateTimeWindow(arrivalDate, plannedTimeWindow);
   }
   else { // Delay without time window
@@ -89,15 +90,12 @@ export const computeMissionDelay = (mission, missionStatus) => {
 export const computeExtraInfo = (route, missionStatusTypesMap) => {
   let res = route.missions.reduce((extraInfo, mission) => {
     // Find arrival date
-    if (mission.date > extraInfo.scheduledArrival) {
-      extraInfo.scheduledArrival = mission.date;
-    }
+    if (mission.date > extraInfo.routeArrivalDate)
+      extraInfo.routeArrivalDate = mission.date;
 
     // Choosed the better ETA source
-    let currentEtaValue = mission.eta ? mission.eta : mission.date;
-    if (currentEtaValue > extraInfo.eta) {
-      extraInfo.eta = currentEtaValue;
-    }
+    if (mission.eta > extraInfo.routeArrivalETA)
+      extraInfo.routeArrivalETA = mission.eta;
 
     // type extra info
     let missionTypeInfo = extraInfo[mission.mission_type];
@@ -107,7 +105,6 @@ export const computeExtraInfo = (route, missionStatusTypesMap) => {
     }
 
     let missionStatus = missionStatusTypesMap[mission.mission_status_type_id];
-
     // is last and undone
     if (missionStatus.is_last) {
       extraInfo.finishedMissions++;

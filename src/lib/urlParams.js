@@ -7,7 +7,7 @@ const deserializeUrlParams = hashString => hashString.split('&').reduce((result,
 
 const serializeUrlParams = params => Object.entries(params).map(([key, value]) => `${key}=${value}`).join('&');
 
-const getUrlStringParams = hashMode =>  hashMode ? window.location.hash.substr(1) : window.location.search.substr(1);
+const getUrlStringParams = hashMode => hashMode ? window.location.hash.substr(1) : window.location.search.substr(1);
 
 const setUrlStringParams = (paramsString, hashMode) =>  {if (hashMode) window.location.hash = paramsString; else window.history.pushState({}, null, `?${paramsString}`);};
 

@@ -1,11 +1,7 @@
-var should = require('should');
-var rewire = require("rewire");
-
-const sha256Module = rewire("../../src/lib/sha256.js");
+import sha256 from "../sha256.js";
 
 describe('Lib - sha256', function() {
   describe('#sha256()', function() {
-    const sha256 = sha256Module.__get__('sha256');
     const hashSet = [
       {entry: 'test1@mapotempo.com', result: 'c1e38fd06a2afc0414b551d4ed79e00d508fd9a456e2158eb44a5d6dd95e704c'},
       {entry: 'toto@mapotempo.com', result: 'b0e83b22d23c9dcb3ed42fc3f2b89e87c17e3f729f8f68dc38d719d9644f5e44'},
@@ -15,7 +11,7 @@ describe('Lib - sha256', function() {
       {entry: 'test espace test', result: '3c343379249ed3214726d903640ca7ea691318bfd084b701e542008b4e3ad2f5'},
     ];
     it('should return true crypt', function() {
-      hashSet.forEach(test => should.equal(sha256(test.entry), test.result));
+      hashSet.forEach(test => expect(sha256(test.entry)).toBe(test.result));
     });
   });
 });

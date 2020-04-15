@@ -1,21 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import { useUrlHashParam } from '../../src/hooks/useUrlHashParam';
-var should = require('should');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+import { useUrlHashParam } from '../useUrlHashParam';
 
 
 describe('Hooks', function() {
   describe('#useUrlHashParam()', function() {
-    before(function() {
-      var { window } = new JSDOM(``, {
-        runScripts: "outside-only",
-        url: "https://example.org/"
-      });
-      window.host = 'localhost';
-      global.window = window;
-    });
     const reinitLocation = () => {window.location.hash='';};
     beforeEach(() => reinitLocation());
 
@@ -26,7 +15,7 @@ describe('Hooks', function() {
         result.current[1](1); // perform setParamValue
       });
       await waitForNextUpdate();
-      should.equal(result.current[0], '1'); // check param value
+      expect(result.current[0]).toBe('1'); // check param value
     });
   });
 });
