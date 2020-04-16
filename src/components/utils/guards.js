@@ -13,33 +13,29 @@ import { isReadyData } from '../../selectors';
 // FleetGuard Component
 // ====================
 
-const FleetGuard = (Component) => {
-  let newFunc = (props) => {
-    const { t } = useTranslation();
+const FleetGuard = (props) => {
+  const { t } = useTranslation();
 
-    let fleetStore = useSelector(state => state.fleet);
-    if (!fleetStore)
-      return (<div>ERROR: global store must be integrate fleet store !</div>);
+  let fleetStore = useSelector(state => state.fleet);
+  if (!fleetStore)
+    return (<div>ERROR: global store must be integrate fleet store !</div>);
 
-    let isConnected = useSelector(state => state.fleet.auth.isConnected);
-    let isFetchingAuth = useSelector(state => state.fleet.auth.isFetching);
-    let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
-    let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
-    let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
-    let readyData = useSelector(isReadyData);
+  let isConnected = useSelector(state => state.fleet.auth.isConnected);
+  let isFetchingAuth = useSelector(state => state.fleet.auth.isFetching);
+  let isFetchingMST = useSelector(state => state.fleet.workflow.isFetchingMST);
+  let isFetchingMAT = useSelector(state => state.fleet.workflow.isFetchingMAT);
+  let isFetchingUser = useSelector(state => state.fleet.users.isFetching);
+  let readyData = useSelector(isReadyData);
 
-    let errors = useSelector(state => state.fleet.auth.errors);
-    if (isFetchingAuth)
-      return <Loader message={t('mapotempo_live_server_connection_pending')} />;
-    if (isFetchingMST || isFetchingMAT || isFetchingUser)
-      return (<Loader message={t('mapotempo_live_server_loading_data')} />);
-    if (!isConnected || !readyData)
-      return <NotConnected errors={errors ? errors.message : ''}/>;
-    return (<div className="mtf-view-container"><Component {...props}/></div>);
-  };
-  return newFunc;
+  let errors = useSelector(state => state.fleet.auth.errors);
+  if (isFetchingAuth)
+    return <Loader message={t('mapotempo_live_server_connection_pending')} />;
+  if (isFetchingMST || isFetchingMAT || isFetchingUser)
+    return (<Loader message={t('mapotempo_live_server_loading_data')} />);
+  if (!isConnected || !readyData)
+    return <NotConnected errors={errors ? errors.message : ''}/>;
+  return (props.children);
 };
-
 export default FleetGuard;
 
 // ======================
