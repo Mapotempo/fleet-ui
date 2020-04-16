@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+// React
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+// Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
-import { Grid, Row, Col } from 'react-bootstrap';
-import LoadingBar from 'react-top-loading-bar';
-
 import { fetchRoutes } from '../actions';
+
+// Reselect
 import { routesSelector, missionsDowloadProgressSelector } from '../selectors';
 
+// Component
+import { Grid, Row, Col } from 'react-bootstrap';
+import LoadingBar from 'react-top-loading-bar';
 import RoutesList from '../components/RouteList';
 import DoughnutStatuses from '../components/RouteDoughnutStatuses';
-import { TotalFinishedRouteCard, TotalDelayedCard, TotalUndoneMissionCard, TotalFinishedMission } from '../components/RouteCards';
-
+import { TotalFinishedRouteCard, TotalDelayedCard,
+  TotalUndoneMissionCard, TotalFinishedMission } from '../components/RouteCards';
 import DatePicker from "react-datepicker";
-
 
 const propTypes = {
   onRouteSelected: PropTypes.func
@@ -42,9 +44,10 @@ const RouteListLiveView = (props) => {
     dispatch(fetchRoutes(from, to));
   };
 
-  if (!date) {
+  useEffect(() => {
     handleChange(new Date());
-  }
+  }, []);
+
   return (
     <React.Fragment>
       <LoadingBar
