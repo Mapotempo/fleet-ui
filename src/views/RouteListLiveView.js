@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-// Redux
+// Hook
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+
+// Action
 import { fetchRoutes } from '../actions';
 
 // Reselect
-import { routesSelector, missionsDowloadProgressSelector } from '../selectors';
+import { routesSelector, globalRoutesInfoSelector, missionsDowloadProgressSelector } from '../selectors';
 
 // Component
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -16,7 +18,7 @@ import LoadingBar from 'react-top-loading-bar';
 import RoutesList from '../components/RouteList';
 import DoughnutStatuses from '../components/RouteDoughnutStatuses';
 import { TotalFinishedRouteCard, TotalDelayedCard,
-  TotalUndoneMissionCard, TotalFinishedMission } from '../components/RouteCards';
+  TotalUndoneMissionCard, TotalFinishedMissionCard } from '../components/RouteCards';
 import DatePicker from "react-datepicker";
 
 const propTypes = {
@@ -33,6 +35,7 @@ const RouteListLiveView = (props) => {
   const [date, setDate] = useState(null);
   const dispatch = useDispatch();
   let routes = useSelector(routesSelector);
+  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   let missionsDownloadProgress = useSelector(missionsDowloadProgressSelector);
 
   const handleChange = (value) => {
@@ -67,16 +70,16 @@ const RouteListLiveView = (props) => {
 
         <Row className="mtf-dashboard-row">
           <Col md={3}>
-            <TotalFinishedRouteCard />
+            <TotalFinishedRouteCard finishedRoutes={globalRoutesInfo.globalFinishedRoutes} totalRoutes={routes.length} />
           </Col>
           <Col md={3} xsHidden>
-            <TotalFinishedMission />
+            <TotalFinishedMissionCard finishedMissions={globalRoutesInfo.globalFinishedMissions} totalMissions={globalRoutesInfo.globalMissions}/>
           </Col>
           <Col md={3} xsHidden>
-            <TotalDelayedCard />
+            <TotalDelayedCard missionDelaysFinished={globalRoutesInfo.globalMissionDelays.finished} missionDelaysPlanned={globalRoutesInfo.globalMissionDelays.planned}/>
           </Col>
           <Col md={3}>
-            <TotalUndoneMissionCard />
+            <TotalUndoneMissionCard finishedMissionsUndone={globalRoutesInfo.globalFinishedMissionsUndone} finishedMissions={globalRoutesInfo.globalFinishedMissions}/>
           </Col>
         </Row>
 

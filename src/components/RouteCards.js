@@ -1,9 +1,11 @@
+// React
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { globalRoutesInfoSelector, routesSelector } from '../selectors';
 
+// Hook
+import { useTranslation } from 'react-i18next';
+
+// Component
 import { Panel, Glyphicon } from 'react-bootstrap';
 
 const BasicRouteCard = (props) => {
@@ -30,6 +32,7 @@ BasicRouteCard.propTypes = {
   subinfo: PropTypes.string,
   bsStyle: PropTypes.string
 };
+
 BasicRouteCard.defaultProps = {
   glyph: 'info-sign',
   value: [],
@@ -42,59 +45,74 @@ BasicRouteCard.defaultProps = {
 // TOTAL ROUTE FINISHED
 // ====================
 
-export const TotalFinishedRouteCard = (/*props*/) => {
+export const TotalFinishedRouteCard = React.memo(props => {
   const { t } = useTranslation();
-  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
-  let routes = useSelector(routesSelector);
   return <BasicRouteCard
     glyph='tasks'
-    value={globalRoutesInfo.globalFinishedRoutes}
-    info={t('card.finished_routes.info', {count: globalRoutesInfo.globalFinishedRoutes})}
-    subinfo={t('card.finished_routes.subinfo', {count: routes.length - globalRoutesInfo.globalFinishedRoutes})}
+    value={props.finishedRoutes}
+    info={t('card.finished_routes.info', {count: props.finishedRoutes})}
+    subinfo={t('card.finished_routes.subinfo', {count: props.totalRoutes - props.finishedRoutes})}
     bsStyle='success'/>;
+});
+
+TotalFinishedRouteCard.propTypes = {
+  finishedRoutes: PropTypes.number,
+  totalRoutes: PropTypes.number
 };
 
 // ======================
 // TOTAL FINISHED MISSION
 // ======================
 
-export const TotalFinishedMission = (/*props*/) => {
+export const TotalFinishedMissionCard = React.memo(props => {
   const { t } = useTranslation();
-  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='flag'
-    value={globalRoutesInfo.globalFinishedMissions}
-    info={t('card.finished_missions.info', {count: globalRoutesInfo.globalFinishedMissions})}
-    subinfo={t('card.finished_missions.subinfo', {count: globalRoutesInfo.globalMissions - globalRoutesInfo.globalFinishedMissions})}
+    value={props.finishedMissions}
+    info={t('card.finished_missions.info', {count: props.finishedMissions})}
+    subinfo={t('card.finished_missions.subinfo', {count: props.totalMissions - props.finishedMissions})}
     bsStyle='info'/>;
+});
+
+TotalFinishedMissionCard.propTypes = {
+  finishedMissions: PropTypes.number,
+  totalMissions: PropTypes.number
 };
 
 // =====================
 // TOTAL DELAYED MISSION
 // =====================
 
-export const TotalDelayedCard = (/*props*/) => {
+export const TotalDelayedCard = React.memo(props => {
   const { t } = useTranslation();
-  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='time'
-    value={globalRoutesInfo.globalMissionDelays.finished}
-    info={t('card.delay_missions.info', {count: globalRoutesInfo.globalMissionDelays.finished})}
-    subinfo={t('card.delay_missions.subinfo', {count: globalRoutesInfo.globalMissionDelays.planned})}
+    value={props.missionDelaysFinished}
+    info={t('card.delay_missions.info', {count: props.missionDelaysFinished})}
+    subinfo={t('card.delay_missions.subinfo', {count: props.missionDelaysPlanned})}
     bsStyle='warning'/>;
+});
+
+TotalDelayedCard.propTypes = {
+  missionDelaysFinished: PropTypes.number,
+  missionDelaysPlanned: PropTypes.number,
 };
 
 // ====================
 // TOTAL UNDONE MISSION
 // ====================
 
-export const TotalUndoneMissionCard = (/*props*/) => {
+export const TotalUndoneMissionCard = React.memo(props => {
   const { t } = useTranslation();
-  let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   return <BasicRouteCard
     glyph='share'
-    value={globalRoutesInfo.globalFinishedMissionsUndone}
-    info={t('card.undone_missions.info', {count: globalRoutesInfo.globalFinishedMissionsUndone})}
-    subinfo={t('card.undone_missions.subinfo', {count: globalRoutesInfo.globalFinishedMissions - globalRoutesInfo.globalFinishedMissionsUndone})}
+    value={props.finishedMissionsUndone}
+    info={t('card.undone_missions.info', {count: props.finishedMissionsUndone})}
+    subinfo={t('card.undone_missions.subinfo', {count: props.finishedMissions - props.finishedMissionsUndone})}
     bsStyle='danger'/>;
+});
+
+TotalUndoneMissionCard.propTypes = {
+  finishedMissionsUndone: PropTypes.number,
+  finishedMissions: PropTypes.number,
 };
