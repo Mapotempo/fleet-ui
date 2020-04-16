@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 // Component
-import { Panel, Glyphicon } from 'react-bootstrap';
+import { Panel, Glyphicon, Form, FormGroup, ControlLabel, FormControl, Grid, Row, Col } from 'react-bootstrap';
 
 const BasicRouteCard = (props) => {
   return (
@@ -115,4 +115,55 @@ export const TotalUndoneMissionCard = React.memo(props => {
 TotalUndoneMissionCard.propTypes = {
   finishedMissionsUndone: PropTypes.number,
   finishedMissions: PropTypes.number,
+};
+
+// ====================
+// TOTAL UNDONE MISSION
+// ====================
+
+export const RouteInfosCard = (props) => {
+  let globalDelay = 0;
+  if (props.route.extraInfo.plannedMissionsDelay.overHightThreashold)
+    globalDelay = 30;
+  else if (props.route.extraInfo.plannedMissionsDelay.overLowThreashold)
+    globalDelay = 15;
+  return (
+    <Panel className='mtf-card' bsStyle='success'>
+      <Panel.Heading>
+        <Panel.Title>
+          Tournée : {props.route.name}
+        </Panel.Title>
+      </Panel.Heading>
+      <Panel.Body>
+        <Form horizontal>
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>missions
+            </Col>
+            <Col sm={10}>
+              <FormControl disable value={props.route.missions.length}/>
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>créneaux
+            </Col>
+            <Col sm={10}>
+              <FormControl disable value={new Date(props.route.date).toLocaleString() + ' - ' + new Date(props.route.extraInfo.routeArrivalDate).toLocaleString()}/>
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>Retard global
+            </Col>
+            <Col sm={10}>
+              <FormControl disable value={globalDelay + " min"}/>
+            </Col>
+          </FormGroup>
+        </Form>
+      </Panel.Body>
+    </Panel>
+  );
+};
+
+RouteInfosCard.propTypes = {
+  route: PropTypes.object,
+  user: PropTypes.object
 };

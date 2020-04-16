@@ -6,7 +6,6 @@
 $background: #f1f1f1;
 
 .mtf-view-container {
-  height: 100%;
   background: $background;
   border-radius:5px;
 }
@@ -75,7 +74,7 @@ $background: #f1f1f1;
 
   .route-list-table-wrapper {
     overflow: auto;
-    max-height: 512px;
+    max-height: 600px;
   }
 
   .route-list-header>th {
