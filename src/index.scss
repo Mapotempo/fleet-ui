@@ -8,10 +8,11 @@ $background: #f1f1f1;
 .mtf-view-container {
   background: $background;
   border-radius:5px;
+  padding-top: 15px;
 }
 
 .mtf-dashboard-row {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 /* ##########
@@ -43,7 +44,8 @@ $background: #f1f1f1;
    #      #
    ########*/
 .mtf-card {
-  margin: 5px
+  font-size: 1em;
+  margin-bottom: 5px;
 }
 
 .mtf-card-icon {
@@ -72,72 +74,72 @@ $background: #f1f1f1;
    #                   #
    #####################*/
 
-  .route-list-table-wrapper {
-    overflow: auto;
-    max-height: 600px;
-  }
+.route-list-table-wrapper {
+  overflow: auto;
+  max-height: 600px;
+}
 
-  .route-list-header>th {
-    position: sticky;
-    background: #c1c1c1;
-    top: 0;
-    z-index: 500;
-  }
+.route-list-header>th {
+  position: sticky;
+  background: #c1c1c1;
+  top: 0;
+  z-index: 500;
+}
 
-  .route-list-row {
-    cursor: pointer;
-  }
+.route-list-row {
+  cursor: pointer;
+}
 
-  td.route-expanding
-  {
-    background: #fefefe;
-  }
+td.route-expanding
+{
+  background: #fefefe;
+}
 
-  .route-list-column.overflow,
-  .mission-list-column.overflow {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+.route-list-column.overflow,
+.mission-list-column.overflow {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
-  /* #######################
-     #                     #
-     # Table Mission Style #
-     #                     #
-     #######################*/
+/* #######################
+   #                     #
+   # Table Mission Style #
+   #                     #
+   #######################*/
 
-  .mission-list {
-    /* border: 1px solid #ddd; */
-  }
+.mission-list {
+  /* border: 1px solid #ddd; */
+}
 
-  .mission-list-table-wrapper {
-    overflow: auto;
-    max-height: 100%;
-  }
+.mission-list-table-wrapper {
+  overflow: auto;
+  max-height: 512px;
+}
 
-  .mission-list-table-wrapper>table {
-    margin: 0;
-  }
+.mission-list-table-wrapper>table {
+  margin: 0;
+}
 
-  .mission-list-header>th {
-    position: sticky;
-    top: 0;
-    background-color: #a8c7cc !important;
-    z-index: 499;
-  }
+.mission-list-header>th {
+  position: sticky;
+  top: 0;
+  background-color: #a8c7cc !important;
+  z-index: 499;
+}
 
-  /* .mission-list-body {
-    background-color: #f4fdff !important;
-  }
-  .mission-list-body>tr :hover {
-    background-color: #dce2e4 !important;
-  } */
+/* .mission-list-body {
+  background-color: #f4fdff !important;
+}
+.mission-list-body>tr :hover {
+  background-color: #dce2e4 !important;
+} */
 
-  /* ##################
-     #                #
-     # LiveView Style #
-     #                #
-     ##################*/
+/* ##################
+    #                #
+    # LiveView Style #
+    #                #
+    ##################*/
 
 #LiveView {
   height: 100%;

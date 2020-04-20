@@ -8,7 +8,7 @@ import { usersMapper } from '../selectors';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
+import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon, Form, FormControl, FormGroup, ControlLabel, Col } from 'react-bootstrap';
 
 // ==========
 // ROUTE LIST
@@ -223,7 +223,7 @@ const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=fa
 // =========
 
 const expandFormater = function(row) {
-  return (<div style={{height: '150px'}}>
+  return (<div>
     <UserCard userId={row.user_id}></UserCard>
   </div>);
 };
@@ -231,9 +231,21 @@ const expandFormater = function(row) {
 const UserCard = ({userId}) => {
   let usersMap = useSelector(usersMapper);
   let user = usersMap[userId];
-  return (<div>
-    <p>{user.name}</p>
-    <p>{user.email}</p>
-    <p>{user.phone}</p>
-  </div>);
+  return (
+    <Form>
+      <FormGroup>
+        <Col componentClass={FormGroup} bsSize="small" sm={4}>
+          <ControlLabel>Nom chauffeur</ControlLabel>
+          <FormControl disabled value={user.name}/>
+        </Col>
+        <Col componentClass={FormGroup} bsSize="small" sm={4}>
+          <ControlLabel>Email chauffeur</ControlLabel>
+          <FormControl disabled value={user.email}/>
+        </Col>
+        <Col componentClass={FormGroup} bsSize="small" sm={4}>
+          <ControlLabel>Téléphone</ControlLabel>
+          <FormControl disabled value={user.phone ? user.phone : 'Non renseigné'}/>
+        </Col>
+      </FormGroup>
+    </Form>);
 };

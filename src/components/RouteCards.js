@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 // Component
-import { Panel, Glyphicon, Form, FormGroup, ControlLabel, FormControl, Grid, Row, Col } from 'react-bootstrap';
+import { Panel, Glyphicon, Form, FormGroup, ControlLabel, FormControl, Col, ProgressBar } from 'react-bootstrap';
 
 const BasicRouteCard = (props) => {
   return (
@@ -14,10 +14,10 @@ const BasicRouteCard = (props) => {
       <Panel.Heading>
         <Panel.Title>
           <Glyphicon glyph={props.glyph} className='mtf-card-icon'/>
-          <p className='mtf-card-value'>{props.value}</p>
-          <p className='mtf-card-title' title={props.info}>
+          <div className='mtf-card-value'>{props.value}</div>
+          <div className='mtf-card-title' title={props.info}>
             {props.info}
-          </p>
+          </div>
         </Panel.Title>
       </Panel.Heading>
       <Panel.Body>{props.subinfo}</Panel.Body>
@@ -122,11 +122,11 @@ TotalUndoneMissionCard.propTypes = {
 // ====================
 
 export const RouteInfosCard = (props) => {
-  let globalDelay = 0;
-  if (props.route.extraInfo.plannedMissionsDelay.overHightThreashold)
-    globalDelay = 30;
-  else if (props.route.extraInfo.plannedMissionsDelay.overLowThreashold)
-    globalDelay = 15;
+  // let globalDelay = 0;
+  // if (props.route.extraInfo.plannedMissionsDelay.overHightThreashold)
+  //   globalDelay = 30;
+  // else if (props.route.extraInfo.plannedMissionsDelay.overLowThreashold)
+  //   globalDelay = 15;
   return (
     <Panel className='mtf-card' bsStyle='success'>
       <Panel.Heading>
@@ -135,26 +135,19 @@ export const RouteInfosCard = (props) => {
         </Panel.Title>
       </Panel.Heading>
       <Panel.Body>
-        <Form horizontal>
+        <Form>
           <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>missions
+            <Col componentClass={FormGroup} bsSize="small" sm={4}>
+              <ControlLabel>Nom chauffeur</ControlLabel>
+              <FormControl disabled value={props.user.name}/>
             </Col>
-            <Col sm={10}>
-              <FormControl disable value={props.route.missions.length}/>
+            <Col componentClass={FormGroup} bsSize="small" sm={4}>
+              <ControlLabel>Email chauffeur</ControlLabel>
+              <FormControl disabled value={props.user.email}/>
             </Col>
-          </FormGroup>
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>créneaux
-            </Col>
-            <Col sm={10}>
-              <FormControl disable value={new Date(props.route.date).toLocaleString() + ' - ' + new Date(props.route.extraInfo.routeArrivalDate).toLocaleString()}/>
-            </Col>
-          </FormGroup>
-          <FormGroup>
-            <Col componentClass={ControlLabel} sm={2}>Retard global
-            </Col>
-            <Col sm={10}>
-              <FormControl disable value={globalDelay + " min"}/>
+            <Col componentClass={FormGroup} bsSize="small" sm={4}>
+              <ControlLabel>Téléphone</ControlLabel>
+              <FormControl disabled value={props.user.phone ? props.user.phone : 'Non renseigné'}/>
             </Col>
           </FormGroup>
         </Form>

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
-
+import {usersMapper} from '../selectors/userSelectors';
 import MissionList from '../components/MissionList';
 import { TotalDelayedCard,
   TotalUndoneMissionCard, TotalFinishedMissionCard, RouteInfosCard } from '../components/RouteCards';
@@ -15,14 +15,19 @@ const propTypes = {
 
 const RouteDetailLiveView = (props) => {
   let route = useSelector(state => state.fleet.routes.items.find(route => route.id === props.routeId));
+  let userMap = useSelector(usersMapper);
+
   if (!route)
     return "route not found";
+  console.log('---------->', userMap);
+  let user = userMap[route.user_id];
+  console.log(user);
   return (
     <React.Fragment>
       <Grid fluid>
         <Row className="mtf-dashboard-row">
           <Col md={12}>
-            <RouteInfosCard route={route}/>
+            <RouteInfosCard route={route} user={user}/>
           </Col>
         </Row>
         <Row className="mtf-dashboard-row">
