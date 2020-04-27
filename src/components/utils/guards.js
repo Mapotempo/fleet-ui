@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Jumbotron, Glyphicon } from 'react-bootstrap';
 
-import Loader from './loader';
+import Spinner from './spinner';
 
 import { isReadyData } from '../../selectors';
 
@@ -29,9 +29,9 @@ const FleetGuard = (props) => {
 
   let errors = useSelector(state => state.fleet.auth.errors);
   if (isFetchingAuth)
-    return <Loader message={t('mapotempo_live_server_connection_pending')} />;
+    return <Spinner message={t('mapotempo_live_server_connection_pending')} />;
   if (isFetchingMST || isFetchingMAT || isFetchingUser)
-    return (<Loader message={t('mapotempo_live_server_loading_data')} />);
+    return (<Spinner message={t('mapotempo_live_server_loading_data')} />);
   if (!isConnected || !readyData)
     return <NotConnected errors={errors ? errors.message : ''}/>;
   return (props.children);

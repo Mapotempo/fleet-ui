@@ -43,14 +43,12 @@ const RoutesList = (props) => {
     return () => window.removeEventListener('resize', reportWindowSize);
   }, []);
 
-
   // const rowEvents = {
   //   onClick: (e, row) => {
   //     // props.onRouteSelected(row.id);
   //   },
   //   onMouseEnter: (/*e, row, rowIndex */) => {    }
   // };
-
 
   const columnsBase = [
     {

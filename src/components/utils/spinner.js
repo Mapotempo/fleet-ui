@@ -13,12 +13,10 @@ const defaultProps = {
 const Loader = (props) => {
   const { t } = useTranslation();
   return (
-    <div className='mtf-view-container' style={{height: '100%'}}>
-      <div style={{position: 'absolute', top: '50%', left: '50%', transform: 'translateY(-50%) translateX(-50%)'}}>
-        <div className={'mtf-loader'} />
-        <p style={{textAlign: 'center'}}>{t('mapotempo_live_server')}</p>
-        <p style={{textAlign: 'center'}}>{props.message}</p>
-      </div>
+    <div className={'mtf-view-container mtf-spinner-container'} >
+      <div className={'mtf-spinner'} />
+      <p style={{}}>{t('mapotempo_live_server')}</p>
+      <p style={{}}>{props.message}</p>
     </div>);
 };
 

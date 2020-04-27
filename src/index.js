@@ -21,4 +21,4 @@ import _RouteDetailLiveView from './views/RouteDetailLiveView';
 export const RouteDetailLiveView = () => (<FleetGuard><_RouteDetailLiveView></_RouteDetailLiveView></FleetGuard>);
 
 // Exposed Style
-export * from './index.scss';
+export * from './styles/index.scss';
