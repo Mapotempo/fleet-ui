@@ -10,48 +10,69 @@
 npm install --save fleet-ui
 ```
 
-## Redux configuration
-```import { fleetReducer, fleetMiddleware } from 'fleet-ui';
-
-export const rootReducer = combineReducers({
-  fleet: fleetReducer('http://localhost:8084/'),
-  app: appReducer
-});
-
-export default function configureStore() {
-  return createStore(
-    rootReducer,
-    applyMiddleware(fleetMiddleware)
-  );
-}
-```
-
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import { createStore,
+         combineReducers,
+         applyMiddleware} from 'redux';
+// fleet-ui import
+import { LiveView }       from 'fleet-ui';
+import { fleetReducer }   from 'fleet-ui';
+import * as fleetActions  from 'fleet-ui';
+// CSS import
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import "react-datepicker/dist/react-datepicker.css";
+import 'fleet-ui/dist/index.css';
 
-import { UserListComponent } from 'fleet-ui';
+let fleet_user = "sync_user_key";
+let fleet_key  = "XXXXXXXXXXXXXXXXX";
 
-import configureStore from './store';
+// Create and configure store (fleetReducer need to be on "fleet" root key)
+const rootReducer = combineReducers({fleet: fleetReducer(fleet_host)});
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
-
-const store = configureStore();
-store.dispatch(fleet_actions.signInUsers('7fbbc3b1939888534fcb7b2a519d431491a91dbc6c0c26cef554e762924558df', '0Q3gGkMDdF06l7VzUWwa6Qtt'));
+// Dispatch connexion
+store.dispatch(fleetActions.signInUsers([
+  { syncUser: fleet_user, apiKey: fleet_key },
+]));
 
 class Example extends Component {
   render() {
     return (
-      <Provider store={store}>
-          <UserListComponent />
-      </Provider>
+    <Provider store={store}>
+      <LiveView></LiveView>
+    </Provider>
     );
   }
 }
 ```
-## Faker
-In .env project folder add following:
-REACT_APP_USE_FAKER=true
+
+## Use faker
+The fleet-ui contain api faker, to enable this feature add
+```REACT_APP_USE_FAKER=true```
+in .env or .env.local file.
+
+## NPM publish
+[Actual npm repository](https://www.npmjs.com/package/fleet-ui)
+
+Before publish check and update version in package.json
+```json
+{
+  "name": "fleet-ui",
+  "version": "X.X.X",
+  ...
+}
+```
+Run the following command (maybe you will need to configure authentication before)
+
+```shell
+npm publish
+```
+
+*This task need to be automated with CI/CD on every pushed git tag*
+
 
 ## License
 
