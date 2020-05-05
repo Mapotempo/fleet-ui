@@ -19,9 +19,9 @@ const RouteDetailLiveView = (props) => {
 
   if (!route)
     return "route not found";
-  console.log('---------->', userMap);
   let user = userMap[route.user_id];
-  console.log(user);
+
+
   return (
     <React.Fragment>
       <Grid fluid>
@@ -32,13 +32,13 @@ const RouteDetailLiveView = (props) => {
         </Row>
         <Row className="mtf-dashboard-row">
           <Col md={4} xsHidden>
-            <TotalFinishedMissionCard finishedMissions={5} totalMissions={6}/>
+            <TotalFinishedMissionCard finishedMissions={route.extraInfo.finishedMissions} totalMissions={route.missions.length}/>
           </Col>
           <Col md={4} xsHidden>
-            <TotalDelayedCard missionDelaysFinished={4} missionDelaysPlanned={3}/>
+            <TotalDelayedCard missionDelaysFinished={route.extraInfo.finishedMissionsDelay.overLowThreashold + route.extraInfo.finishedMissionsDelay.overHightThreashold} missionDelaysPlanned={route.extraInfo.plannedMissionsDelay.overLowThreashold + route.extraInfo.plannedMissionsDelay.overHightThreashold}/>
           </Col>
           <Col md={4}>
-            <TotalUndoneMissionCard finishedMissionsUndone={2} finishedMissions={4}/>
+            <TotalUndoneMissionCard finishedMissionsUndone={route.extraInfo.finishedMissionsUndone} finishedMissions={route.extraInfo.finishedMissions}/>
           </Col>
         </Row>
         <Row className="mtf-dashboard-row">
