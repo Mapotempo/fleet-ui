@@ -1,27 +1,32 @@
+// React
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Hook
 import { useSelector } from 'react-redux';
-import {usersMapper} from '../selectors/userSelectors';
+import { usersMapper } from '../selectors/userSelectors';
+import { useAutoFetchRoutesMissions } from '../hooks/useAutoFetch';
+
+// Component
 import MissionList from '../components/MissionList';
 import { TotalDelayedCard,
   TotalUndoneMissionCard, TotalFinishedMissionCard, RouteInfosCard } from '../components/RouteCards';
-
 import { Grid, Row, Col } from 'react-bootstrap';
 
 const propTypes = {
-  routeId: PropTypes.string.isRequired
+  routeId: PropTypes.string.isRequired,
 };
 
 const RouteDetailLiveView = (props) => {
   let route = useSelector(state => state.fleet.routes.items.find(route => route.id === props.routeId));
   let userMap = useSelector(usersMapper);
 
+  // Use auto fetch
+  useAutoFetchRoutesMissions(route ? [route] : []);
+
   if (!route)
     return "route not found";
   let user = userMap[route.user_id];
-
-
   return (
     <React.Fragment>
       <Grid fluid>

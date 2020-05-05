@@ -21,9 +21,9 @@ export default function routesReducer(state = initState, action) {
       state = { ...state, isFetching: false, errors: null };
       state.items = action.routes.map(newRoute => {
         let oldRoute = state.items.find(oldRoute => oldRoute.id == newRoute.id);
-        let missions = (oldRoute && oldRoute.missions) ? oldRoute.missions : [];
-        newRoute.missions = missions;
-        newRoute.extraInfo = (oldRoute && oldRoute.oldExtraInfo) ? oldRoute.oldExtraInfo : initialExtraInfo();
+        // Conserve previous missions and extraInfo
+        newRoute.missions = (oldRoute && oldRoute.missions) ? oldRoute.missions : [];
+        newRoute.extraInfo = (oldRoute && oldRoute.extraInfo) ? oldRoute.extraInfo : initialExtraInfo();
         return {...newRoute};
       });
       break;

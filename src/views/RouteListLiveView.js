@@ -1,13 +1,11 @@
 // React
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Hook
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
-// Action
-import { fetchRoutes } from '../actions';
+import { useAutoFetchRoutesMissions } from '../hooks/useAutoFetch';
 
 // Reselect
 import { routesSelector, globalRoutesInfoSelector, missionsDowloadProgressSelector } from '../selectors';
@@ -22,34 +20,30 @@ import { TotalFinishedRouteCard, TotalDelayedCard,
 import DatePicker from "react-datepicker";
 
 const propTypes = {
-  onRouteSelected: PropTypes.func
+  onDateSelected: PropTypes.func,
+  onRouteSelected: PropTypes.func,
+  selectedDate: PropTypes.func
 };
 
 const defaultProps = {
-  onRouteSelected: () => {}
+  onDateSelected: () => {},
+  onRouteSelected: () => {},
+  selectedDate: new Date()
 };
 
 const RouteListLiveView = (props) => {
   const { t } = useTranslation();
-
-  const [date, setDate] = useState(null);
-  const dispatch = useDispatch();
   let routes = useSelector(routesSelector);
   let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   let missionsDownloadProgress = useSelector(missionsDowloadProgressSelector);
 
+  // Use auto fetch
+  useAutoFetchRoutesMissions(routes);
+
   const handleChange = (value) => {
-    let from = new Date(value);
-    from.setUTCHours(0, 0, 0, 0);
-    let to = new Date(from);
-    to.setDate(from.getDate() + 1);
-    setDate(from);
-    dispatch(fetchRoutes(from, to));
+    props.onDateSelected(value);
   };
 
-  useEffect(() => {
-    handleChange(new Date());
-  }, []);
 
   return (
     <React.Fragment>
@@ -62,7 +56,7 @@ const RouteListLiveView = (props) => {
         <Row className="mtf-dashboard-row">
           <Col xs={12}>
             <DatePicker
-              selected={date}
+              selected={props.selectedDate}
               onChange={handleChange}
             />
           </Col>

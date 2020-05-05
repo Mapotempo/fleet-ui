@@ -3,10 +3,14 @@ import { computeExtraInfo } from '../lib/extraInfo';
 import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 import { missionStatusTypesMapper } from '../selectors/workflowSelectors';
 
-// ##########
-// ALL ROUTES
-// ##########
-export const fetchRoutes = (from, to) => {
+/**
+ * fetchRoutesOnDates
+ *
+ * fetch all routes between dates (with empty missions array)
+ * @param {Date} from valid date
+ * @param {Date} to   valid date
+ */
+export const fetchRoutesOnDates = (from, to) => {
   return (dispatch, getState) => {
     // Prevent multi fetching
     if (getState().fleet.routes.isFetching ||
@@ -21,18 +25,15 @@ export const fetchRoutes = (from, to) => {
             host: getState().fleet.fleetHost,
             apiKey: authUser.api_key,
           })))
-      .then(res => res.flat())          // flat routes arrays
-      .then(routes => {                 // remove duplicate route (multi same account case)
+      .then(res => res.flat()) // flat routes arrays
+      .then(routes => { // remove duplicate route (multi same account case)
         let routeIds = {};
         return routes.filter(route => {
           let res = !routeIds[route.id];
           routeIds[route.id] = route.id;
           return res;
         });})
-      .then(routes => {                 // proccess receive route action and multi route_mission fetch
-        dispatch(receiveRoutes(routes));
-        dispatch(fetchRoutesMissions(routes));
-      })
+      .then(routes => dispatch(receiveRoutes(routes))) // proccess receive route action
       .catch(errors => dispatch(errorsRoutes(errors)));
   };
 };
@@ -67,12 +68,15 @@ const errorsRoutes = (errors) => {
   };
 };
 
-// ###################
-// ROUTE WITH MISSIONS
-// ###################
-
 const ROUTES_BY_STEP = 20;
 
+/**
+ * fetchRoutesMissions
+ *
+ * fetch routes with missions details
+ * ROUTES_BY_STEP define the number of missions fetch by step
+ * @param {Array} routes Array of route
+ */
 export const fetchRoutesMissions = (routes) => {
   return async(dispatch, getState) => {
     // Prevent multi fetching
@@ -83,7 +87,7 @@ export const fetchRoutesMissions = (routes) => {
     var index = 0;
     while (index < routes.length) {
       let routeSliced = routes.slice(index, index + ROUTES_BY_STEP);
-      await dispatch(_fetchRoutesMissions(routeSliced));
+      await dispatch(_fetchRoutesMissions(routeSliced)); // await for previous ROUTES_BY_STEP fetches
       index += ROUTES_BY_STEP;
     }
     dispatch(requestRouteMissionsEnd());
@@ -93,15 +97,14 @@ export const fetchRoutesMissions = (routes) => {
 const _fetchRoutesMissions = (routes) => {
   return (dispatch, getState) => {
     let missionStatusTypesMap = missionStatusTypesMapper(getState());
-    return Promise
-      .all(routes.map((route) => ApiRoutes
-        .apiFetchRoute(route.id, {
-          host: getState().fleet.fleetHost,
-          apiKey: tokenBySyncUserSelector(getState(), route.sync_user)
-        })
-        .then(route => dispatch(receiveRouteMissions(route, computeExtraInfo(route, missionStatusTypesMap))))
-        .catch(errors => dispatch(errorsRoutes(errors)))
-      ));
+    return Promise.all(routes.map((route) => ApiRoutes
+      .apiFetchRoute(route.id, {
+        host: getState().fleet.fleetHost,
+        apiKey: tokenBySyncUserSelector(getState(), route.sync_user)
+      })
+      .then(route => dispatch(receiveRouteMissions(route, computeExtraInfo(route, missionStatusTypesMap))))
+      .catch(errors => dispatch(errorsRoutes(errors)))
+    ));
   };
 };
 
