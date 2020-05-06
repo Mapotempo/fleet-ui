@@ -4,18 +4,22 @@ import { useDispatch } from 'react-redux';
 
 const TIMEOUT_INTERVAL_ROUTES = 30000; //ms
 /**
- * Create a hook that automaticly fetch data
+ * useAutoFetchRoutesOnDate
+ * Trigger routes fetch on TIMEOUT_INTERVAL_ROUTES_MISSIONS times interval
+ * (without missions detail)
  *
- * @param {string} key The param key to observe
- * @return {[string, function]} A pair of value function on desire param
+ * @param {string} key date to fetch
+ * @param {string} slidingDay sliding day default 1
  */
 export const useAutoFetchRoutesOnDate = (date, slidingDay=1) => {
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log('register cb useAutoFetchRoutesOnDate');
     let to = new Date(date);
     to.setDate(date.getDate() + slidingDay);
     dispatch(fetchRoutesOnDates(date, to));
     let handler = window.setInterval(() => {
+      console.log('update cb useAutoFetchRoutesOnDate');
       dispatch(fetchRoutesOnDates(date, to));
     }, TIMEOUT_INTERVAL_ROUTES);
     return () => window.clearInterval(handler);
@@ -24,11 +28,19 @@ export const useAutoFetchRoutesOnDate = (date, slidingDay=1) => {
 
 const TIMEOUT_INTERVAL_ROUTES_MISSIONS = 120000; //ms
 /**
- * Fetch
+ * useAutoFetchRoutesMissions
+ * Trigger routes fetch on TIMEOUT_INTERVAL_ROUTES_MISSIONS times interval
+ * (with missions details)
  *
  * @param {Array} routes The param key to observe
  */
 export const useAutoFetchRoutesMissions = (routes) => {
+  // Do not use routes to trigger useEffect cb to prevent infinit loop
+  // (route is immutable and realocate on every fetch)
+  let routesIDS = routes.reduce((accumulator, route) => {
+    return accumulator + route.id;
+  }, "");
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRoutesMissions(routes));
@@ -36,5 +48,5 @@ export const useAutoFetchRoutesMissions = (routes) => {
       dispatch(fetchRoutesMissions(routes));
     }, TIMEOUT_INTERVAL_ROUTES_MISSIONS);
     return () => window.clearInterval(handler);
-  }, [routes]);
+  }, [routesIDS]);
 };
