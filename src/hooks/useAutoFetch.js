@@ -14,12 +14,10 @@ const TIMEOUT_INTERVAL_ROUTES = 30000; //ms
 export const useAutoFetchRoutesOnDate = (date, slidingDay=1) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('register cb useAutoFetchRoutesOnDate');
     let to = new Date(date);
     to.setDate(date.getDate() + slidingDay);
     dispatch(fetchRoutesOnDates(date, to));
     let handler = window.setInterval(() => {
-      console.log('update cb useAutoFetchRoutesOnDate');
       dispatch(fetchRoutesOnDates(date, to));
     }, TIMEOUT_INTERVAL_ROUTES);
     return () => window.clearInterval(handler);

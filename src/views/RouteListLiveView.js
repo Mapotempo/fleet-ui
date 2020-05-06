@@ -22,7 +22,7 @@ import DatePicker from "react-datepicker";
 const propTypes = {
   onDateSelected: PropTypes.func,
   onRouteSelected: PropTypes.func,
-  selectedDate: PropTypes.func
+  selectedDate: PropTypes.object
 };
 
 const defaultProps = {
