@@ -2,7 +2,7 @@ import { doGet } from './ApiCommon';
 
 export default {
   apiFetchAuthUser(syncUser, { host, apiKey }) {
-    return doGet(host, { url: `api/0.1/users/${syncUser}` ,apiKey })
+    return doGet(host, { url: `/api/0.1/users/${syncUser}` ,apiKey })
       .then((data) => Promise.resolve(data.user))
       .catch((error) => {
         switch (error.status) {
