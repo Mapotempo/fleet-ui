@@ -3,21 +3,28 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { missionStatusTypesMapper } from '../selectors';
+import { missionStatusTypesMapper } from '../../selectors';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Label, Badge, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
+
+import { surveyType } from '../../constants';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 
 // =============
 // MISSIONS LIST
 // =============
 
 const propTypes = {
-  missions: PropTypes.array
+  missions: PropTypes.array,
+  onMissionSurveyClick: PropTypes.func
 };
 
 const defaultProps = {
   missions: [],
+  onMissionSurveyClick: () => {}
 };
 
 const MissionsList = props => {
@@ -47,6 +54,7 @@ const MissionsList = props => {
     dataField: 'attachment',
     text: t('mapotempo_mission_proof_of_delivery'),
     formatter: AttachmentFormater,
+    formatExtraData: props.onMissionSurveyClick,
     headerAlign: 'right',
     align: 'right',
     classes: 'mission-list-column overflow',
@@ -87,18 +95,20 @@ const ETAFormater = (cell) => {
   return <Label bsStyle='default'>{new Date(cell).toLocaleString()}</Label>;
 };
 
-const AttachmentFormater = () => {
-  let picture = Math.random() >= 0.5;
-  let signature = Math.random() >= 0.5;
-  let comment = Math.random() >= 0.5;
-  let barcode = Math.random() >= 0.5;
-  let quantity = Math.random() >= 0.5;
+const AttachmentFormater = (cell, row, rowIndex, formatExtraData) => {
+  let picture = row.survey_pictures && row.survey_pictures.length > 0;
+  let signature = row.survey_signature;
+  let comment = row.survey_comment;
+  let barcode = row.survey_barcodes && row.survey_barcodes.length > 0;
+  let address = row.survey_address;
+  // let temperature = row.survey_temperature;
   return <ButtonGroup>
-    <Button bsStyle={picture ? "info": "default"} disabled={!picture}><Glyphicon glyph="camera" /></Button>
-    <Button bsStyle={signature ? "info": "default"} disabled={!signature}><Glyphicon glyph="pencil" /></Button>
-    <Button bsStyle={comment ? "info": "default"} disabled={!comment}><Glyphicon glyph="comment" /></Button>
-    <Button bsStyle={barcode ? "info": "default"} disabled={!barcode}><Glyphicon glyph="barcode" /></Button>
-    <Button bsStyle={quantity ? "info": "default"} disabled={!quantity}><Glyphicon glyph="inbox" /></Button>
+    <Button bsStyle={picture ? "info": "default"} disabled={!picture} onClick={() => formatExtraData(row, surveyType.PICTURE)}><Glyphicon glyph="camera" /></Button>
+    <Button bsStyle={signature ? "info": "default"} disabled={!signature} onClick={() => formatExtraData(row, surveyType.SIGNATURE)}><Glyphicon glyph="pencil" /></Button>
+    <Button bsStyle={comment ? "info": "default"} disabled={!comment} onClick={() => formatExtraData(row, surveyType.COMMENT)}><Glyphicon glyph="comment" /></Button>
+    <Button bsStyle={barcode ? "info": "default"} disabled={!barcode} onClick={() => formatExtraData(row, surveyType.BARCODE)}><Glyphicon glyph="barcode" /></Button>
+    <Button bsStyle={address ? "info": "default"} disabled={!address} onClick={() => formatExtraData(row, surveyType.ADDRESS)}><FontAwesomeIcon icon={faMapMarkedAlt} /></Button>
+    {/* <Button bsStyle={temperature ? "info": "default"} disabled={!temperature} onClick={() => formatExtraData(row, surveyType.TEMPERATURE)}><FontAwesomeIcon icon={faTemperatureLow} /></Button> */}
   </ButtonGroup>;
 };
 

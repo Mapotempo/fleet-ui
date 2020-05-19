@@ -8,7 +8,7 @@ import { usersMapper } from '../selectors';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon, Form, FormControl, FormGroup, ControlLabel, Col } from 'react-bootstrap';
+import {ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon, Form, FormControl, FormGroup, ControlLabel, Col } from 'react-bootstrap';
 
 // ==========
 // ROUTE LIST
@@ -142,25 +142,26 @@ const RoutesList = (props) => {
 
   let columns = columnsBase.filter((item) => !item.wideScreenOnly || item.wideScreenOnly == wideScreen);
 
-  return <BootstrapTable
-    wrapperClasses="route-list-table-wrapper"
-    headerWrapperClasses="route-list-table-head"
-    headerClasses="route-list-header"
-    rowClasses="route-list-row"
-    keyField='id'
-    data={props.routes}
-    columns={columns}
-    hover
-    bordered={ false }
-    pagination={ paginationFactory() }
-    noDataIndication="No Route found"
-    expandRow={{
-      onlyOneExpanding: true,
-      className: 'route-expanding',
-      renderer: expandFormater
-    }}
+  return (
+    <BootstrapTable
+      wrapperClasses="route-list-table-wrapper"
+      headerWrapperClasses="route-list-table-head"
+      headerClasses="route-list-header"
+      rowClasses="route-list-row"
+      keyField='id'
+      data={props.routes}
+      columns={columns}
+      hover
+      bordered={ false }
+      pagination={ paginationFactory() }
+      noDataIndication="No Route found"
+      expandRow={{
+        onlyOneExpanding: true,
+        className: 'route-expanding',
+        renderer: expandFormater
+      }}
     // rowEvents={ rowEvents }
-  />;
+    />);
 };
 
 RoutesList.propTypes = propTypes;

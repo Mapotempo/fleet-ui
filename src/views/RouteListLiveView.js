@@ -11,7 +11,7 @@ import { useAutoFetchRoutesMissions } from '../hooks/useAutoFetch';
 import { routesSelector, globalRoutesInfoSelector, missionsDowloadProgressSelector } from '../selectors';
 
 // Component
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import RoutesList from '../components/RouteList';
 import DoughnutStatuses from '../components/RouteDoughnutStatuses';
@@ -100,11 +100,13 @@ const RouteListLiveView = (props) => {
 
         <Row className="mtf-dashboard-row">
           <Col md={12}>
-            <RoutesList
-              routes={routes}
-              expandable={false}
-              onRouteSelected={props.onRouteSelected}
-            />
+            <Panel>
+              <RoutesList
+                routes={routes}
+                expandable={false}
+                onRouteSelected={props.onRouteSelected}
+              />
+            </Panel>
           </Col>
         </Row>
       </Grid>

@@ -63,11 +63,14 @@
     "dist"
   ],
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "axios": "^0.19.2",
     "bootstrap": "^3.3.5",
     "chart.js": "^2.9.3",
     "i18next": "^19.3.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "re-reselect": "^3.4.0",
     "react-bootstrap": "^0.33.1",
     "react-bootstrap-table-next": "^3.3.5",
