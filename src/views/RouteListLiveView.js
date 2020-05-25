@@ -17,7 +17,8 @@ import RoutesList from '../components/RouteList';
 import DoughnutStatuses from '../components/RouteDoughnutStatuses';
 import { TotalFinishedRouteCard, TotalDelayedCard,
   TotalUndoneMissionCard, TotalFinishedMissionCard } from '../components/RouteCards';
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
+import DatePicker from "../components/utils/datepicker";
 
 const propTypes = {
   onDateSelected: PropTypes.func,
@@ -40,10 +41,7 @@ const RouteListLiveView = (props) => {
   // Use auto fetch
   useAutoFetchRoutesMissions(routes);
 
-  const handleChange = (value) => {
-    props.onDateSelected(value);
-  };
-
+  const handleChange = (value) => props.onDateSelected(value);
 
   return (
     <React.Fragment>
@@ -54,10 +52,10 @@ const RouteListLiveView = (props) => {
       />
       <Grid fluid>
         <Row className="mtf-dashboard-row">
-          <Col xs={12}>
+          <Col xs={12} md={3}>
             <DatePicker
-              selected={props.selectedDate}
-              onChange={handleChange}
+              initialDate={props.selectedDate}
+              onChangeDate={handleChange}
             />
           </Col>
         </Row>

@@ -21,6 +21,7 @@
   "mapotempo_mission_estimated_time_arrival": "heure d'arrivée estimée (ETA)",
   "mapotempo_mission_proof_of_delivery": "preuves de livraison",
   "close": "fermer",
+  "datepicker": "dd-mm-yyyy",
   "card": {
     "finished_routes": {
       "info": "tournée terminée",

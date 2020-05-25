@@ -10,11 +10,8 @@ import RouteDetailLiveView from './RouteDetailLiveView';
 import RouteListLiveView from './RouteListLiveView';
 
 
-const purifyDate = (date) => {
-  date = new Date(date);
-  date.setUTCHours(0, 0, 0, 0);
-  return date;
-};
+const formatUrlDate = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+const purifyDate = (date) => {date.setHours(0,0,0,0); return date;};
 
 /**
  * Live view Component
@@ -22,15 +19,13 @@ const purifyDate = (date) => {
 const LiveView = () => {
   let [routeId, setRouteId] = useUrlHashParam('route_id');
   let [date, setDate] = useUrlHashParam('date');
-  let fetchDate = purifyDate(date ? new Date(date) : new Date());
-
+  let fetchDate = date ? new Date(date) : purifyDate(new Date());
   useAutoFetchRoutesOnDate(fetchDate);
-
   return (
     <div className='mtf-view-container'>
       {routeId ?
         <RouteDetailLiveView routeId={routeId} /> :
-        <RouteListLiveView selectedDate={fetchDate} onDateSelected={date => setDate(date.toISOString())} onRouteSelected={routeId => setRouteId(routeId)} />}
+        <RouteListLiveView selectedDate={fetchDate} onDateSelected={date => setDate(formatUrlDate(date))} onRouteSelected={routeId => setRouteId(routeId)} />}
     </div>
   );
 };

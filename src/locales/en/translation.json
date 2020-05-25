@@ -21,6 +21,7 @@
   "mapotempo_mission_estimated_time_arrival": "estimated time arrival  (ETA)",
   "mapotempo_mission_proof_of_delivery": "proof of delivery",
   "close": "close",
+  "datepicker": "mm-dd-yyyy",
   "card": {
     "finished_routes": {
       "info": "completed route",

@@ -2,7 +2,10 @@ import React from 'react';
 import FleetGuard from './components/utils/guards';
 
 // Expose i18n
-export { default as i18n } from './locales';
+import i18n from './locales';
+export const changeLocal = (local) => {
+  i18n.changeLanguage(local);
+};
 
 // Expose Actions
 export * from './actions';

@@ -6,6 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import url from '@rollup/plugin-url';
 import json from '@rollup/plugin-json';
 import svgr from '@svgr/rollup';
+import inject from '@rollup/plugin-inject';
 
 import pkg from './package.json';
 
@@ -40,7 +41,10 @@ export default {
       runtimeHelpers: true
     }),
     resolve({browser: true}),
-    commonjs()
+    commonjs(),
+    inject({
+      jQuery: 'jquery',
+    })
   ],
   external: ['bootstrap']
 };
