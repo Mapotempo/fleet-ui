@@ -57,8 +57,7 @@
     "rollup": "^1.29.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-peer-deps-external": "^2.2.2",
-    "rollup-plugin-postcss": "^2.0.3",
-    "should": "^13.2.3"
+    "rollup-plugin-postcss": "^2.0.3"
   },
   "files": [
     "dist"
@@ -78,7 +77,6 @@
     "react-bootstrap-table-next": "^3.3.5",
     "react-bootstrap-table2-paginator": "^2.1.0",
     "react-chartjs-2": "^2.9.0",
-    "react-datepicker": "^2.13.0",
     "react-i18next": "^11.3.3",
     "react-top-loading-bar": "^1.2.0",
     "reselect": "^4.0.0"

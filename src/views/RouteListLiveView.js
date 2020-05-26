@@ -17,7 +17,6 @@ import RoutesList from '../components/RouteList';
 import DoughnutStatuses from '../components/RouteDoughnutStatuses';
 import { TotalFinishedRouteCard, TotalDelayedCard,
   TotalUndoneMissionCard, TotalFinishedMissionCard } from '../components/RouteCards';
-// import DatePicker from "react-datepicker";
 import DatePicker from "../components/utils/datepicker";
 
 const propTypes = {
