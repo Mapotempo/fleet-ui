@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
 import { Provider } from 'react-redux';
 
+import * as app_actions from './actions';
 import configureStore from './store';
 
+import { LiveView, changeLocal } from 'fleet-ui';
 import * as fleet_actions from 'fleet-ui';
-import * as app_actions from './actions';
-import { LiveView } from 'fleet-ui';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import "react-datepicker/dist/react-datepicker.css";
+import 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
 import 'fleet-ui/dist/index.css';
 
+changeLocal('en');
 const store = configureStore();
 store.dispatch(fleet_actions.signInUsers([
   {syncUser: '82fb10aa79fecae40b3687957611b32fe7a4be7698498c233b6c9675178a6914' , apiKey: 'abcdef123456'},
