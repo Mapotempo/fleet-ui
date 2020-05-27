@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useTranslation } from 'react-i18next';
@@ -29,8 +29,10 @@ const defaultProps = {
 
 const Datepicker = (props) => {
   const { t, i18n} = useTranslation();
+  const [buttonId] = useState(`bootstrap-date-picker-${Math.floor(Math.random()*10000000000)}`);
+
   useEffect(() => {
-    $('#_begin_date')
+    $(`#${buttonId}`)
       .datepicker({
         language: i18n.language,
         autoclose: true,
@@ -43,7 +45,7 @@ const Datepicker = (props) => {
       .datepicker("setDate", props.initialDate);
 
   }, []);
-  return <input className="form-control" type="text" name="_[begin_date]" id="_begin_date" />;
+  return <input className="form-control" type="text" name="bootstrap-date-picker" id={buttonId} />;
 };
 
 Datepicker.propTypes = propTypes;
