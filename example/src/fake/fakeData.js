@@ -1,5 +1,5 @@
 import faker from 'Faker';
-import sha256 from '../../lib/sha256';
+import { sha256 } from 'fleet-ui';
 
 const MAX_MISSION = 50;
 const LASTIFY_THREASHOLD = 96;
@@ -376,6 +376,43 @@ const generateUser = (companyId, vehicle = true, email=faker.Internet.email(), a
   };
 };
 
+// const generateUserInfo = (companyId, userId, date) => {
+//   return {
+//     "company_id": companyId,
+//     "user_id": userId,
+//     "current_app_version": "5.0.10",
+//     "current_lib_version": "6",
+//     "current_sign_in_connexion_type": "wifi",
+//     "date": "2020-05-26T14:21:55.925+02:00",
+//     "device_info": {
+//       "android_ver": "8.1.0",
+//       "api_lvl": "27",
+//       "device_id": "bd00ba34f98ab1a3",
+//       "manufacturer": "CROSSCALL",
+//       "model": "Core-X3"
+//     },
+//     "last_sign_in_at": dateToLocalISO(date),
+//     "last_sign_in_ip": "",
+//     "location_detail": {
+//       "accuracy": 86.832,
+//       "altitude": 62.6022,
+//       "bearing": 0,
+//       "cid": -1,
+//       "date": dateToLocalISO(date),
+//       "lac": -1,
+//       "lat": 44.79669733,
+//       "lon": -0.5723686,
+//       "mcc": -1,
+//       "mnc": -1,
+//       "signal_strength": 0,
+//       "speed": 0
+//     },
+//     "sign_in_count": 5,
+//     "time_zone": "Europe/Paris",
+//     "type": "user_info"
+//   };
+// };
+
 const generateRoute = (user, date, workflow) => {
   let routeId = 'route-' + getRandomUUID(11);
   let missions = generateMissionSet(routeId, user, date, workflow);
@@ -514,9 +551,9 @@ const lastify = (isLast) => {
 };
 
 const getRandomStatus = (missionStatusTypes, isLast, isInProgress) => {
-  missionStatusTypes = missionStatusTypes.filter(missionStatusType =>(missionStatusType.is_last || false) == isLast);
+  missionStatusTypes = missionStatusTypes.filter(missionStatusType =>(missionStatusType.is_last || false) === isLast);
   if (!isLast)
-    missionStatusTypes = missionStatusTypes.filter(missionStatusType => missionStatusType.reference.includes('in_progress') == isInProgress);
+    missionStatusTypes = missionStatusTypes.filter(missionStatusType => missionStatusType.reference.includes('in_progress') === isInProgress);
   return missionStatusTypes[Math.floor(Math.random() * missionStatusTypes.length)];
 };
 

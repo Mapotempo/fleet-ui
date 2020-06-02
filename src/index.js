@@ -1,6 +1,9 @@
 import React from 'react';
 import FleetGuard from './components/utils/guards';
 
+// Exose libs
+export { default as sha256 } from './lib/sha256';
+
 // Expose i18n
 import i18n from './locales';
 export const changeLocal = (local) => {

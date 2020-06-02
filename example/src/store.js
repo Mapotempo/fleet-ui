@@ -6,8 +6,9 @@ import appReducer from './reducer/appReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const rootReducer = combineReducers({
-  // fleet: fleetReducer('http://localhost:8084/'),
-  fleet: fleetReducer('https://fleet.beta.mapotempo.com/'),
+  // fleet: fleetReducer('http://localhost:8084'),
+  fleet: fleetReducer('https://fleet.beta.mapotempo.com'),
+  // fleet: fleetReducer('https://fleet.mapotempo.com'),
   app: appReducer
 });
 
