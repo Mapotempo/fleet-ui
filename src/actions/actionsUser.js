@@ -33,7 +33,51 @@ export const fetchUsers = () => {
           apiKey: authUser.api_key
         })))
       .then(res => res.flat())
-      .then((users) => dispatch(receiveUsers(users)))
+      .then((users) => {
+        dispatch(receiveUsers(users));
+        users.forEach(user => {
+          dispatch(fetchUserInfos(user));
+        });
+      })
       .catch((errors) => dispatch(errorsUsers(errors)));
+  };
+};
+
+export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
+const requestUserInfo = () => {
+  return {
+    type: REQUEST_USER_INFO
+  };
+};
+
+export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
+const receiveUserInfo = (userInfo) => {
+  console.log('user_info', userInfo);
+  return {
+    type: RECEIVE_USER_INFO,
+    userInfo
+  };
+};
+
+export const ERRORS_USER_INFO = 'ERRORS_USER_INFO';
+const errorsUserInfo = (errors) => {
+  return {
+    type: ERRORS_USER_INFO,
+    errors
+  };
+};
+
+export const fetchUserInfos = (user) => {
+  return (dispatch, getState) => {
+    dispatch(requestUserInfo());
+    return Promise
+      .all(getState().fleet.auth.users.map((authUser) => ApiUsers.apiFetchUserInfo(
+        user.sync_user,
+        {
+          host: getState().fleet.fleetHost,
+          apiKey: authUser.api_key
+        })))
+      .then((userInfo) => dispatch(receiveUserInfo(userInfo)))
+      .catch((errors) => dispatch(errorsUserInfo(errors)));
   };
 };
