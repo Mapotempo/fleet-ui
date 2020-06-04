@@ -1,4 +1,5 @@
 import { ApiUsers } from '../api';
+import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 
 export const REQUEST_USERS = 'REQUEST_USERS';
 const requestUsers = () => {
@@ -51,11 +52,11 @@ const requestUserInfo = () => {
 };
 
 export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
-const receiveUserInfo = (userInfo) => {
-  console.log('user_info', userInfo);
+const receiveUserInfo = (user, userInfos) => {
   return {
     type: RECEIVE_USER_INFO,
-    userInfo
+    user_infos: userInfos,
+    user
   };
 };
 
@@ -70,14 +71,13 @@ const errorsUserInfo = (errors) => {
 export const fetchUserInfos = (user) => {
   return (dispatch, getState) => {
     dispatch(requestUserInfo());
-    return Promise
-      .all(getState().fleet.auth.users.map((authUser) => ApiUsers.apiFetchUserInfo(
-        user.sync_user,
-        {
-          host: getState().fleet.fleetHost,
-          apiKey: authUser.api_key
-        })))
-      .then((userInfo) => dispatch(receiveUserInfo(userInfo)))
-      .catch((errors) => dispatch(errorsUserInfo(errors)));
+    return  ApiUsers.apiFetchUserInfo(
+      user.sync_user,
+      {
+        host: getState().fleet.fleetHost,
+        apiKey: tokenBySyncUserSelector(getState(), user.sync_user)
+      })
+      .then(userInfos => dispatch(receiveUserInfo(user, userInfos)))
+      .catch(errors => dispatch(errorsUserInfo(errors)));
   };
 };

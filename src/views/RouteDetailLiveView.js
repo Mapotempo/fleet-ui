@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 // Component
 import MissionList from '../components/mission/MissionList';
 import { TotalDelayedCard,
-  TotalUndoneMissionCard, TotalFinishedMissionCard, RouteInfosCard } from '../components/RouteCards';
+  TotalUndoneMissionCard, TotalFinishedMissionCard, RouteInfosCard } from '../components/route/RouteCards';
 import { Panel, Grid, Row, Col, Modal, Button } from 'react-bootstrap';
 import MissionSurvey from '../components/mission/MissionSurvey';
 

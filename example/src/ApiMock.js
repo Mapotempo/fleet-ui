@@ -13,9 +13,8 @@ const initMock = (dataSet) => {
         if (!checkCredential(dataSet, request.queryParams.api_key))
           return new Response(401, { "errors": "Your are not authorized to perform this action" });
         let userInfos = dataSet[request.queryParams.api_key].userInfoSet[request.params.sync_user];
-        console.log(userInfos);
         if (!userInfos)
-          return new Response(404, {"error": "Cette ressource n'existe pas"});
+          return new Response(404, { "error": "Cette ressource n'existe pas" });
         return {"user_infos": userInfos};
       });
 

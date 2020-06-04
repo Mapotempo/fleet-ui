@@ -13,7 +13,7 @@ import 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
 import 'fleet-ui/dist/index.css';
 
 import initMock from './ApiMock';
-import { generateFakeData } from './fake/fakeData';
+import { generateFakeData } from './faker';
 
 if (process.env.REACT_APP_USE_FAKER === 'true') {
   initMock(generateFakeData());

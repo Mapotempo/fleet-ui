@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { missionStatusTypesMapper } from '../selectors';
+import { missionStatusTypesMapper } from '../../selectors';
 
 import { Doughnut } from 'react-chartjs-2';
 

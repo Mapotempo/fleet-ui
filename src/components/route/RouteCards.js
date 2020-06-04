@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 // Component
-import { Panel, Glyphicon, Form, FormGroup, ControlLabel, FormControl, Col, ProgressBar } from 'react-bootstrap';
+import { Panel, Glyphicon, Form, FormGroup, ControlLabel, FormControl, Col } from 'react-bootstrap';
 
 const BasicRouteCard = (props) => {
   return (

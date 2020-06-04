@@ -17,16 +17,17 @@ export default function usersReducer(state = initState, action) {
       break;
     case RECEIVE_USERS:
       state = { ...state, isFetching: false, ready: true };
-      state.items = action.users.map(user => {return {...user, "user_info": []};});
+      state.items = action.users.map(user => {return {...user, "user_infos": []};});
       break;
     case REQUEST_USER_INFO:
       // TODO: Nothing to do for the moment
       break;
     case RECEIVE_USER_INFO:
-      var index = state.items.findIndex(user => user.id == action.user_info.user_id);
+      var index = state.items.findIndex(user => user.id == action.user.id);
       if (index >= 0) {
+        console.log(action.user_infos);
         state = { ...state, items: [...state.items] };
-        state.items[index] = {...state.items[index], "user_info": [...action.user_info]};
+        state.items[index] = {...state.items[index], "user_infos": [...action.user_infos]};
       }
       break;
     case ERRORS_USER_INFO:

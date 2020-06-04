@@ -13,10 +13,10 @@ import { routesSelector, globalRoutesInfoSelector, missionsDowloadProgressSelect
 // Component
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
-import RoutesList from '../components/RouteList';
-import DoughnutStatuses from '../components/RouteDoughnutStatuses';
+import RoutesList from '../components/route/RouteList';
+import DoughnutStatuses from '../components/route/RouteDoughnutStatuses';
 import { TotalFinishedRouteCard, TotalDelayedCard,
-  TotalUndoneMissionCard, TotalFinishedMissionCard } from '../components/RouteCards';
+  TotalUndoneMissionCard, TotalFinishedMissionCard } from '../components/route/RouteCards';
 import DatePicker from "../components/utils/datepicker";
 
 const propTypes = {
