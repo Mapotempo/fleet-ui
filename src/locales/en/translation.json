@@ -56,5 +56,36 @@
       "barcode": "Survey barcode",
       "address": "Survey address"
     }
+  },
+  "user_info": {
+    "driver": {
+      "title": "Driver:",
+      "name": "name",
+      "email": "email",
+      "phone": "phone"
+    },
+    "application_settings": {
+      "title": "Application Settings:",
+      "geoloc_tracking": "geoloc tracking",
+      "automatic_archiving": "automatic archiving",
+      "mobile_data": "mobile data",
+      "automatic_next_mission": "automatic next mission",
+      "toggle_on": "enable",
+      "toggle_off": "disable",
+      "settings_information_missing": "settings information missing"
+    },
+    "devices_informations": {
+      "title": "Devices informations:",
+      "current_connection": "current connection",
+      "current_connection_plural": "currents connections",
+      "device_id": "device ID",
+      "device_os": "device os",
+      "device_model": "device model",
+      "last_update": "last update",
+      "last_connection": "last connection",
+      "app_version": "app version",
+      "lib_version": "lib version",
+      "connection_type": "connection type"
+    }
   }
 }

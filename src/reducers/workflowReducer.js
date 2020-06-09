@@ -28,6 +28,7 @@ export default function workflowReducer(state = initState, action) {
       state.missionStatusTypeItems = [...action.missionStatusTypes];
       break;
     case ERRORS_MISSION_STATUS_TYPE:
+      console.error(action.errors);
       state = { ...state, errorsMST: action.errors, isFetching: false };
       break;
     case REQUEST_MISSION_ACTION_TYPE:
@@ -38,6 +39,7 @@ export default function workflowReducer(state = initState, action) {
       state.missionActionTypeItems = [...action.missionActionTypes];
       break;
     case ERRORS_MISSION_ACTION_TYPE:
+      console.error(action.errors);
       state = { ...state, errorsMAT: action.errors, isFetchingMAT: false };
       break;
     default:

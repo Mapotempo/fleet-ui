@@ -1,14 +1,21 @@
-import React, {useEffect, useState} from 'react';
+// React
+import React from 'react';
 import PropTypes from 'prop-types';
+
+// Hook
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
+// Reselect
 import { missionStatusTypesMapper } from '../../selectors';
 import { usersMapper } from '../../selectors';
 
+// Component
+import { UserInfos } from '../user/UserInfos';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import {ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon, Form, FormControl, FormGroup, ControlLabel, Col } from 'react-bootstrap';
+import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
 // ==========
 // ROUTE LIST
@@ -223,122 +230,6 @@ const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=fa
 
 const expandFormater = function(row) {
   return (<div>
-    <UserCard userId={row.user_id}></UserCard>
+    <UserInfos userId={row.user_id}></UserInfos>
   </div>);
-};
-
-function FieldGroup({ id, label, help, ...props }) {
-  return (
-    <FormGroup controlId={id}>
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl bsSize="sm" {...props} />
-      {help && <HelpBlock>{help}</HelpBlock>}
-    </FormGroup>
-  );
-}
-
-const UserCard = ({userId}) => {
-  let usersMap = useSelector(usersMapper);
-  let user = usersMap[userId];
-  return (
-    <Form>
-      <Col componentClass={FormGroup} bsSize="small" sm={4}>
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Nom"
-          disabled
-          value={user.name}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Nom"
-          disabled
-          value={user.name}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Email"
-          disabled
-          value={user.name}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Téléphone"
-          placeholder="Non renseigné"
-          disabled
-          value={user.phone ? user.phone : null}
-        />
-      </Col>
-      <Col componentClass={FormGroup} bsSize="small" sm={4}>
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="wifi setting"
-          disabled
-          value='off'
-        />
-      </Col>
-      <Col componentClass={FormGroup} bsSize="small" sm={4}>
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Last update"
-          disabled
-          value={user.user_infos[0].date}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Last connexion"
-          disabled
-          value={user.user_infos[0].last_sign_in_at}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Current App Version"
-          disabled
-          value={user.user_infos[0].current_app_version}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Current Lib Version"
-          disabled
-          value={user.user_infos[0].current_lib_version}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Current Connexion"
-          disabled
-          value={user.user_infos[0].current_sign_in_connexion_type}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Device OS"
-          disabled
-          value='android-8.1.0'
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Device Id"
-          disabled
-          value={user.user_infos[0].device_info.device_id}
-        />
-        <FieldGroup
-          id="formControlsText"
-          type="text"
-          label="Device Model"
-          disabled
-          value={`${user.user_infos[0].device_info.model} (${user.user_infos[0].device_info.manufacturer})`}
-        />
-      </Col>
-    </Form>);
 };

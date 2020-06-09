@@ -1,5 +1,8 @@
 import { ApiUsers } from '../api';
-import { tokenBySyncUserSelector } from '../selectors/authSelectors';
+
+// =================================
+// USER
+// =================
 
 export const REQUEST_USERS = 'REQUEST_USERS';
 const requestUsers = () => {
@@ -28,21 +31,24 @@ export const fetchUsers = () => {
   return (dispatch, getState) => {
     dispatch(requestUsers());
     return Promise
-      .all(getState().fleet.auth.users.map((authUser) => ApiUsers.apiFetchUser(
+      .all(getState().fleet.auth.users.map(authUser => ApiUsers.  apiFetchUsersCompany(
         {
           host: getState().fleet.fleetHost,
           apiKey: authUser.api_key
         })))
       .then(res => res.flat())
-      .then((users) => {
+      .then(users => {
         dispatch(receiveUsers(users));
-        users.forEach(user => {
-          dispatch(fetchUserInfos(user));
-        });
+        dispatch(fetchUserInfos());
+        dispatch(fetchUserSettings());
       })
-      .catch((errors) => dispatch(errorsUsers(errors)));
+      .catch(errors => dispatch(errorsUsers(errors)));
   };
 };
+
+// =================================
+// USER INFOS
+// =================
 
 export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
 const requestUserInfo = () => {
@@ -52,11 +58,11 @@ const requestUserInfo = () => {
 };
 
 export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
-const receiveUserInfo = (user, userInfos) => {
+const receiveUserInfo = (userID, userInfos) => {
   return {
     type: RECEIVE_USER_INFO,
-    user_infos: userInfos,
-    user
+    userInfos,
+    userID
   };
 };
 
@@ -68,16 +74,67 @@ const errorsUserInfo = (errors) => {
   };
 };
 
-export const fetchUserInfos = (user) => {
+export const fetchUserInfos = () => {
   return (dispatch, getState) => {
     dispatch(requestUserInfo());
-    return  ApiUsers.apiFetchUserInfo(
-      user.sync_user,
-      {
-        host: getState().fleet.fleetHost,
-        apiKey: tokenBySyncUserSelector(getState(), user.sync_user)
+    return Promise
+      .all(getState().fleet.auth.users.map(
+        authUser => ApiUsers.apiFetchUserInfosCompany(
+          {
+            host: getState().fleet.fleetHost,
+            apiKey: authUser.api_key
+          })))
+      .then(res => res.flat())
+      .then(userInfosArray => {
+        Object.entries(userInfosArray.reduce((accumulator, userInfo) => {
+          accumulator[userInfo.user_id] = accumulator[userInfo.user_id] || [];
+          accumulator[userInfo.user_id].push(userInfo);
+          return accumulator;
+        }, {})).map(([userID, userInfos]) => dispatch(receiveUserInfo(userID, userInfos)));
       })
-      .then(userInfos => dispatch(receiveUserInfo(user, userInfos)))
       .catch(errors => dispatch(errorsUserInfo(errors)));
+  };
+};
+
+// =================================
+// USER SETTINGS
+// =================
+
+export const REQUEST_USER_SETTINGS = 'REQUEST_USER_SETTINGS';
+const requestUserSettings = () => {
+  return {
+    type: REQUEST_USER_SETTINGS
+  };
+};
+
+export const RECEIVE_USER_SETTINGS = 'RECEIVE_USER_SETTINGS';
+const receiveUserSettings = userSettings => {
+  return {
+    type: RECEIVE_USER_SETTINGS,
+    userSettings
+  };
+};
+
+export const ERRORS_USER_SETTINGS = 'ERRORS_USER_SETTINGS';
+const errorsUserSettings = errors => {
+  return {
+    type: ERRORS_USER_SETTINGS,
+    errors
+  };
+};
+
+export const fetchUserSettings = () => {
+  return (dispatch, getState) => {
+    dispatch(requestUserSettings());
+    return Promise
+      .all(getState().fleet.auth.users.map(
+        authUser => ApiUsers.apiFetchUserSettingsCompany(
+          {
+            host: getState().fleet.fleetHost,
+            apiKey: authUser.api_key
+          })))
+      .then(res => res.flat())
+      .then(userSettingsArray => userSettingsArray.map(userSettings => dispatch(receiveUserSettings(userSettings))))
+      .catch(errors => dispatch(errorsUserSettings(errors)));
   };
 };

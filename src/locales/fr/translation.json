@@ -56,5 +56,36 @@
       "barcode": "Code bar relevé",
       "address": "Adresse relevée"
     }
+  },
+  "user_info": {
+    "driver": {
+      "title": "Chauffeur :",
+      "name": "nom",
+      "email": "email",
+      "phone": "téléphone"
+    },
+    "application_settings": {
+      "title": "Paramètres de l'application :",
+      "geoloc_tracking": "suivi géoloc",
+      "automatic_archiving": "archivage automatique",
+      "mobile_data": "donnée mobile",
+      "automatic_next_mission": "mission suivante automatique",
+      "toggle_on": "activé",
+      "toggle_off": "désactivé",
+      "settings_information_missing": "informations sur les paramètres manquantes"
+    },
+    "devices_informations": {
+      "title": "Informations matérielles :",
+      "current_connection": "connexion courante",
+      "current_connection_plural": "connexions courantes",
+      "device_id": "ID du matérielle",
+      "device_os": "os du matérielle",
+      "device_model": "model du matérielle",
+      "last_update": "dernière mise à jour",
+      "last_connection": "dernière connexion",
+      "app_version": "app version",
+      "lib_version": "lib version",
+      "connection_type": "type de connexion"
+    }
   }
 }

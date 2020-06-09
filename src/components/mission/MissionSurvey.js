@@ -163,7 +163,6 @@ const missionSurveyPropTypes = {
 };
 
 const MissionSurvey = (props) => {
-  console.log(props.mission);
   switch (props.surveyType)
   {
     case surveyType.SIGNATURE:

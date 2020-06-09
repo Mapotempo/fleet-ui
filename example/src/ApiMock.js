@@ -9,15 +9,6 @@ const initMock = (dataSet) => {
       // ####################
       // # Users API
       // ####################
-      this.get("https://fleet.beta.mapotempo.com/api/0.1/users/:sync_user/user_info", (schema, request) => {
-        if (!checkCredential(dataSet, request.queryParams.api_key))
-          return new Response(401, { "errors": "Your are not authorized to perform this action" });
-        let userInfos = dataSet[request.queryParams.api_key].userInfoSet[request.params.sync_user];
-        if (!userInfos)
-          return new Response(404, { "error": "Cette ressource n'existe pas" });
-        return {"user_infos": userInfos};
-      });
-
       this.get("https://fleet.beta.mapotempo.com/api/0.1/users/:sync_user", (schema, request) => {
         if (!checkCredential(dataSet, request.queryParams.api_key))
           return new Response(401, {"errors": "Your are not authorized to perform this action"});
@@ -32,6 +23,49 @@ const initMock = (dataSet) => {
           return new Response(401, {"errors": "Your are not authorized to perform this action"});
         return {users: dataSet[request.queryParams.api_key].users.filter(u => u.vehicle)};
       });
+
+
+      // ####################
+      // # Users Info API
+      // ####################
+      this.get("https://fleet.beta.mapotempo.com/api/0.1/user_info/:sync_user", (schema, request) => {
+        if (!checkCredential(dataSet, request.queryParams.api_key))
+          return new Response(401, { "errors": "Your are not authorized to perform this action" });
+        let userInfos = dataSet[request.queryParams.api_key].userInfoSet[request.params.sync_user];
+        if (!userInfos)
+          return new Response(404, { "error": "Cette ressource n'existe pas" });
+        return {"user_infos": userInfos};
+      });
+      this.get("https://fleet.beta.mapotempo.com/api/0.1/user_info", (schema, request) => {
+        if (!checkCredential(dataSet, request.queryParams.api_key))
+          return new Response(401, { "errors": "Your are not authorized to perform this action" });
+        let userInfoSet = dataSet[request.queryParams.api_key].userInfoSet;
+        if (!userInfoSet)
+          return new Response(404, { "error": "Cette ressource n'existe pas" });
+        return {"user_infos": Object.values(userInfoSet).flat()};
+      });
+
+
+      // ####################
+      // # Users Settings API
+      // ####################
+      this.get("https://fleet.beta.mapotempo.com/api/0.1/user_settings/:sync_user", (schema, request) => {
+        if (!checkCredential(dataSet, request.queryParams.api_key))
+          return new Response(401, { "errors": "Your are not authorized to perform this action" });
+        let userInfos = dataSet[request.queryParams.api_key].userSettingsSet[request.params.sync_user];
+        if (!userInfos)
+          return new Response(404, { "error": "Cette ressource n'existe pas" });
+        return {"user_infos": userInfos};
+      });
+      this.get("https://fleet.beta.mapotempo.com/api/0.1/user_settings", (schema, request) => {
+        if (!checkCredential(dataSet, request.queryParams.api_key))
+          return new Response(401, { "errors": "Your are not authorized to perform this action" });
+        let userInfoSet = dataSet[request.queryParams.api_key].userSettingsSet;
+        if (!userInfoSet)
+          return new Response(404, { "error": "Cette ressource n'existe pas" });
+        return {"user_infos": Object.values(userInfoSet)};
+      });
+
 
       // ####################
       // # Workkflow API

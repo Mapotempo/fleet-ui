@@ -100,6 +100,7 @@ const generateMission = (routeid, user, date, eta, mission_type, missionStatusTy
     "duration": null,
     "quantities": null,
     "tags": null,
-    "time_windows": [] // generateTimeWindows(date, mission_type)
+    "time_windows": [], // generateTimeWindows(date, mission_type),
+    "survey_pictures": [`https://avatars3.githubusercontent.com/u/${getRandomInt(0, 20000000)}`]
   };
 };

@@ -9,7 +9,6 @@ import { useUrlHashParam } from '../hooks/useUrlHashParam';
 import RouteDetailLiveView from './RouteDetailLiveView';
 import RouteListLiveView from './RouteListLiveView';
 
-
 const formatUrlDate = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 const purifyDate = (date) => {date.setHours(0,0,0,0); return date;};
 
@@ -23,9 +22,9 @@ const LiveView = () => {
   useAutoFetchRoutesOnDate(fetchDate);
   return (
     <div className='mtf-view-container'>
-      {routeId ?
+      { routeId ?
         <RouteDetailLiveView routeId={routeId} /> :
-        <RouteListLiveView selectedDate={fetchDate} onDateSelected={date => setDate(formatUrlDate(date))} onRouteSelected={routeId => setRouteId(routeId)} />}
+        <RouteListLiveView selectedDate={fetchDate} onDateSelected={date => setDate(formatUrlDate(date))} onRouteSelected={routeId => setRouteId(routeId)} /> }
     </div>
   );
 };
