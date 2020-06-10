@@ -199,7 +199,6 @@ const ETAFormatter = (cell, row) => {
 };
 const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
   return (<ButtonGroup justified>
-    <Button onClick={() => formatExtraData(row.id)} href="#"><Glyphicon glyph="map-marker" /></Button>
     <Button onClick={() => formatExtraData(row.id)} href="#"><Glyphicon glyph="list-alt" /></Button>
   </ButtonGroup>);
 };
