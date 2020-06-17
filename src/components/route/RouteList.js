@@ -12,7 +12,7 @@ import { missionStatusTypesMapper } from '../../selectors';
 import { usersMapper } from '../../selectors';
 
 // Component
-import { UserInfos } from '../user/UserInfos';
+import { UserPanel } from '../user/UserInfos';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
@@ -60,7 +60,7 @@ const RoutesList = (props) => {
   const columnsBase = [
     {
       dataField: 'extraInfo.eta',
-      text: 'retard - prévu',
+      text: t('route.list_header.delay_planned'),
       headerAlign: 'center',
       align: 'center',
       formatter: ETAFormatter,
@@ -69,7 +69,7 @@ const RoutesList = (props) => {
     },
     {
       dataField: 'name',
-      text: t('mapotempo_route_name'),
+      text: t('route.list_header.name'),
       classes: 'route-list-column overflow',
       headerClasses: 'route-list-column overflow',
       sort: true
@@ -77,7 +77,7 @@ const RoutesList = (props) => {
     {
       dataField: 'user_email',
       isDummyField: true,
-      text: t('mapotempo_route_email'),
+      text: t('route.list_header.email'),
       formatter: userEmailFormatter,
       formatExtraData: usersMap,
       classes: 'route-list-column overflow',
@@ -88,7 +88,7 @@ const RoutesList = (props) => {
     {
       dataField: 'routeInfoDeparture',
       isDummyField: true,
-      text: t('mapotempo_route_departure'),
+      text: t('route.list_header.departure'),
       formatter: statusFormatter,
       formatExtraData: 'departure',
       headerAlign: 'center',
@@ -99,7 +99,7 @@ const RoutesList = (props) => {
     {
       dataField: 'routeInfoMission',
       isDummyField: true,
-      text: t('mapotempo_route_missions'),
+      text: t('route.list_header.missions'),
       formatter: missionStatusFormatter,
       formatExtraData: 'mission',
       headerAlign: 'center',
@@ -109,7 +109,7 @@ const RoutesList = (props) => {
     }, {
       dataField: 'routeInfoRest',
       isDummyField: true,
-      text: t('mapotempo_route_rests'),
+      text: t('route.list_header.rests'),
       formatter: statusFormatter,
       formatExtraData: 'rest',
       headerAlign: 'center',
@@ -120,7 +120,7 @@ const RoutesList = (props) => {
     {
       dataField: 'routeInfoArrival',
       isDummyField: true,
-      text: t('mapotempo_route_arrivals'),
+      text: t('route.list_header.arrivals'),
       formatter: statusFormatter,
       formatExtraData: 'arrival',
       headerAlign: 'center',
@@ -130,7 +130,7 @@ const RoutesList = (props) => {
     },
     {
       dataField: 'extraInfo.progress',
-      text: t('mapotempo_route_progress'),
+      text: t('route.list_header.progress'),
       formatter: advancementFormatter,
       classes: 'route-list-column',
       headerClasses: 'route-list-column',
@@ -199,12 +199,14 @@ const ETAFormatter = (cell, row) => {
 };
 const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
   return (<ButtonGroup justified>
-    <Button onClick={() => formatExtraData(row.id)} href="#"><Glyphicon glyph="list-alt" /></Button>
+    <ButtonActionWrapper onClick={() => formatExtraData(row.id)} href="#"
+      titleTag="route.actions.help_text.details"><Glyphicon glyph="list" /></ButtonActionWrapper>
   </ButtonGroup>);
 };
-// ==================
-// Formater Component
-// ==================
+
+// ==========
+// Components
+// ==========
 
 const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=false}) => {
   let missionStatusTypesMap = useSelector(missionStatusTypesMapper);
@@ -223,12 +225,20 @@ const RouteStatusColors = ({route, type='mission', withCount=true, withLabels=fa
   }, []);
 };
 
+const ButtonActionWrapper =   props => {
+  const { t } = useTranslation();
+  let {titleTag, ...rest} = props;
+  return <Button {...rest} title={t(titleTag)} />;
+};
+
+ButtonActionWrapper.propTypes = { titleTag: PropTypes.string.isRequired };
+
 // =========
 // ExpandRow
 // =========
 
 const expandFormater = function(row) {
   return (<div>
-    <UserInfos userId={row.user_id}></UserInfos>
+    <UserPanel userId={row.user_id}></UserPanel>
   </div>);
 };

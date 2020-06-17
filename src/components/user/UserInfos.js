@@ -10,37 +10,12 @@ import { useTranslation } from 'react-i18next';
 import { usersMapper } from '../../selectors';
 
 // Component
-import { Grid, Col, Media, Row, Panel } from 'react-bootstrap';
+import { Entry } from '../utils/entry';
+import { Title } from '../utils/title';
+import { Grid, Col, Row, Panel } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faAt, faUser, faMobile } from '@fortawesome/free-solid-svg-icons';
 import Toggle from 'react-bootstrap-toggle';
-
-const Entry = (props) => {
-  let { icon, title, content } = props;
-  return (
-    <React.Fragment>
-      <Media>
-        {icon ? <Media.Left align="middle">
-          {<FontAwesomeIcon color="grey  " size="1x" icon={icon} />}
-        </Media.Left> : null}
-        <Media.Body>
-          <div className="mtf-user-info-entry-title">
-            {title}
-          </div>
-          <div className="mtf-user-info-entry-content">
-            {content}
-          </div>
-        </Media.Body>
-      </Media>
-    </React.Fragment>
-  );
-};
-
-Entry.propTypes = {
-  icon: PropTypes.object,
-  title: PropTypes.string,
-  content: PropTypes.any
-};
 
 const SettingToggle = (props) => {
   const { t } = useTranslation();
@@ -55,19 +30,6 @@ const SettingToggle = (props) => {
 
 SettingToggle.propTypes = {
   active: PropTypes.bool.isRequired
-};
-
-const UserInfoTitle = (props) => {
-  return (
-    <h4>
-      {props.text}
-      <div className="mtf-user-info-v-separator"/>
-    </h4>
-  );
-};
-
-UserInfoTitle.propTypes = {
-  text: PropTypes.string.isRequired
 };
 
 const DeviceInfoPanel = (props) => {
@@ -95,16 +57,29 @@ const UserInfos = (props) => {
   const { t } = useTranslation();
   let usersMap = useSelector(usersMapper);
   let user = usersMap[props.userId];
+  return (<React.Fragment>
+    <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faUser} />} title={t("user_info.driver.name")} content={user.name} />
+    <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faAt} />} title={t("user_info.driver.email")} content={user.email} />
+    <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faPhone} />} title={t("user_info.driver.phone")} content={user.phone} />
+  </React.Fragment>);
+};
+
+UserInfos.propTypes = {
+  userId: PropTypes.string.isRequired
+};
+
+const UserPanel = (props) => {
+  const { t } = useTranslation();
+  let usersMap = useSelector(usersMapper);
+  let user = usersMap[props.userId];
   return (
     <div>
       <Grid fluid>
         <Row className="show-grid">
           <Col md={5}>
-            <UserInfoTitle text={t("user_info.driver.title")} />
-            <Entry icon={faUser} title={t("user_info.driver.name")} content={user.name} />
-            <Entry icon={faAt} title={t("user_info.driver.email")} content={user.email} />
-            <Entry icon={faPhone} title={t("user_info.driver.phone")} content={user.phone} />
-            <UserInfoTitle text={t("user_info.application_settings.title")} />
+            <Title text={t("user_info.driver.title")} />
+            <UserInfos userId={user.id} />
+            <Title text={t("user_info.application_settings.title")} />
             {user.user_settings ? (
               <React.Fragment>
                 <Entry
@@ -128,8 +103,8 @@ const UserInfos = (props) => {
             }
           </Col>
           <Col md={7}>
-            <UserInfoTitle text={t("user_info.devices_informations.title")} />
-            <Entry icon={faMobile} title={t("user_info.devices_informations.current_connection", {count: user.user_infos.length})} content={user.user_infos.length} />
+            <Title text={t("user_info.devices_informations.title")} />
+            <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faMobile} />} title={t("user_info.devices_informations.current_connection", {count: user.user_infos.length})} content={user.user_infos.length} />
             <div className="mtf-user-info-devices-container">
               {user.user_infos.map(userInfo => (<DeviceInfoPanel key={userInfo.id} userInfo={userInfo} />))}
             </div>
@@ -140,10 +115,11 @@ const UserInfos = (props) => {
   );
 };
 
-UserInfos.propTypes = {
+UserPanel.propTypes = {
   userId: PropTypes.string.isRequired
 };
 
 export {
-  UserInfos
+  UserInfos,
+  UserPanel
 };

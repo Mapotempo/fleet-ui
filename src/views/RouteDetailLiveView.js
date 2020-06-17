@@ -5,33 +5,61 @@ import PropTypes from 'prop-types';
 // Hook
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { usersMapper } from '../selectors/userSelectors';
 import { useAutoFetchRoutesMissions } from '../hooks/useAutoFetch';
 import { useTranslation } from 'react-i18next';
 
 // Component
+import { Title } from '../components/utils/title';
+import { UserInfos } from '../components/user/UserInfos';
 import MissionList from '../components/mission/MissionList';
 import { TotalDelayedCard,
-  TotalUndoneMissionCard, TotalFinishedMissionCard, RouteInfosCard } from '../components/route/RouteCards';
-import { Panel, Grid, Row, Col, Modal, Button } from 'react-bootstrap';
+  TotalUndoneMissionCard, TotalFinishedMissionCard
+} from '../components/route/RouteCards';
+import { Panel, Grid, Row, Col, Modal, Button, Glyphicon } from 'react-bootstrap';
 import MissionSurvey from '../components/mission/MissionSurvey';
+
+const Header = ({ text, onBackClick }) => {
+  const { t } = useTranslation();
+  return (
+    <React.Fragment>
+      <Title text={text}/>
+      <Button onClick={onBackClick}><Glyphicon glyph="arrow-left" /> {t('route.route_detail_back')}</Button>
+    </React.Fragment>
+  );
+};
+
+Header.propTypes = {
+  text: PropTypes.string.isRequired,
+  onBackClick: PropTypes.func.isRequired
+};
 
 const propTypes = {
   routeId: PropTypes.string.isRequired,
+  onBackClick: PropTypes.func
+};
+
+const defaultProps = {
+  onBackClick: () => {}
 };
 
 const RouteDetailLiveView = (props) => {
   const { t } = useTranslation();
   let route = useSelector(state => state.fleet.routes.items.find(route => route.id === props.routeId));
-  let userMap = useSelector(usersMapper);
   const [modalInfo, setModalInfo] = useState(null);
 
   // Use auto fetch
   useAutoFetchRoutesMissions(route ? [route] : []);
 
   if (!route)
-    return "route not found";
-  let user = userMap[route.user_id];
+    return (
+      <Grid fluid>
+        <Row className="mtf-dashboard-row" >
+          <Col md={12}>
+            <Header text={t('route.route_not_found')} onBackClick={props.onBackClick} />
+          </Col>
+        </Row>
+      </Grid>
+    );
 
   const onMissionSurveyHandler = (mission, surveyType) => {
     setModalInfo({
@@ -43,12 +71,22 @@ const RouteDetailLiveView = (props) => {
   return (
     <React.Fragment>
       <Grid fluid>
-        <Row className="mtf-dashboard-row">
+        <Row className="mtf-dashboard-row" >
           <Col md={12}>
-            <RouteInfosCard route={route} user={user}/>
+            <Header text={t('route.route_detail_title', { name: route.name })}
+              onBackClick={props.onBackClick} />
           </Col>
         </Row>
-        <Row className="mtf-dashboard-row">
+        <Row>
+          <Col md={12}>
+            <Panel>
+              <Panel.Body>
+                <UserInfos userId={route.user_id} />
+              </Panel.Body>
+            </Panel>
+          </Col>
+        </Row>
+        <Row className="mtf-dashboard-row" >
           <Col md={4} xsHidden>
             <TotalFinishedMissionCard finishedMissions={route.extraInfo.finishedMissions} totalMissions={route.missions.length}/>
           </Col>
@@ -86,5 +124,6 @@ const RouteDetailLiveView = (props) => {
 };
 
 RouteDetailLiveView.propTypes = propTypes;
+RouteDetailLiveView.defaultProps = defaultProps;
 
 export default RouteDetailLiveView;

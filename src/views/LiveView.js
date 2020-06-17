@@ -23,7 +23,7 @@ const LiveView = () => {
   return (
     <div className='mtf-view-container'>
       { routeId ?
-        <RouteDetailLiveView routeId={routeId} /> :
+        <RouteDetailLiveView routeId={routeId} onBackClick={() => setRouteId('')}/> :
         <RouteListLiveView selectedDate={fetchDate} onDateSelected={date => setDate(formatUrlDate(date))} onRouteSelected={routeId => setRouteId(routeId)} /> }
     </div>
   );

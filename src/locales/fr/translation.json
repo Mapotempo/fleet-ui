@@ -7,15 +7,6 @@
   "mapotempo_route_global_status_departure": "statuts des départs",
   "mapotempo_route_global_status_missions": "statuts des missions",
   "mapotempo_route_global_status_arrival": "statuts des arrivées",
-  "mapotempo_route_name": "nom",
-  "mapotempo_route_email": "email",
-  "mapotempo_route_phone": "téléphone",
-  "mapotempo_route_departure": "départ",
-  "mapotempo_route_missions": "missions",
-  "mapotempo_route_rests": "pauses",
-  "mapotempo_route_arrivals": "arrivée",
-  "mapotempo_route_progress": "avancement",
-  "mapotempo_route_estimated_time_arrival": "heure d'arrivée estimée (ETA)",
   "mapotempo_mission_name": "nom",
   "mapotempo_mission_status": "status",
   "mapotempo_mission_estimated_time_arrival": "heure d'arrivée estimée (ETA)",
@@ -46,6 +37,29 @@
       "info_plural": "anomalies",
       "subinfo": "{{count}} mission sans anomalies",
       "subinfo_plural": "{{count}} missions sans anomalies"
+    }
+  },
+  "route": {
+    "routes_list_title": "Tournées du {{date}}",
+    "route_detail_title": "Tournée : {{name}}",
+    "route_not_found": "Tournée non trouvée",
+    "route_detail_back": "retour à la liste des tournées",
+    "list_header": {
+      "delay_planned": "retard - prévu",
+      "name": "nom",
+      "email": "email",
+      "phone": "téléphone",
+      "departure": "départ",
+      "missions": "missions",
+      "rests": "pauses",
+      "arrivals": "arrivée",
+      "progress": "avancement",
+      "estimated_time_arrival": "heure d'arrivée estimée (ETA)"
+    },
+    "actions": {
+      "help_text": {
+        "details": "afficher les détails de la tournée"
+      }
     }
   },
   "mission": {

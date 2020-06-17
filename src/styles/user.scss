@@ -1,24 +1,6 @@
 $margin: 20px;
 $padding: 20px;
 
-.mtf-user-info-title {
-  margin-top: $margin;
-}
-.mtf-user-info-v-separator {
-  border: solid;
-  margin: $margin / 2;
-  border-width: 1px 0 0 0;
-  border-color: black;
-}
-
-.mtf-user-info-entry-title {
-  float: left;
-}
-
-.mtf-user-info-entry-content {
-  float: right;
-}
-
 .mtf-user-info-devices-container {
   margin: $margin;
 }

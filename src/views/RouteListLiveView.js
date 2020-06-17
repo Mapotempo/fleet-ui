@@ -11,6 +11,7 @@ import { useAutoFetchRoutesMissions } from '../hooks/useAutoFetch';
 import { routesSelector, globalRoutesInfoSelector, missionsDowloadProgressSelector } from '../selectors';
 
 // Component
+import { Title } from '../components/utils/title';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import RoutesList from '../components/route/RouteList';
@@ -32,7 +33,7 @@ const defaultProps = {
 };
 
 const RouteListLiveView = (props) => {
-  const { t } = useTranslation();
+  const { t, i18n} = useTranslation();
   let routes = useSelector(routesSelector);
   let globalRoutesInfo = useSelector(globalRoutesInfoSelector);
   let missionsDownloadProgress = useSelector(missionsDowloadProgressSelector);
@@ -50,15 +51,18 @@ const RouteListLiveView = (props) => {
         color='#00AAC2'
       />
       <Grid fluid>
-        <Row className="mtf-dashboard-row">
-          <Col xs={12} md={3}>
+        <Row className="mtf-dashboard-row" >
+          <Col md={12}>
+            <Title text={t('route.routes_list_title',
+              { date: props.selectedDate.toLocaleDateString(i18n.language) })} />
+          </Col>
+          <Col md={2}>
             <DatePicker
               initialDate={props.selectedDate}
               onChangeDate={handleChange}
             />
           </Col>
         </Row>
-
         <Row className="mtf-dashboard-row">
           <Col md={3}>
             <TotalFinishedRouteCard finishedRoutes={globalRoutesInfo.globalFinishedRoutes} totalRoutes={routes.length} />

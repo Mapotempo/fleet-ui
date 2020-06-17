@@ -22,3 +22,24 @@
   max-height: 512px;
   margin: auto;
 }
+
+/* ##################
+    #               #
+    # Utils         #
+    #               #
+    #################*/
+
+.mtf-entry-title {
+  float: left;
+}
+
+.mtf-entry-content {
+  float: right;
+}
+
+.mtf-title-separator {
+  border: solid;
+  margin: $margin / 2;
+  border-width: 1px 0 0 0;
+  border-color: black;
+}

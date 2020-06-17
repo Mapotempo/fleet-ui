@@ -7,15 +7,6 @@
   "mapotempo_route_global_status_departure": "Departure statuses",
   "mapotempo_route_global_status_missions": "Missions statuses",
   "mapotempo_route_global_status_arrival": "Arrival statuses",
-  "mapotempo_route_name": "name",
-  "mapotempo_route_email": "email",
-  "mapotempo_route_phone": "phone",
-  "mapotempo_route_departure": "departures",
-  "mapotempo_route_missions": "missions",
-  "mapotempo_route_rests": "rests",
-  "mapotempo_route_arrivals": "arrival",
-  "mapotempo_route_progress": "progress",
-  "mapotempo_route_estimated_time_arrival": "estimated time arrival (ETA)",
   "mapotempo_mission_name": "name",
   "mapotempo_mission_status": "status",
   "mapotempo_mission_estimated_time_arrival": "estimated time arrival  (ETA)",
@@ -46,6 +37,29 @@
       "info_plural": "anomalies",
       "subinfo": "{{count}} mission without anomaly",
       "subinfo_plural": "{{count}} missions without anomalies"
+    }
+  },
+  "route": {
+    "routes_list_title": "Routes of {{date}}",
+    "route_detail_title": "Route: {{name}}",
+    "route_not_found": "Route not found",
+    "route_detail_back": "back to routes list",
+    "list_header": {
+      "delay_planned": "delay - planned",
+      "name": "name",
+      "email": "email",
+      "phone": "phone",
+      "departure": "departures",
+      "missions": "missions",
+      "rests": "rests",
+      "arrivals": "arrival",
+      "progress": "progress",
+      "estimated_time_arrival": "estimated time arrival (ETA)"
+    },
+    "actions": {
+      "help_text": {
+        "details": "display route details"
+      }
     }
   },
   "mission": {

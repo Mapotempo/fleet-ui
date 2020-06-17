@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
 import 'fleet-ui/dist/index.css';
+import "react-bootstrap-toggle/dist/bootstrap2-toggle.css";
 
 import initMock from './ApiMock';
 import { generateFakeData } from './faker';
