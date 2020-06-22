@@ -33,26 +33,26 @@ const MissionsList = props => {
 
   const columns = [{
     dataField: 'name',
-    text: t('mapotempo_mission_name'),
+    text: t('mission.list_header.name'),
     formatter: NameFormater,
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }, {
     dataField: 'mission_status_type_id',
-    text: t('mapotempo_mission_status'),
+    text: t('mission.list_header.status'),
     formatter: MissionStatusFormater,
     formatExtraData: missionStatusTypeMap,
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }, {
     dataField: 'date',
-    text: t('mapotempo_mission_estimated_time_arrival'),
+    text: t('mission.list_header.estimated_time_arrival'),
     formatter: ETAFormater,
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }, {
     dataField: 'attachment',
-    text: t('mapotempo_mission_proof_of_delivery'),
+    text: t('mission.list_header.proof_of_delivery'),
     formatter: AttachmentFormater,
     formatExtraData: props.onMissionSurveyClick,
     headerAlign: 'right',
@@ -81,7 +81,10 @@ const MissionsList = props => {
 
 const NameFormater = (cell, row) => {
   return (
-    <div><b>{cell}</b><br/><Label>ref: {row.reference}</Label></div>);
+    <div>
+      <b>{cell}</b><br />
+      {row.reference ? <Label>ref: {row.reference}</Label> : null}
+    </div>);
 };
 
 const MissionStatusFormater = (cell, row, rowIndex, formatExtraData) => {

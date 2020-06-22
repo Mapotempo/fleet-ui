@@ -7,10 +7,6 @@
   "mapotempo_route_global_status_departure": "Departure statuses",
   "mapotempo_route_global_status_missions": "Missions statuses",
   "mapotempo_route_global_status_arrival": "Arrival statuses",
-  "mapotempo_mission_name": "name",
-  "mapotempo_mission_status": "status",
-  "mapotempo_mission_estimated_time_arrival": "estimated time arrival  (ETA)",
-  "mapotempo_mission_proof_of_delivery": "proof of delivery",
   "close": "close",
   "datepicker": "mm-dd-yyyy",
   "card": {
@@ -69,6 +65,12 @@
       "comment": "Survey comment",
       "barcode": "Survey barcode",
       "address": "Survey address"
+    },
+    "list_header": {
+      "name": "name",
+      "status": "status",
+      "estimated_time_arrival": "estimated time arrival  (ETA)",
+      "proof_of_delivery": "proof of delivery"
     }
   },
   "user_info": {
