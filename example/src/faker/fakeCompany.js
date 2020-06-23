@@ -3,7 +3,7 @@ import { generateMissionActionsType, generateMissionStatusType } from './fakeWor
 import { generateRoute } from './fakeRoute';
 import { getRandomInt } from './fakeUtils';
 
-export const generateCompanyData = (companyId, email, apiKey, minMission = 0, maxMission=1000) =>
+export const generateCompanyData = (companyId, email, apiKey, minMission = 0, maxMission=30) =>
 {
   let today = new Date();
   let users = [generateUser(companyId, false, email, apiKey)];
@@ -23,10 +23,6 @@ export const generateCompanyData = (companyId, email, apiKey, minMission = 0, ma
       [user.sync_user]: generateUserSettings(companyId, user)
     };
   }, {});
-
-
-
-
 
   let workflow = {
     missionActionTypes: generateMissionActionsType(companyId),

@@ -17,7 +17,8 @@ import initMock from './ApiMock';
 import { generateFakeData } from './faker';
 
 if (process.env.REACT_APP_USE_FAKER === 'true') {
-  initMock(generateFakeData());
+  var server = initMock(generateFakeData());
+  server.logging = false;
 }
 
 changeLocal('en');

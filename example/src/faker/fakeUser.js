@@ -89,7 +89,7 @@ const generateUserInfo = (companyId, user) => {
 
 export const generateUserInfos = (companyId, user) => {
   let userInfos = [];
-  for (let i = 0; i < getRandomInt(0, 3); i++) {
+  for (let i = 0; i < getRandomInt(0, 6); i++) {
     userInfos.push(generateUserInfo(companyId, user));
   }
   return userInfos;

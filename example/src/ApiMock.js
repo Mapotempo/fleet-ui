@@ -2,7 +2,7 @@ import { Server, Response } from "miragejs";
 
 
 const initMock = (dataSet) => {
-  new Server({
+  return new Server({
     routes() {
       // this.namespace = "/api";
 

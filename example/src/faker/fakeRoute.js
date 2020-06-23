@@ -78,7 +78,7 @@ const generateMission = (routeid, user, date, eta, mission_type, missionStatusTy
     "sync_user": user.sync_user,
     "mission_type": mission_type,
     "external_ref": mission_type + '-4025-2020_03_18-2286795',
-    "name": mission_type === 'mission' ? faker.Name.findName : mission_type,
+    "name": mission_type === 'mission' ? faker.Name.findName() : mission_type,
     "date": dateToLocalISO(date),
     "eta": dateToLocalISO(eta),
     "eta_computed_at": null,
