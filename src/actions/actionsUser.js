@@ -33,7 +33,7 @@ export const fetchUsers = () => {
     return Promise
       .all(getState().fleet.auth.users.map(authUser => ApiUsers.  apiFetchUsersCompany(
         {
-          host: getState().fleet.fleetHost,
+          host: getState().fleet.config.host,
           apiKey: authUser.api_key
         })))
       .then(res => res.flat())
@@ -81,7 +81,7 @@ export const fetchUserInfos = () => {
       .all(getState().fleet.auth.users.map(
         authUser => ApiUsers.apiFetchUserInfosCompany(
           {
-            host: getState().fleet.fleetHost,
+            host: getState().fleet.config.host,
             apiKey: authUser.api_key
           })))
       .then(res => res.flat())
@@ -130,7 +130,7 @@ export const fetchUserSettings = () => {
       .all(getState().fleet.auth.users.map(
         authUser => ApiUsers.apiFetchUserSettingsCompany(
           {
-            host: getState().fleet.fleetHost,
+            host: getState().fleet.config.host,
             apiKey: authUser.api_key
           })))
       .then(res => res.flat())

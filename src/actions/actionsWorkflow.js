@@ -45,7 +45,7 @@ const fetchMissionStatusTypes = () => {
       .all(getState().fleet.auth.users.map((authUser) => ApiWorkflow.apiFetchMissionStatusTypes(
         authUser.sync_user,
         {
-          host: getState().fleet.fleetHost,
+          host: getState().fleet.config.host,
           apiKey: authUser.api_key,
         }
       )))
@@ -89,7 +89,7 @@ const fetchMissionActionTypes = () => {
       .all(getState().fleet.auth.users.map((authUser) => ApiWorkflow.apiFetchMissionActionTypes(
         authUser.sync_user,
         {
-          host: getState().fleet.fleetHost,
+          host: getState().fleet.config.host,
           apiKey: authUser.api_key,
         }
       )))

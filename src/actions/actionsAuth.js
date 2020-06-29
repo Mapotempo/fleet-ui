@@ -33,7 +33,7 @@ export const signInUsers = (connexions) => {
       .all(connexions.map(({ syncUser, apiKey }) => {
         return ApiAuth.apiFetchAuthUser(syncUser,
           {
-            host: getState().fleet.fleetHost,
+            host: getState().fleet.config.host,
             apiKey: apiKey
           });
       }))

@@ -77,28 +77,32 @@ const RouteListLiveView = (props) => {
             <TotalUndoneMissionCard finishedMissionsUndone={globalRoutesInfo.globalFinishedMissionsUndone} finishedMissions={globalRoutesInfo.globalFinishedMissions}/>
           </Col>
         </Row>
-
-        <Row className="mtf-dashboard-row">
-          <Col md={4} xsHidden>
-            <DoughnutStatuses
-              routes={routes}
-              missionType="departure"
-              header={t("mapotempo_route_global_status_departure")}/>
-          </Col>
-          <Col md={4}>
-            <DoughnutStatuses
-              routes={routes}
-              missionType="mission"
-              header={t("mapotempo_route_global_status_missions")}/>
-          </Col>
-          <Col md={4} xsHidden>
-            <DoughnutStatuses
-              routes={routes}
-              missionType="arrival"
-              header={t("mapotempo_route_global_status_arrival")}/>
+        <Row className="mtf-dashboard-row" >
+          <Col md={12}>
+            <Panel>
+              <Panel.Body>
+                <Col md={4} xsHidden>
+                  <DoughnutStatuses
+                    routes={routes}
+                    missionType="departure"
+                    header={t("mapotempo_route_global_status_departure")}/>
+                </Col>
+                <Col md={4}>
+                  <DoughnutStatuses
+                    routes={routes}
+                    missionType="mission"
+                    header={t("mapotempo_route_global_status_missions")}/>
+                </Col>
+                <Col md={4} xsHidden>
+                  <DoughnutStatuses
+                    routes={routes}
+                    missionType="arrival"
+                    header={t("mapotempo_route_global_status_arrival")}/>
+                </Col>
+              </Panel.Body>
+            </Panel>
           </Col>
         </Row>
-
         <Row className="mtf-dashboard-row">
           <Col md={12}>
             <Panel>

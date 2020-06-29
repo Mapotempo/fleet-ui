@@ -13,7 +13,7 @@ import { usersMapper } from '../../selectors';
 
 // Component
 import { UserPanel } from '../user/UserInfos';
-import BootstrapTable from 'react-bootstrap-table-next';
+import GenericTable from '../utils/table';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
@@ -50,12 +50,14 @@ const RoutesList = (props) => {
     return () => window.removeEventListener('resize', reportWindowSize);
   }, []);
 
-  // const rowEvents = {
-  //   onClick: (e, row) => {
-  //     // props.onRouteSelected(row.id);
-  //   },
-  //   onMouseEnter: (/*e, row, rowIndex */) => {    }
-  // };
+  const widthStyleGenerator = width => {
+    return {
+      style: {width: `${width}%`},
+      headerStyle: {width: `${width}%`},
+      editCellStyle: {width: `${width}%`},
+      editorStyle: {width: `${width}%`}
+    };
+  };
 
   const columnsBase = [
     {
@@ -65,13 +67,14 @@ const RoutesList = (props) => {
       align: 'center',
       formatter: ETAFormatter,
       classes: 'route-list-column',
-      headerClasses: 'route-list-column'
+      headerClasses: 'route-list-column',
+      ...widthStyleGenerator(6)
     },
     {
       dataField: 'name',
       text: t('route.list_header.name'),
       classes: 'route-list-column overflow',
-      headerClasses: 'route-list-column overflow',
+      headerClasses: 'route-list-column',
       sort: true
     },
     {
@@ -81,9 +84,10 @@ const RoutesList = (props) => {
       formatter: userEmailFormatter,
       formatExtraData: usersMap,
       classes: 'route-list-column overflow',
-      headerClasses: 'route-list-column overflow',
+      headerClasses: 'route-list-column',
       wideScreenOnly: true,
-      sort: true
+      sort: true,
+      ...widthStyleGenerator(50)
     },
     {
       dataField: 'routeInfoDeparture',
@@ -94,7 +98,7 @@ const RoutesList = (props) => {
       headerAlign: 'center',
       align: 'center',
       classes: 'route-list-column',
-      headerClasses: 'route-list-column overflow'
+      headerClasses: 'route-list-column'
     },
     {
       dataField: 'routeInfoMission',
@@ -105,7 +109,7 @@ const RoutesList = (props) => {
       headerAlign: 'center',
       align: 'center',
       classes: 'route-list-column',
-      headerClasses: 'route-list-column overflow'
+      headerClasses: 'route-list-column'
     }, {
       dataField: 'routeInfoRest',
       isDummyField: true,
@@ -115,7 +119,7 @@ const RoutesList = (props) => {
       headerAlign: 'center',
       align: 'center',
       classes: 'route-list-column',
-      headerClasses: 'route-list-column overflow'
+      headerClasses: 'route-list-column'
     },
     {
       dataField: 'routeInfoArrival',
@@ -126,14 +130,14 @@ const RoutesList = (props) => {
       headerAlign: 'center',
       align: 'center',
       classes: 'route-list-column',
-      headerClasses: 'route-list-column overflow'
+      headerClasses: 'route-list-column'
     },
     {
       dataField: 'extraInfo.progress',
       text: t('route.list_header.progress'),
       formatter: advancementFormatter,
       classes: 'route-list-column',
-      headerClasses: 'route-list-column',
+      headerClasses: 'route-list-column overflow',
       wideScreenOnly: true
     },
     {
@@ -150,21 +154,19 @@ const RoutesList = (props) => {
   let columns = columnsBase.filter((item) => !item.wideScreenOnly || item.wideScreenOnly == wideScreen);
 
   return (
-    <BootstrapTable
-      wrapperClasses="route-list-table-wrapper"
-      headerWrapperClasses="route-list-table-head"
-      headerClasses="route-list-header"
-      rowClasses="route-list-row"
+    <GenericTable
+      wrapperClasses="route-table-wrapper"
+      rowClasses="route-table-row"
       keyField='id'
       data={props.routes}
       columns={columns}
-      hover
-      bordered={ false }
+      hover={false}
+      striped
+      bordered={false}
       pagination={ paginationFactory() }
       noDataIndication="No Route found"
       expandRow={{
         onlyOneExpanding: true,
-        className: 'route-expanding',
         renderer: expandFormater
       }}
     // rowEvents={ rowEvents }
@@ -181,9 +183,13 @@ export default RoutesList;
 // ========
 
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].email;
-const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData} withLabels withCount={false}/>);
+
+const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData} withLabels withCount={false} />);
+
 const missionStatusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData}/>);
-const advancementFormatter = cell => (<ProgressBar style={{ margin: 0 }} now={cell} label={`${cell}%`} title={`${cell}%`}/>);
+
+const advancementFormatter = cell => (<ProgressBar style={{ margin: 0 }} now={cell} label={`${cell}%`} title={`${cell}%`} />);
+
 const ETAFormatter = (cell, row) => {
   let delay = row.extraInfo.finishedMissionsDelay.overLowThreashold + row.extraInfo.finishedMissionsDelay.overHightThreashold;
   let delayPlanned = row.extraInfo.plannedMissionsDelay.overLowThreashold + row.extraInfo.plannedMissionsDelay.overHightThreashold;
@@ -197,6 +203,7 @@ const ETAFormatter = (cell, row) => {
   }
   return <Label bsStyle={style} style={{ display: 'block', width: '100%' }}>{delay} - {delayPlanned}</Label>;
 };
+
 const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
   return (<ButtonGroup justified>
     <ButtonActionWrapper onClick={() => formatExtraData(row.id)} href="#"
@@ -237,8 +244,4 @@ ButtonActionWrapper.propTypes = { titleTag: PropTypes.string.isRequired };
 // ExpandRow
 // =========
 
-const expandFormater = function(row) {
-  return (<div>
-    <UserPanel userId={row.user_id}></UserPanel>
-  </div>);
-};
+const expandFormater = row => <UserPanel userId={row.user_id}></UserPanel>;

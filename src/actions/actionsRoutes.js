@@ -22,7 +22,7 @@ export const fetchRoutesOnDates = (from, to) => {
       getState().fleet.auth.users.map((authUser) =>
         ApiRoutes.apiFetchRoutes(false, from ,to,
           {
-            host: getState().fleet.fleetHost,
+            host: getState().fleet.config.host,
             apiKey: authUser.api_key,
           })))
       .then(res => res.flat()) // flat routes arrays
@@ -99,10 +99,13 @@ const _fetchRoutesMissions = (routes) => {
     let missionStatusTypesMap = missionStatusTypesMapper(getState());
     return Promise.all(routes.map((route) => ApiRoutes
       .apiFetchRoute(route.id, {
-        host: getState().fleet.fleetHost,
+        host: getState().fleet.config.host,
         apiKey: tokenBySyncUserSelector(getState(), route.sync_user)
       })
-      .then(route => dispatch(receiveRouteMissions(route, computeExtraInfo(route, missionStatusTypesMap))))
+      .then(route => dispatch(receiveRouteMissions(route,
+        computeExtraInfo(route, missionStatusTypesMap,
+          getState().fleet.config.delayLowThreashold,
+          getState().fleet.config.delayHightThreashold))))
       .catch(errors => dispatch(errorsRoutes(errors)))
     ));
   };

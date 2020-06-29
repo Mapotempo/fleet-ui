@@ -1,33 +1,37 @@
+// React
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// React
+import { missionStatusTypesMapper } from '../../selectors';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { missionStatusTypesMapper } from '../../selectors';
-
-import BootstrapTable from 'react-bootstrap-table-next';
-import { Label, Badge, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
-
-import { surveyType } from '../../constants';
-
+// Component
+import GenericTable from '../utils/table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { Label, Badge, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
+
+// other
+import { surveyType, computedDelayType } from '../../constants';
+import { toLocaleTimeString, dayLabel } from '../../lib/dateUtils';
 
 // =============
-// MISSIONS LIST
+// MISSIONS LISTmissions
 // =============
 
 const propTypes = {
-  missions: PropTypes.array,
+  route: PropTypes.object.isRequired,
+  // missions: PropTypes.array,
   onMissionSurveyClick: PropTypes.func
 };
 
 const defaultProps = {
-  missions: [],
   onMissionSurveyClick: () => {}
 };
 
-const MissionsList = props => {
+const MissionList = props => {
   const { t } = useTranslation();
   let missionStatusTypeMap = useSelector(missionStatusTypesMapper);
 
@@ -36,20 +40,30 @@ const MissionsList = props => {
     text: t('mission.list_header.name'),
     formatter: NameFormater,
     classes: 'mission-list-column overflow',
-    headerClasses: 'mission-list-column overflow'
+    headerClasses: 'mission-list-column overflow',
+    sort: true
   }, {
     dataField: 'mission_status_type_id',
     text: t('mission.list_header.status'),
     formatter: MissionStatusFormater,
     formatExtraData: missionStatusTypeMap,
     classes: 'mission-list-column overflow',
-    headerClasses: 'mission-list-column overflow'
-  }, {
-    dataField: 'date',
-    text: t('mission.list_header.estimated_time_arrival'),
-    formatter: ETAFormater,
+    headerClasses: 'mission-list-column overflow',
+    sort: true
+  },{
+    dataField: 'mission_type',
+    text: t('mission.list_header.mission_type'),
     classes: 'mission-list-column overflow',
-    headerClasses: 'mission-list-column overflow'
+    headerClasses: 'mission-list-column overflow',
+    sort: true
+  },{
+    dataField: 'date',
+    text: t('mission.list_header.arrival_time'),
+    formatter: TimeFormater,
+    formatExtraData: props.route,
+    classes: 'mission-list-column overflow',
+    headerClasses: 'mission-list-column overflow',
+    sort: true
   }, {
     dataField: 'attachment',
     text: t('mission.list_header.proof_of_delivery'),
@@ -60,14 +74,19 @@ const MissionsList = props => {
     classes: 'mission-list-column overflow',
     headerClasses: 'mission-list-column overflow'
   }];
-  return <BootstrapTable
+
+  const defaultSorted = [{
+    dataField: 'date',
+    order: 'asc'
+  }];
+
+  return <GenericTable
     classes="mission-list"
-    wrapperClasses='mission-list-table-wrapper'
-    headerWrapperClasses='mission-list-table-header'
-    headerClasses='mission-list-header'
-    bodyClasses="mission-list-body"
+    wrapperClasses='mission-table-wrapper'
     keyField='id'
-    data={props.missions}
+    striped
+    defaultSorted={defaultSorted}
+    data={props.route.missions}
     columns={columns}
     hover
     bordered={ false }
@@ -77,45 +96,93 @@ const MissionsList = props => {
 
 // ========
 // Formater
+// prototype: (cell, row, rowIndex, formatExtraData) => { ... }
 // ========
 
-const NameFormater = (cell, row) => {
+const NameFormater = (name, mission) => {
   return (
     <div>
-      <b>{cell}</b><br />
-      {row.reference ? <Label>ref: {row.reference}</Label> : null}
+      <b>{name}</b><br />
+      {mission.reference ? <Label>ref: {mission.reference}</Label> : null}
     </div>);
 };
 
-const MissionStatusFormater = (cell, row, rowIndex, formatExtraData) => {
-  let status = formatExtraData[cell];
+const MissionStatusFormater = (missionStatusTypeId, mission, rowIndex, missionStatusTypeMap) => {
+  let status = missionStatusTypeMap[missionStatusTypeId];
   if (status)
     return (<Badge style={{ backgroundColor: status.color }}>{status.label}</Badge>);
-  return cell;
+  return missionStatusTypeId;
 };
 
-const ETAFormater = (cell) => {
-  return <Label bsStyle='default'>{new Date(cell).toLocaleString()}</Label>;
+const TimeFormater = (date, mission, rowIndex, route) => {
+  let routeDate = new Date(route.date),
+    planned = new Date(date),
+    delayInfo = route.extraInfo.missionDelayInfoMap[mission.id];
+  return (<TimeComponent
+    routeDate={routeDate}
+    planned={planned}
+    delayInfo={delayInfo} />);
 };
 
-const AttachmentFormater = (cell, row, rowIndex, formatExtraData) => {
-  let picture = row.survey_pictures && row.survey_pictures.length > 0;
-  let signature = row.survey_signature;
-  let comment = row.survey_comment;
-  let barcode = row.survey_barcodes && row.survey_barcodes.length > 0;
-  let address = row.survey_address;
+const AttachmentFormater = (cell, mission, rowIndex, formatExtraData) => {
+  let picture = mission.survey_pictures && mission.survey_pictures.length > 0;
+  let signature = mission.survey_signature;
+  let comment = mission.survey_comment;
+  let barcode = mission.survey_barcodes && mission.survey_barcodes.length > 0;
+  let address = mission.survey_address;
   // let temperature = row.survey_temperature;
   return <ButtonGroup>
-    <Button bsStyle={picture ? "info": "default"} disabled={!picture} onClick={() => formatExtraData(row, surveyType.PICTURE)}><Glyphicon glyph="camera" /></Button>
-    <Button bsStyle={signature ? "info": "default"} disabled={!signature} onClick={() => formatExtraData(row, surveyType.SIGNATURE)}><Glyphicon glyph="pencil" /></Button>
-    <Button bsStyle={comment ? "info": "default"} disabled={!comment} onClick={() => formatExtraData(row, surveyType.COMMENT)}><Glyphicon glyph="comment" /></Button>
-    <Button bsStyle={barcode ? "info": "default"} disabled={!barcode} onClick={() => formatExtraData(row, surveyType.BARCODE)}><Glyphicon glyph="barcode" /></Button>
-    <Button bsStyle={address ? "info": "default"} disabled={!address} onClick={() => formatExtraData(row, surveyType.ADDRESS)}><FontAwesomeIcon icon={faMapMarkedAlt} /></Button>
+    <Button bsStyle={picture ? "info": "default"} disabled={!picture} onClick={() => formatExtraData(mission, surveyType.PICTURE)}><Glyphicon glyph="camera" /></Button>
+    <Button bsStyle={signature ? "info": "default"} disabled={!signature} onClick={() => formatExtraData(mission, surveyType.SIGNATURE)}><Glyphicon glyph="pencil" /></Button>
+    <Button bsStyle={comment ? "info": "default"} disabled={!comment} onClick={() => formatExtraData(mission, surveyType.COMMENT)}><Glyphicon glyph="comment" /></Button>
+    <Button bsStyle={barcode ? "info": "default"} disabled={!barcode} onClick={() => formatExtraData(mission, surveyType.BARCODE)}><Glyphicon glyph="barcode" /></Button>
+    <Button bsStyle={address ? "info": "default"} disabled={!address} onClick={() => formatExtraData(mission, surveyType.ADDRESS)}><FontAwesomeIcon icon={faMapMarkedAlt} /></Button>
     {/* <Button bsStyle={temperature ? "info": "default"} disabled={!temperature} onClick={() => formatExtraData(row, surveyType.TEMPERATURE)}><FontAwesomeIcon icon={faTemperatureLow} /></Button> */}
   </ButtonGroup>;
 };
 
-MissionsList.propTypes = propTypes;
-MissionsList.defaultProps = defaultProps;
+// ==========
+// Components
+// ==========
 
-export default MissionsList;
+const TimeComponent = ({ routeDate, planned, delayInfo }) => {
+  let delayLowThreashold = useSelector(state => state.fleet.config.delayLowThreashold);
+  let delayHightThreashold = useSelector(state => state.fleet.config.delayHightThreashold);
+  let arrival = new Date(delayInfo.arrivalDate);
+  let style = 'success';
+  if (delayInfo.delay > delayHightThreashold)
+    style = 'danger';
+  else if (delayInfo.delay > delayLowThreashold)
+    style = 'warning';
+
+  let arrivalLabel = delayInfo.delayType === computedDelayType.RTA ? '' : `ETA`;
+
+  return (
+    <div>
+      <Label bsStyle={style} style={{ fontSize: '0.87em' }}>
+        {`${toLocaleTimeString(planned)}${dayLabel(routeDate, planned)} / ${toLocaleTimeString(arrival)}${dayLabel(routeDate, arrival)}`}
+      </Label>
+      <Badge style={{
+        background: '#989898',
+        display: 'inline-block',
+        position: 'relative',
+        left: '-10px',
+        top: '-10px',
+        fontSize: '0.6em'
+      }} title={delayInfo.delayType}>
+        {arrivalLabel}
+      </Badge>
+    </div>);
+};
+
+TimeComponent.propTypes = {
+  routeDate: PropTypes.instanceOf(Date).isRequired,
+  planned: PropTypes.instanceOf(Date).isRequired,
+  delayInfo: PropTypes.object.isRequired
+};
+
+
+MissionList.propTypes = propTypes;
+MissionList.defaultProps = defaultProps;
+
+export default MissionList;

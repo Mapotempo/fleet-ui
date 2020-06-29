@@ -69,7 +69,8 @@
     "list_header": {
       "name": "name",
       "status": "status",
-      "estimated_time_arrival": "estimated time arrival  (ETA)",
+      "mission_type": "type",
+      "arrival_time": "arriving time (planned / real)",
       "proof_of_delivery": "proof of delivery"
     }
   },

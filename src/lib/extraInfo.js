@@ -1,9 +1,8 @@
+import { computedDelayType } from '../constants';
+
 // ======================
 // Extra info computation
 // ======================
-
-const DELAY_LOW_THREASHOLD = 10; //min
-const DELAY_HIGHT_THREASHOLD = 30; //min
 
 export const initialExtraInfo = () => {
   return {
@@ -40,7 +39,8 @@ export const initialExtraInfo = () => {
       statusCounter: {},
       count: 0,
       done: 0
-    }
+    },
+    missionDelayInfoMap: {}
   };
 };
 
@@ -64,68 +64,99 @@ const getPlannedTimeWindow = (mission) => {
   return mission.time_windows.find(timeWindow => delayDateTimeWindow(mission.date, timeWindow) === 0);
 };
 
-// computeMissionDelay
-// return delay for a mission with planned time windows or without time window
-// FIXME: when plannedTimeWindow is not found return 0 (should be switch on classic mode ?)
-export const computeMissionDelay = (mission, missionStatus) => {
-  let arrivalDate = mission.eta;
-  if (missionStatus.is_last)
-    arrivalDate = mission.mission_status_type_last_date;
-  if (!arrivalDate) // Unpredictable delay return 0
-    return 0;
-
-  if (mission.time_windows && mission.time_windows.length) { // Delay with time windows
-    let plannedTimeWindow = getPlannedTimeWindow(mission);
-    if (!plannedTimeWindow) {
-      return 0;
-    }
-    return delayDateTimeWindow(arrivalDate, plannedTimeWindow);
-  }
-  else { // Delay without time window
-    return (new Date(arrivalDate) - new Date(mission.date)) / 1000;
-  }
+const shiftedDate = (mission, delay) => {
+  let res = new Date(mission.date);
+  res.setTime(res.getTime() + delay * 1000);
+  return res;
 };
 
-//
-export const computeExtraInfo = (route, missionStatusTypesMap) => {
-  let res = route.missions.reduce((extraInfo, mission) => {
-    // Find arrival date
-    if (mission.date > extraInfo.routeArrivalDate)
-      extraInfo.routeArrivalDate = mission.date;
+// computeMissionDelay
+// return delay for a mission with planned time windows or without time window
+export const computeMissionDelayInfos = (mission, missionStatus, previousRealDelay) => {
+  // plannedDate => planned time arrival by MapotempoWeb (always present)
+  // sta         => shifted time arrival                 (always present)
+  // eta         => estimated time arrival               (can missing)
+  // rta         => real time arrival                    (can missing)
+  let plannedDate = new Date(mission.date),
+    sta = shiftedDate(mission, previousRealDelay),
+    eta = mission.eta ? new Date(mission.eta) : null,
+    rta = mission.mission_status_type_last_date ? mission.mission_status_type_last_date : null,
+    delay = 0, realDelay = 0;
+    // 1) - Choose arrival Date
+  let arrivalDate = sta;
+  let delayType = computedDelayType.STA;
+  if (missionStatus.is_last) {
+    if (rta) {
+      arrivalDate = rta;
+      delayType = computedDelayType.RTA;
+    } // FIXME: else right behavior ?
+  } else if (eta) {
+    arrivalDate = eta;
+    delayType = computedDelayType.ETA;
+  }
 
-    // Choosed the better ETA source
-    if (mission.eta > extraInfo.routeArrivalETA)
-      extraInfo.routeArrivalETA = mission.eta;
+  // 2) - Compute real delay
+  realDelay = (new Date(arrivalDate) - plannedDate) / 1000;
 
-    // type extra info
-    let missionTypeInfo = extraInfo[mission.mission_type];
-    if (missionTypeInfo) { // FIXME: mayber log error | sentry ?
-      missionTypeInfo.statusCounter[mission.mission_status_type_id] = ++missionTypeInfo.statusCounter[mission.mission_status_type_id] || 1;
-      missionTypeInfo.count++;
-    }
+  // 3) - Compute delay
+  if (mission.time_windows && mission.time_windows.length) { // Delay with time windows
+    let plannedTimeWindow = getPlannedTimeWindow(mission);
+    if (plannedTimeWindow)
+      delay = delayDateTimeWindow(arrivalDate, plannedTimeWindow);
+    else // FIXME: right behavior ?
+      delay = realDelay;
+  } else
+    delay = realDelay;
+  return {delay, delayType, realDelay, arrivalDate };
+};
 
-    let missionStatus = missionStatusTypesMap[mission.mission_status_type_id];
-    // is last and undone
-    if (missionStatus.is_last) {
-      extraInfo.finishedMissions++;
-      if (missionStatusTypesMap[mission.mission_status_type_id].reference.includes('undone'))
-        extraInfo.finishedMissionsUndone++;
-    }
-    let delay = computeMissionDelay(mission, missionStatus);
-    if (missionStatus.is_last) {
-      if (delay > DELAY_HIGHT_THREASHOLD)
-        extraInfo.finishedMissionsDelay.overHightThreashold++;
-      else if (delay > DELAY_LOW_THREASHOLD)
-        extraInfo.finishedMissionsDelay.overLowThreashold++;
-    }
-    else {
-      if (delay > DELAY_HIGHT_THREASHOLD)
-        extraInfo.plannedMissionsDelay.overHightThreashold++;
-      else if (delay > DELAY_LOW_THREASHOLD)
-        extraInfo.plannedMissionsDelay.overLowThreashold++;
-    }
-    return extraInfo;
-  }, initialExtraInfo());
+const compareMissions = (missionA, missionB) => {
+  if (missionA.date < missionB.date) return -1;
+  if (missionA.date > missionB.date) return 1;
+  return 0;
+};
+
+export const computeExtraInfo = (route, missionStatusTypesMap, delayLowThreashold, delayHightThreashold) => {
+  let previousRealDelay = 0;
+
+  let res = route.missions
+    .sort(compareMissions)
+    .reduce((extraInfo, mission) => {
+      // Choosed the better ETA source
+      if (mission.eta > extraInfo.routeArrivalETA)
+        extraInfo.routeArrivalETA = mission.eta;
+
+      // type extra info
+      let missionTypeInfo = extraInfo[mission.mission_type];
+      if (missionTypeInfo) { // FIXME: mayber log error | sentry ?
+        missionTypeInfo.statusCounter[mission.mission_status_type_id] = ++missionTypeInfo.statusCounter[mission.mission_status_type_id] || 1;
+        missionTypeInfo.count++;
+      }
+
+      let missionStatus = missionStatusTypesMap[mission.mission_status_type_id];
+      // is last and undone
+      if (missionStatus.is_last) {
+        extraInfo.finishedMissions++;
+        if (missionStatusTypesMap[mission.mission_status_type_id].reference.includes('undone'))
+          extraInfo.finishedMissionsUndone++;
+      }
+      let delayInfo = computeMissionDelayInfos(mission, missionStatus, previousRealDelay);
+      previousRealDelay = delayInfo.realDelay;
+      extraInfo.missionDelayInfoMap[mission.id] = delayInfo;
+      if (missionStatus.is_last) {
+        if (delayInfo.delay > delayHightThreashold)
+          extraInfo.finishedMissionsDelay.overHightThreashold++;
+        else if (delayInfo.delay > delayLowThreashold)
+          extraInfo.finishedMissionsDelay.overLowThreashold++;
+      }
+      else {
+        if (delayInfo.delay > delayHightThreashold)
+          extraInfo.plannedMissionsDelay.overHightThreashold++;
+        else if (delayInfo.delay > delayLowThreashold)
+          extraInfo.plannedMissionsDelay.overLowThreashold++;
+      }
+      return extraInfo;
+    }, initialExtraInfo());
 
   if (route.missions.length)
     res.progress = Math.floor((res.finishedMissions / route.missions.length) * 100);

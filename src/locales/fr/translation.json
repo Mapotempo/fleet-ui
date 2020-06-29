@@ -69,7 +69,8 @@
     "list_header": {
       "name": "nom",
       "status": "statut",
-      "estimated_time_arrival": "heure d'arrivée estimée (ETA)",
+      "mission_type": "type",
+      "arrival_time": "heure d'arrivée (planifié / réel)",
       "proof_of_delivery": "preuves de livraison"
     }
   },

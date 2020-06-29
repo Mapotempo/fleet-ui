@@ -45,6 +45,7 @@ const defaultProps = {
 const RouteDetailLiveView = (props) => {
   const { t } = useTranslation();
   let route = useSelector(state => state.fleet.routes.items.find(route => route.id === props.routeId));
+
   const [modalInfo, setModalInfo] = useState(null);
 
   // Use auto fetch
@@ -100,7 +101,7 @@ const RouteDetailLiveView = (props) => {
         <Row className="mtf-dashboard-row">
           <Col md={12}>
             <Panel>
-              <MissionList missions={route.missions} onMissionSurveyClick={onMissionSurveyHandler}></MissionList>
+              <MissionList route={route} onMissionSurveyClick={onMissionSurveyHandler}></MissionList>
             </Panel>
           </Col>
         </Row>

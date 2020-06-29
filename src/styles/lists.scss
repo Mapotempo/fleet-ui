@@ -1,31 +1,51 @@
-$mtf-list-max-height: 600px;
+$generic-odd-color: #f9f9f9;
+$generic-even-color: #ffffff;
 
-/* #####################
-   #                   #
-   # Table Route Style #
-   #                   #
-   #####################*/
+.generic-table-wrapper {
+  tbody {
+    .odd {
+      background-color: $generic-odd-color !important;
+    }
 
-.route-list-table-wrapper {
+    .even {
+      background-color: $generic-even-color !important;
+    }
+
+    .generic-table-raw-expanding {
+      border-top: 0 !important;
+    }
+  }
+}
+
+// /* ########################
+//    #                      #
+//    # Specific Table Style #
+//    #                      #
+//    ########################*/
+
+.route-table-wrapper {
+  // max-height: $generic-wrapper-max-height;
+  // overflow: auto;
+  th {
+    position: sticky;
+    background: #f1f1f1;
+    top: 0;
+    z-index: 500;
+  }
+  .route-table-row {
+    cursor: pointer;
+  }
+}
+
+.mission-table-wrapper {
+  max-height: 650px;
   overflow: auto;
-  max-height: $mtf-list-max-height;
-}
-
-.route-list-header>th {
-  position: sticky;
-  background: #dad7d7;
-  top: 0;
-  z-index: 500;
-}
-
-.route-list-row {
-  cursor: pointer;
-  background: #f7f4f4;
-}
-
-.route-expanding
-{
-  background: #fafafa;
+  th {
+    position: sticky;
+    background: #f1f1f1;
+    top: 0;
+    z-index: 500;
+  }
 }
 
 .route-list-column.overflow,
@@ -34,36 +54,3 @@ $mtf-list-max-height: 600px;
   white-space: nowrap;
   overflow: hidden;
 }
-
-/* #######################
-   #                     #
-   # Table Mission Style #
-   #                     #
-   #######################*/
-
-// .mission-list {
-//   /* border: 1px solid #ddd; */
-// }
-
-.mission-list-table-wrapper {
-  overflow: auto;
-  max-height: $mtf-list-max-height;
-}
-
-.mission-list-table-wrapper>table {
-  margin: 0;
-}
-
-.mission-list-header>th {
-  position: sticky;
-  top: 0;
-  background-color: #a8c7cc !important;
-  z-index: 499;
-}
-
-/* .mission-list-body {
-  background-color: #f4fdff !important;
-}
-.mission-list-body>tr :hover {
-  background-color: #dce2e4 !important;
-} */

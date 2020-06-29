@@ -13,6 +13,7 @@ export const generateRoute = (user, date, workflow) => {
   let duration = computeDuration(missions);
   return {
     "id": routeId,
+    "date": dateToLocalISO(date),
     "external_ref": 'route-' + (1000000+Math.round(Math.random()*1000000)) + '-' + date.getFullYear() + '_' + (date.getMonth() + 1) + '_' + date.getUTCDate(),
     "name": faker.random.br_state(),
     "user_id": user.id,
