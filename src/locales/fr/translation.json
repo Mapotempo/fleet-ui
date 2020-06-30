@@ -70,13 +70,17 @@
       "name": "nom",
       "status": "statut",
       "mission_type": "type",
-      "arrival_time": "heure d'arrivée (planifié / réel)",
+      "arrival_time": "heure d'arrivée (planifiée / réelle)",
       "proof_of_delivery": "preuves de livraison"
+    },
+    "eta_help_text": {
+      "shifted_time_arrival": "(STA: Shifted Arrival Time) - L'heure d'arrivée éstimée a été calculée en décalant la date d'arrivée plannifiée avec le précedant retard",
+      "computed_time_arrival": "(CTA: Computed Arrival Time) - L'heure d'arrivée éstimée a été calculée avec un routeur traffique temps réel"
     }
   },
   "user_info": {
     "driver": {
-      "title": "Chauffeur :",
+      "title": "Agent mobile :",
       "name": "nom",
       "email": "email",
       "phone": "téléphone"

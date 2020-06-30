@@ -1,4 +1,4 @@
-import { computedDelayType } from '../constants';
+import { ETA_TYPE } from '../constants';
 
 // ======================
 // Extra info computation
@@ -84,15 +84,15 @@ export const computeMissionDelayInfos = (mission, missionStatus, previousRealDel
     delay = 0, realDelay = 0;
     // 1) - Choose arrival Date
   let arrivalDate = sta;
-  let delayType = computedDelayType.STA;
+  let delayType = ETA_TYPE.STA;
   if (missionStatus.is_last) {
     if (rta) {
       arrivalDate = rta;
-      delayType = computedDelayType.RTA;
+      delayType = ETA_TYPE.RTA;
     } // FIXME: else right behavior ?
   } else if (eta) {
     arrivalDate = eta;
-    delayType = computedDelayType.ETA;
+    delayType = ETA_TYPE.CTA;
   }
 
   // 2) - Compute real delay

@@ -72,11 +72,15 @@
       "mission_type": "type",
       "arrival_time": "arriving time (planned / real)",
       "proof_of_delivery": "proof of delivery"
+    },
+    "eta_help_text": {
+      "shifted_time_arrival": "(STA: Shifted Arrival Time) - Estimated Arrival Time was calculated by shifting the planned time with previous delay",
+      "computed_time_arrival": "(CTA: Computed Arrival Time) - Estimated Arrival Time was calculated with a real-time traffic router"
     }
   },
   "user_info": {
     "driver": {
-      "title": "Driver:",
+      "title": "Mobile agent:",
       "name": "name",
       "email": "email",
       "phone": "phone"

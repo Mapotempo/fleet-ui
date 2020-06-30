@@ -9,7 +9,7 @@ export const dateDiffInDays = (a, b) => {
 export const dayLabel = (a, b) => {
   let dayDiff = dateDiffInDays(a, b);
   if (dayDiff !== 0)
-    return ` (J${dayDiff<0?'-':'+'}${dayDiff})`;
+    return ` (J${dayDiff<0?'':'+'}${dayDiff})`;
   return '';
 };
 

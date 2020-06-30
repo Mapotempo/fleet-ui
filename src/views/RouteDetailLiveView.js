@@ -78,7 +78,7 @@ const RouteDetailLiveView = (props) => {
               onBackClick={props.onBackClick} />
           </Col>
         </Row>
-        <Row>
+        <Row className="mtf-dashboard-row">
           <Col md={12}>
             <Panel>
               <Panel.Body>

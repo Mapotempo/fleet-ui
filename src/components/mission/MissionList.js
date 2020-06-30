@@ -14,11 +14,11 @@ import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 import { Label, Badge, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 
 // other
-import { surveyType, computedDelayType } from '../../constants';
+import { surveyType, ETA_TYPE } from '../../constants';
 import { toLocaleTimeString, dayLabel } from '../../lib/dateUtils';
 
 // =============
-// MISSIONS LISTmissions
+// MISSIONS LIST
 // =============
 
 const propTypes = {
@@ -146,6 +146,7 @@ const AttachmentFormater = (cell, mission, rowIndex, formatExtraData) => {
 // ==========
 
 const TimeComponent = ({ routeDate, planned, delayInfo }) => {
+  const { t } = useTranslation();
   let delayLowThreashold = useSelector(state => state.fleet.config.delayLowThreashold);
   let delayHightThreashold = useSelector(state => state.fleet.config.delayHightThreashold);
   let arrival = new Date(delayInfo.arrivalDate);
@@ -155,7 +156,7 @@ const TimeComponent = ({ routeDate, planned, delayInfo }) => {
   else if (delayInfo.delay > delayLowThreashold)
     style = 'warning';
 
-  let arrivalLabel = delayInfo.delayType === computedDelayType.RTA ? '' : `ETA`;
+  let arrivalLabel = delayInfo.delayType === ETA_TYPE.RTA ? '' : `ETA`;
 
   return (
     <div>
@@ -169,7 +170,7 @@ const TimeComponent = ({ routeDate, planned, delayInfo }) => {
         left: '-10px',
         top: '-10px',
         fontSize: '0.6em'
-      }} title={delayInfo.delayType}>
+      }} title={t(`mission.eta_help_text.${delayInfo.delayType}`)}>
         {arrivalLabel}
       </Badge>
     </div>);
