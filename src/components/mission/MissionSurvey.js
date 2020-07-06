@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // Component
-import { Image, Form, FormGroup, Col, FormControl, ControlLabel } from 'react-bootstrap';
+import { Image, Form, FormGroup, Col, FormControl, ControlLabel, Carousel } from 'react-bootstrap';
 
 // Constant
-import { surveyType } from '../../constants';
+import { SURVEY_TYPE } from '../../constants';
 
 // =============
 // SurveyPicture
@@ -20,11 +20,12 @@ const surveyPicturePropTypes = {
 };
 
 const SurveyPicture = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
+  let images = props.mission.survey_pictures.map((image, index) => <Carousel.Item key={index}><Image src={image} responsive className="survey-image"/></Carousel.Item>);
   return (
     <React.Fragment>
-      {isLoading ? '...' : null }
-      <Image onLoad={() => setIsLoading(false)} src={props.mission.survey_pictures[0]} responsive className="survey-image"/>
+      <Carousel>
+        {images}
+      </Carousel>
     </React.Fragment>);
 };
 
@@ -159,21 +160,21 @@ SurveyError.propTypes = surveyErrorPropTypes;
 
 const missionSurveyPropTypes = {
   mission: PropTypes.object.isRequired,
-  surveyType: PropTypes.oneOf(Object.values(surveyType)).isRequired
+  surveyType: PropTypes.oneOf(Object.values(SURVEY_TYPE)).isRequired
 };
 
 const MissionSurvey = (props) => {
   switch (props.surveyType)
   {
-    case surveyType.SIGNATURE:
+    case SURVEY_TYPE.SIGNATURE:
       return <SurveySignature mission={props.mission}/>;
-    case surveyType.PICTURE:
+    case SURVEY_TYPE.PICTURE:
       return <SurveyPicture mission={props.mission}/>;
-    case surveyType.COMMENT:
+    case SURVEY_TYPE.COMMENT:
       return <SurveyComment mission={props.mission}/>;
-    case surveyType.BARCODE:
+    case SURVEY_TYPE.BARCODE:
       return <SurveyBarCode mission={props.mission}/>;
-    case surveyType.ADDRESS:
+    case SURVEY_TYPE.ADDRESS:
       return <SurveyAddress mission={props.mission}/>;
     default:
       return (<SurveyError msg={`survey type "${props.surveyType}" not yet implemented`}/>);

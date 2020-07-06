@@ -60,7 +60,7 @@
   },
   "mission": {
     "survey": {
-      "picture": "Photo relevée",
+      "picture": "Photos relevées",
       "signature": "Signature relevée",
       "comment": "Commentaire relevé",
       "barcode": "Codes barres relevées",
@@ -70,12 +70,13 @@
       "name": "nom",
       "status": "statut",
       "mission_type": "type",
-      "arrival_time": "heure d'arrivée (planifiée / réelle)",
+      "planned_time": "heure planifiée",
+      "arrival_time": "heure d'arrivée",
       "proof_of_delivery": "preuves de livraison"
     },
     "eta_help_text": {
-      "shifted_time_arrival": "(STA: Shifted Arrival Time) - L'heure d'arrivée éstimée a été calculée en décalant la date d'arrivée plannifiée avec le précedant retard",
-      "computed_time_arrival": "(CTA: Computed Arrival Time) - L'heure d'arrivée éstimée a été calculée avec un routeur traffique temps réel"
+      "shifted_time_arrival": "(STA: Shifted Time Arrival) - L'heure d'arrivée éstimée a été calculée en décalant la date d'arrivée plannifiée avec le précedant retard",
+      "computed_time_arrival": "(CTA: Computed Time Arrival) - L'heure d'arrivée éstimée a été calculée avec un routeur traffique temps réel"
     }
   },
   "user_info": {

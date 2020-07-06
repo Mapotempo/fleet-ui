@@ -60,7 +60,7 @@
   },
   "mission": {
     "survey": {
-      "picture": "Survey picture",
+      "picture": "Survey pictures",
       "signature": "Survey signature",
       "comment": "Survey comment",
       "barcode": "Survey barcode",
@@ -70,12 +70,13 @@
       "name": "name",
       "status": "status",
       "mission_type": "type",
-      "arrival_time": "arriving time (planned / real)",
+      "planned_time": "planned time",
+      "arrival_time": "arriving time",
       "proof_of_delivery": "proof of delivery"
     },
     "eta_help_text": {
-      "shifted_time_arrival": "(STA: Shifted Arrival Time) - Estimated Arrival Time was calculated by shifting the planned time with previous delay",
-      "computed_time_arrival": "(CTA: Computed Arrival Time) - Estimated Arrival Time was calculated with a real-time traffic router"
+      "shifted_time_arrival": "(STA: Shifted Time Arrival) - Estimated Arrival Time was calculated by shifting the planned time with previous delay",
+      "computed_time_arrival": "(CTA: Computed Time Arrival) - Estimated Arrival Time was calculated with a real-time traffic router"
     }
   },
   "user_info": {

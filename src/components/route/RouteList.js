@@ -73,6 +73,7 @@ const RoutesList = (props) => {
     {
       dataField: 'name',
       text: t('route.list_header.name'),
+      title: true,
       classes: 'route-list-column overflow',
       headerClasses: 'route-list-column',
       sort: true

@@ -85,6 +85,7 @@ export const computeMissionDelayInfos = (mission, missionStatus, previousRealDel
     // 1) - Choose arrival Date
   let arrivalDate = sta;
   let delayType = ETA_TYPE.STA;
+  let plannedTimeWindow = null;
   if (missionStatus.is_last) {
     if (rta) {
       arrivalDate = rta;
@@ -100,14 +101,14 @@ export const computeMissionDelayInfos = (mission, missionStatus, previousRealDel
 
   // 3) - Compute delay
   if (mission.time_windows && mission.time_windows.length) { // Delay with time windows
-    let plannedTimeWindow = getPlannedTimeWindow(mission);
+    plannedTimeWindow = getPlannedTimeWindow(mission);
     if (plannedTimeWindow)
       delay = delayDateTimeWindow(arrivalDate, plannedTimeWindow);
     else // FIXME: right behavior ?
       delay = realDelay;
   } else
     delay = realDelay;
-  return {delay, delayType, realDelay, arrivalDate };
+  return {delay, delayType, realDelay, arrivalDate, plannedTimeWindow };
 };
 
 const compareMissions = (missionA, missionB) => {

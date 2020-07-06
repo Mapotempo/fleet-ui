@@ -1,4 +1,4 @@
-export const surveyType = {
+export const SURVEY_TYPE = {
   PICTURE: 'picture',
   SIGNATURE: 'signature',
   COMMENT: 'comment',
@@ -13,4 +13,5 @@ export const ETA_TYPE = {
   CTA: 'computed_time_arrival'
 };
 
-Object.freeze(surveyType);
+Object.freeze(SURVEY_TYPE);
+Object.freeze(ETA_TYPE);
