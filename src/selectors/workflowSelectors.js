@@ -17,9 +17,8 @@ export const missionStatusTypesMapper = createSelector(
   missionStatusTypesSelector,
   (statusTypesList) => {
     let res = {};
-    statusTypesList.forEach((statusType) => {
-      res[statusType.id] = statusType;
-    });
+    for (let i = 0; i < statusTypesList.length; i++)
+      res[statusTypesList[i].id] = statusTypesList[i];
     return res;
   }
 );
@@ -33,9 +32,8 @@ export const missionActionsTypesMapper = createSelector(
   missionActionsTypesSelector,
   (actionTypesList) => {
     let res = {};
-    actionTypesList.forEach((actionType) => {
-      res[actionType.id] = actionType;
-    });
+    for (let i = 0; i < actionTypesList.length; i++)
+      res[actionTypesList[i].id] = actionTypesList[i];
     return res;
   }
 );

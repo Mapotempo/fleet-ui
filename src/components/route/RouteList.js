@@ -183,7 +183,9 @@ export default RoutesList;
 // Formater
 // ========
 
-const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => formatExtraData[row.user_id].email;
+const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => {
+  return formatExtraData[row.user_id].email
+};
 
 const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData} withLabels withCount={false} />);
 

@@ -1,4 +1,5 @@
 import { ApiUsers } from '../api';
+import { flatten } from '../lib/flatten'
 
 // =================================
 // USER
@@ -36,7 +37,7 @@ export const fetchUsers = () => {
           host: getState().fleet.config.host,
           apiKey: authUser.api_key
         })))
-      .then(res => res.flat())
+      .then(res => flatten(res))
       .then(users => {
         dispatch(receiveUsers(users));
         dispatch(fetchUserInfos());
@@ -84,7 +85,7 @@ export const fetchUserInfos = () => {
             host: getState().fleet.config.host,
             apiKey: authUser.api_key
           })))
-      .then(res => res.flat())
+      .then(res => flatten(res))
       .then(userInfosArray => {
         Object.entries(userInfosArray.reduce((accumulator, userInfo) => {
           accumulator[userInfo.user_id] = accumulator[userInfo.user_id] || [];
@@ -133,7 +134,7 @@ export const fetchUserSettings = () => {
             host: getState().fleet.config.host,
             apiKey: authUser.api_key
           })))
-      .then(res => res.flat())
+      .then(res => flatten(res))
       .then(userSettingsArray => userSettingsArray.map(userSettings => dispatch(receiveUserSettings(userSettings))))
       .catch(errors => dispatch(errorsUserSettings(errors)));
   };

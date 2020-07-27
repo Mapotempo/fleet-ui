@@ -1,4 +1,5 @@
 import { ApiWorkflow } from '../api';
+import { flatten } from '../lib/flatten'
 
 // ====================
 // WORKFLOW FULL ACTION
@@ -49,7 +50,7 @@ const fetchMissionStatusTypes = () => {
           apiKey: authUser.api_key,
         }
       )))
-      .then(res => res.flat())
+      .then(res => flatten(res))
       .then(missionStatusTypes => dispatch(receiveMissionStatusType(missionStatusTypes)))
       .catch(errors => dispatch(errorsMissionStatusType(errors)));
   };
@@ -93,7 +94,7 @@ const fetchMissionActionTypes = () => {
           apiKey: authUser.api_key,
         }
       )))
-      .then(res => res.flat())
+      .then(res => flatten(res))
       .then(missionActionTypes => dispatch(receiveMissionActionType(missionActionTypes)))
       .catch(errors => dispatch(errorsMissionActionType(errors)));
   };

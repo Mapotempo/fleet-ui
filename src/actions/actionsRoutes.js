@@ -2,6 +2,7 @@ import { ApiRoutes } from '../api';
 import { computeExtraInfo } from '../lib/extraInfo';
 import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 import { missionStatusTypesMapper } from '../selectors/workflowSelectors';
+import { flatten } from '../lib/flatten'
 
 /**
  * fetchRoutesOnDates
@@ -25,7 +26,7 @@ export const fetchRoutesOnDates = (from, to) => {
             host: getState().fleet.config.host,
             apiKey: authUser.api_key,
           })))
-      .then(res => res.flat()) // flat routes arrays
+      .then(res => flatten(res)) // flat routes arrays
       .then(routes => { // remove duplicate route (multi same account case)
         let routeIds = {};
         return routes.filter(route => {

@@ -9,22 +9,23 @@ import { useUrlHashParam } from '../hooks/useUrlHashParam';
 import RouteDetailLiveView from './RouteDetailLiveView';
 import RouteListLiveView from './RouteListLiveView';
 
+const now = (date = new Date()) => { date.setHours(0, 0, 0, 0); return date; };
 const formatUrlDate = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-const purifyDate = (date) => {date.setHours(0,0,0,0); return date;};
+const parseUrlDate = date => new Date(date.replace(/-/gi, '/'));
 
 /**
  * Live view Component
  */
 const LiveView = () => {
   let [routeId, setRouteId] = useUrlHashParam('route_id');
-  let [date, setDate] = useUrlHashParam('date');
-  let fetchDate = date ? new Date(date) : purifyDate(new Date());
-  useAutoFetchRoutesOnDate(fetchDate);
+  let [hashDate, setHashDate] = useUrlHashParam('date');
+  let date = hashDate ?  parseUrlDate(hashDate) : now();
+  useAutoFetchRoutesOnDate(date);
   return (
     <div className='mtf-view-container'>
-      { routeId ?
-        <RouteDetailLiveView routeId={routeId} onBackClick={() => setRouteId('')}/> :
-        <RouteListLiveView selectedDate={fetchDate} onDateSelected={date => setDate(formatUrlDate(date))} onRouteSelected={routeId => setRouteId(routeId)} /> }
+      {routeId ?
+        <RouteDetailLiveView routeId={routeId} onBackClick={() => setRouteId('')} /> :
+        <RouteListLiveView selectedDate={date} onDateSelected={date => setHashDate(formatUrlDate(date))} onRouteSelected={routeId => setRouteId(routeId)} /> }
     </div>
   );
 };

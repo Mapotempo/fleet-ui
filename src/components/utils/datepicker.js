@@ -41,7 +41,10 @@ const Datepicker = (props) => {
         format: t('datepicker'),
         zIndexOffset: 1000
       })
-      .on("changeDate", (e) => props.onChangeDate(e.date))
+      .on("changeDate", (e) => {
+        if (e && e.date)
+          props.onChangeDate(e.date)
+      })
       .datepicker("setDate", props.initialDate);
 
   }, []);
