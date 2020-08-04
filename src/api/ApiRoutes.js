@@ -1,4 +1,4 @@
-import { doGet } from './ApiCommon';
+import { doGet, CancelToken } from './ApiCommon';
 
 export default {
   apiFetchRoutes(withMissions, from, to, { host, apiKey }) {
@@ -10,8 +10,8 @@ export default {
         'from': from,
         'to': to
       }
-    })
-      .then(data => Promise.resolve(data.routes));
+    }, this._axiosSource.token)
+      .then(data => data.routes);
   },
   apiFetchRoute(routeId, { host, apiKey }) {
     return doGet(host, {
@@ -20,7 +20,12 @@ export default {
       parameters: {
         'with_missions': true
       }
-    })
-      .then((data) => Promise.resolve(data.route));
+    }, this._axiosSource.token)
+      .then((data) => data.route);
+  },
+  _axiosSource: CancelToken.source(),
+  cancelFetch() {
+    this._axiosSource.cancel();
+    this._axiosSource = CancelToken.source();
   }
 };

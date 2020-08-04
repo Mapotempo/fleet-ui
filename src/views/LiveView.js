@@ -17,10 +17,10 @@ const parseUrlDate = date => new Date(date.replace(/-/gi, '/'));
  * Live view Component
  */
 const LiveView = () => {
-  let [routeId, setRouteId] = useUrlHashParam('route_id');
-  let [hashDate, setHashDate] = useUrlHashParam('date');
-  let date = hashDate ?  parseUrlDate(hashDate) : now();
-  useAutoFetchRoutesOnDate(date);
+  const [routeId, setRouteId] = useUrlHashParam('route_id');
+  const [hashDate, setHashDate] = useUrlHashParam('date');
+  const date = hashDate ?  parseUrlDate(hashDate) : now();
+  useAutoFetchRoutesOnDate(date.toISOString());
   return (
     <div className='mtf-view-container'>
       {routeId ?

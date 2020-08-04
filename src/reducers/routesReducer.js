@@ -1,19 +1,25 @@
 import {
-  REQUEST_ROUTES, RECEIVE_ROUTES, ERRORS_ROUTES, CLEAR_ROUTES,
+  RESET_STATE, REQUEST_ROUTES, RECEIVE_ROUTES, ERRORS_ROUTES,
   RECEIVE_ROUTE_MISSIONS, REQUEST_ROUTES_MISSIONS_BEGIN, REQUEST_ROUTES_MISSIONS_END
 } from '../actions';
-
 import { initialExtraInfo } from '../lib/extraInfo';
+import { generateId } from '../lib/random';
 
-const initState = {
-  isFetching: false,
-  errors: null,
-  items: [],
-  isFetchingRoutesMissions: false
+const initState = () => {
+  return {
+    errors: null,
+    items: [],
+    isFetching: false,
+    isFetchingRoutesMissions: false,
+    _fetchSession: generateId()
+  };
 };
 
-export default function routesReducer(state = initState, action) {
+export default function routesReducer(state = initState(), action) {
   switch (action.type) {
+    case RESET_STATE:
+      state = initState();
+      break;
     case REQUEST_ROUTES:
       state = { ...state, isFetching: true };
       break;
@@ -26,9 +32,6 @@ export default function routesReducer(state = initState, action) {
         newRoute.extraInfo = (oldRoute && oldRoute.extraInfo) ? oldRoute.extraInfo : initialExtraInfo();
         return {...newRoute};
       });
-      break;
-    case CLEAR_ROUTES:
-      state = { ...initState };
       break;
     case ERRORS_ROUTES:
       console.error(action.errors);

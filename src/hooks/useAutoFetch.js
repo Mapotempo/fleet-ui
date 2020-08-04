@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { fetchRoutesOnDates, fetchRoutesMissions } from '../actions';
+import { fetchRoutesOnDates, fetchRoutesMissions, cancelFetchAndResetState } from '../actions';
 import { useDispatch } from 'react-redux';
 
 const TIMEOUT_INTERVAL_ROUTES = 30000; //ms
@@ -14,14 +14,16 @@ const TIMEOUT_INTERVAL_ROUTES = 30000; //ms
 export const useAutoFetchRoutesOnDate = (date, slidingDay=1) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    let to = new Date(date);
-    to.setDate(date.getDate() + slidingDay);
-    dispatch(fetchRoutesOnDates(date, to));
+    dispatch(cancelFetchAndResetState());
+    let from = new Date(date);
+    let to = new Date(from);
+    to.setDate(from.getDate() + slidingDay);
+    dispatch(fetchRoutesOnDates(from, to));
     let handler = window.setInterval(() => {
-      dispatch(fetchRoutesOnDates(date, to));
+      dispatch(fetchRoutesOnDates(from, to));
     }, TIMEOUT_INTERVAL_ROUTES);
     return () => window.clearInterval(handler);
-  }, [date]);
+  }, [date, slidingDay]);
 };
 
 const TIMEOUT_INTERVAL_ROUTES_MISSIONS = 120000; //ms

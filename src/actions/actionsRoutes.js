@@ -2,7 +2,26 @@ import { ApiRoutes } from '../api';
 import { computeExtraInfo } from '../lib/extraInfo';
 import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 import { missionStatusTypesMapper } from '../selectors/workflowSelectors';
-import { flatten } from '../lib/flatten'
+import { flatten } from '../lib/flatten';
+
+/**
+ * cancelFetchAndResetState
+ *
+ * cancel all current fetch and reset route state
+ */
+export const cancelFetchAndResetState = () => {
+  return (dispatch) => {
+    ApiRoutes.cancelFetch();
+    dispatch(resetState());
+  };
+};
+
+export const RESET_STATE = 'RESET_STATE';
+const resetState = () => {
+  return {
+    type: RESET_STATE
+  };
+};
 
 /**
  * fetchRoutesOnDates
@@ -36,13 +55,6 @@ export const fetchRoutesOnDates = (from, to) => {
         });})
       .then(routes => dispatch(receiveRoutes(routes))) // proccess receive route action
       .catch(errors => dispatch(errorsRoutes(errors)));
-  };
-};
-
-export const CLEAR_ROUTES = 'CLEAR_ROUTES';
-export const clearRoutes = () => {
-  return {
-    type: CLEAR_ROUTES
   };
 };
 
@@ -80,13 +92,14 @@ const ROUTES_BY_STEP = 20;
  */
 export const fetchRoutesMissions = (routes) => {
   return async(dispatch, getState) => {
-    // Prevent multi fetching
-    if (getState().fleet.routes.isFetchingRoutesMissions)
+    if (getState().fleet.routes.isFetchingRoutesMissions) // Prevent multi fetching
       return;
 
     dispatch(requestRouteMissionsBegin());
     var index = 0;
-    while (index < routes.length) {
+    let session = getState().fleet.routes._fetchSession;
+    while (index < routes.length
+      && session === getState().fleet.routes._fetchSession) {
       let routeSliced = routes.slice(index, index + ROUTES_BY_STEP);
       await dispatch(_fetchRoutesMissions(routeSliced)); // await for previous ROUTES_BY_STEP fetches
       index += ROUTES_BY_STEP;
