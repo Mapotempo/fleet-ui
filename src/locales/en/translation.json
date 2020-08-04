@@ -60,11 +60,24 @@
   },
   "mission": {
     "survey": {
-      "picture": "Survey pictures",
-      "signature": "Survey signature",
-      "comment": "Survey comment",
-      "barcode": "Survey barcode",
-      "address": "Survey address"
+      "picture": {
+        "title": "survey_pictures"
+      },
+      "signature": {
+        "title": "Survey signature",
+        "signatory_name": "Signatory name:",
+        "unknown_signatory": "Unknown signatory",
+        "signature": "Signature:"
+      },
+      "comment": {
+        "title": "Survey comment"
+      },
+      "barcode": {
+        "title": "Survey barcode"
+      },
+      "address": {
+        "title": "Survey address"
+      }
     },
     "list_header": {
       "name": "name",

@@ -109,7 +109,7 @@ const RouteDetailLiveView = (props) => {
           {modalInfo ?
             <React.Fragment>
               <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-sm">{t(`mission.survey.${modalInfo.surveyType}`)}</Modal.Title>
+                <Modal.Title id="contained-modal-title-sm">{t(`mission.survey.${modalInfo.surveyType}.title`)}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <MissionSurvey mission={modalInfo.mission} surveyType={modalInfo.surveyType}></MissionSurvey>

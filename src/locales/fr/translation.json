@@ -60,11 +60,24 @@
   },
   "mission": {
     "survey": {
-      "picture": "Photos relevées",
-      "signature": "Signature relevée",
-      "comment": "Commentaire relevé",
-      "barcode": "Codes barres relevées",
-      "address": "Adresse relevée"
+      "picture": {
+        "title": "Photos relevées"
+      },
+      "signature": {
+        "title": "Signature relevée",
+        "signatory_name": "Nom du signataire :",
+        "unknown_signatory": "Signataire inconnue",
+        "signature": "Signature :"
+      },
+      "comment": {
+        "title": "Commentaire relevé"
+      },
+      "barcode": {
+        "title": "Codes barres relevées"
+      },
+      "address": {
+        "title": "Adresse relevée"
+      }
     },
     "list_header": {
       "name": "nom",

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Hook
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Component
 import { Image, Form, FormGroup, Col, FormControl, ControlLabel, Carousel } from 'react-bootstrap';
@@ -40,11 +41,18 @@ const surveySignaturePropTypes = {
 };
 
 const SurveySignature = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
+  const signatory_name = props.mission.survey_signature_name || t(`mission.survey.signature.unknown_signatory`);
   return (
     <React.Fragment>
-      {isLoading ? '...' : null }
-      <Image onLoad={() => setIsLoading(false)} src={props.mission.survey_signature} responsive className="survey-image"/>
+      <p>
+        <b>{t(`mission.survey.signature.signatory_name`)}</b><br />
+        {signatory_name}</p>
+      <p>
+        <b>{t(`mission.survey.signature.signature`)}</b>
+        <Image src={props.mission.survey_signature} responsive
+          className="survey-image" />
+      </p>
     </React.Fragment>);
 };
 
