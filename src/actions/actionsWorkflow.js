@@ -1,5 +1,5 @@
-import { ApiWorkflow } from '../api';
-import { flatten } from '../lib/flatten'
+import { ApiWorkflow, BaseApiException } from '../api';
+import { flatten } from '../lib/flatten';
 
 // ====================
 // WORKFLOW FULL ACTION
@@ -32,10 +32,10 @@ const receiveMissionStatusType = (missionStatusTypes) => {
 };
 
 export const ERRORS_MISSION_STATUS_TYPE = 'ERRORS_MISSION_STATUS_TYPE';
-const errorsMissionStatusType = (errors) => {
+const errorsMissionStatusType = (error) => {
   return {
     type: ERRORS_MISSION_STATUS_TYPE,
-    errors
+    error
   };
 };
 
@@ -52,7 +52,11 @@ const fetchMissionStatusTypes = () => {
       )))
       .then(res => flatten(res))
       .then(missionStatusTypes => dispatch(receiveMissionStatusType(missionStatusTypes)))
-      .catch(errors => dispatch(errorsMissionStatusType(errors)));
+      .catch(error => {
+        if (!(error instanceof BaseApiException))
+          throw error;
+        dispatch(errorsMissionStatusType(error));
+      });
   };
 };
 
@@ -76,10 +80,10 @@ const receiveMissionActionType = (missionActionTypes) => {
 };
 
 export const ERRORS_MISSION_ACTION_TYPE = 'ERRORS_MISSION_ACTION_TYPE';
-const errorsMissionActionType = (errors) => {
+const errorsMissionActionType = (error) => {
   return {
     type: ERRORS_MISSION_ACTION_TYPE,
-    errors
+    error
   };
 };
 
@@ -96,6 +100,11 @@ const fetchMissionActionTypes = () => {
       )))
       .then(res => flatten(res))
       .then(missionActionTypes => dispatch(receiveMissionActionType(missionActionTypes)))
-      .catch(errors => dispatch(errorsMissionActionType(errors)));
+      .catch(error => {
+        if (!(error instanceof BaseApiException))
+          throw error;
+        dispatch(errorsMissionActionType(error));
+      });
+
   };
 };

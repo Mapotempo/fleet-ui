@@ -9,7 +9,7 @@ const initState = {
   isFetching: false,
   items: [],
   ready: false,
-  errors: null
+  errors: []
 };
 
 export default function usersReducer(state = initState, action) {
@@ -57,8 +57,8 @@ export default function usersReducer(state = initState, action) {
     case ERRORS_USER_SETTINGS:
     case ERRORS_USER_INFO:
     case ERRORS_USERS:
-      console.error(action.errors);
-      state = { ...state, errors: action.errors, isFetching: false };
+      console.warn(action.error);
+      state = { ...state, errors: [...state.errors, action.error], isFetching: false };
       break;
     default:
       break;

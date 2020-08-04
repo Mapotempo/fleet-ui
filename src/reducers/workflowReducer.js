@@ -10,8 +10,8 @@ import {
 const initState = {
   isFetchingMST: false,
   isFetchingMAT: false,
-  errorsMST: null,
-  errorsMAT: null,
+  errorsMST: [],
+  errorsMAT: [],
   missionStatusTypeItems: [],
   missionActionTypeItems: [],
   readyMST: false,
@@ -28,8 +28,8 @@ export default function workflowReducer(state = initState, action) {
       state.missionStatusTypeItems = [...action.missionStatusTypes];
       break;
     case ERRORS_MISSION_STATUS_TYPE:
-      console.error(action.errors);
-      state = { ...state, errorsMST: action.errors, isFetching: false };
+      console.warn(action.error);
+      state = { ...state, errorsMST: [...state.errorsMSt, action.error], isFetching: false };
       break;
     case REQUEST_MISSION_ACTION_TYPE:
       state = { ...state, isFetchingMAT: true, readyMAT: false};
@@ -39,8 +39,8 @@ export default function workflowReducer(state = initState, action) {
       state.missionActionTypeItems = [...action.missionActionTypes];
       break;
     case ERRORS_MISSION_ACTION_TYPE:
-      console.error(action.errors);
-      state = { ...state, errorsMAT: action.errors, isFetchingMAT: false };
+      console.warn(action.error);
+      state = { ...state, errorsMAT: [...state.errorsMAT, action.error], isFetchingMAT: false };
       break;
     default:
       break;

@@ -1,4 +1,4 @@
-import { ApiRoutes } from '../api';
+import { ApiRoutes, BaseApiException, CancelApiException } from '../api';
 import { computeExtraInfo } from '../lib/extraInfo';
 import { tokenBySyncUserSelector } from '../selectors/authSelectors';
 import { missionStatusTypesMapper } from '../selectors/workflowSelectors';
@@ -54,7 +54,7 @@ export const fetchRoutesOnDates = (from, to) => {
           return res;
         });})
       .then(routes => dispatch(receiveRoutes(routes))) // proccess receive route action
-      .catch(errors => dispatch(errorsRoutes(errors)));
+      .catch(error => processRouteError(error, dispatch));
   };
 };
 
@@ -120,7 +120,7 @@ const _fetchRoutesMissions = (routes) => {
         computeExtraInfo(route, missionStatusTypesMap,
           getState().fleet.config.delayLowThreashold,
           getState().fleet.config.delayHightThreashold))))
-      .catch(errors => dispatch(errorsRoutes(errors)))
+      .catch(error => processRouteError(error, dispatch))
     ));
   };
 };
@@ -148,4 +148,16 @@ const receiveRouteMissions = (route, extraInfo) => {
     route,
     extraInfo: extraInfo
   };
+};
+
+const processRouteError = (error, dispatch) => {
+  switch (error.constructor)
+  {
+    case BaseApiException:
+    case CancelApiException:
+      dispatch(errorsRoutes(error));
+      break;
+    default:
+      throw error;
+  }
 };

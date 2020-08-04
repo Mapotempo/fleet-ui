@@ -1,21 +1,18 @@
 import { doGet } from './ApiCommon';
-
+import { AuthApiException } from './ApiException';
 export default {
   apiFetchAuthUser(syncUser, { host, apiKey }) {
     return doGet(host, { url: `/api/0.1/users/${syncUser}` ,apiKey })
-      .then((data) => Promise.resolve(data.user))
-      .catch((error) => {
+      .then(data => Promise.resolve(data.user))
+      .catch(error => {
         switch (error.status) {
           case 401:
-            error.message = 'Credential invalid'; //FIXME: translate;
-            break;
+            throw new AuthApiException('Credential invalid', error.status);
           case 404:
-            error.message = 'Utilisateur inconnue'; //FIXME: translate;
-            break;
+            throw new AuthApiException('Credential invalid', error.status);
           default:
-            error.message = 'Erreur inconnue'; //FIXME: translate;
+            throw error;
         }
-        throw error;
       });
   }
 };

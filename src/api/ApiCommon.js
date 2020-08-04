@@ -1,23 +1,19 @@
 import axios from 'axios';
-
+import { CancelApiException, BaseApiException } from './ApiException';
 export const CancelToken = axios.CancelToken;
 
-axios.interceptors.response.use(response => response.data,
+axios.interceptors.response.use(
+  response => response.data,
   thrown => {
-    let message = thrown ? thrown.toString() : 'Unknow Error';
-    let status = -1;
-    if (axios.isCancel(thrown)) {
-      message = "fetch cancel";
-      status = -2;
-    } else {
-      if (thrown && thrown.response && thrown.response.status > -1) {
-        status = thrown.response.status;
-        message = thrown.response.data ? thrown.response.data.error : thrown.toString();
-      }
-      if (process.env.NODE_ENV != 'development')
-        message = 'Error, call your support team'; //FIXME: translate;
+    if (axios.isCancel(thrown))
+      throw new CancelApiException();
+    else if (thrown.isAxiosError) {
+      let status = thrown.response.status;
+      let message = thrown.response.data ? thrown.response.data.error : thrown.toString();
+      throw new BaseApiException(message, status);
     }
-    throw { message, status };
+    else
+      throw thrown;
   }
 );
 

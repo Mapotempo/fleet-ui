@@ -1,5 +1,6 @@
+import { ApiRoutes, IgnoredApiException } from '../api';
 import { ApiUsers } from '../api';
-import { flatten } from '../lib/flatten'
+import { flatten } from '../lib/flatten';
 
 // =================================
 // USER
@@ -21,10 +22,10 @@ const receiveUsers = (users) => {
 };
 
 export const ERRORS_USERS = 'ERRORS_USERS';
-const errorsUsers = (errors) => {
+const errorsUsers = (error) => {
   return {
     type: ERRORS_USERS,
-    errors
+    error
   };
 };
 
@@ -68,10 +69,10 @@ const receiveUserInfo = (userID, userInfos) => {
 };
 
 export const ERRORS_USER_INFO = 'ERRORS_USER_INFO';
-const errorsUserInfo = (errors) => {
+const errorsUserInfo = (error) => {
   return {
     type: ERRORS_USER_INFO,
-    errors
+    error
   };
 };
 
@@ -93,7 +94,16 @@ export const fetchUserInfos = () => {
           return accumulator;
         }, {})).map(([userID, userInfos]) => dispatch(receiveUserInfo(userID, userInfos)));
       })
-      .catch(errors => dispatch(errorsUserInfo(errors)));
+      .catch(error => {
+        switch (error.constructor)
+        {
+          case IgnoredApiException:
+            dispatch(errorsUserInfo(error));
+            break;
+          default:
+            throw error;
+        }
+      });
   };
 };
 
@@ -117,10 +127,10 @@ const receiveUserSettings = userSettings => {
 };
 
 export const ERRORS_USER_SETTINGS = 'ERRORS_USER_SETTINGS';
-const errorsUserSettings = errors => {
+const errorsUserSettings = error => {
   return {
     type: ERRORS_USER_SETTINGS,
-    errors
+    error
   };
 };
 
@@ -136,6 +146,15 @@ export const fetchUserSettings = () => {
           })))
       .then(res => flatten(res))
       .then(userSettingsArray => userSettingsArray.map(userSettings => dispatch(receiveUserSettings(userSettings))))
-      .catch(errors => dispatch(errorsUserSettings(errors)));
+      .catch(error => {
+        switch (error.constructor)
+        {
+          case IgnoredApiException:
+            dispatch(errorsUserSettings(error));
+            break;
+          default:
+            throw error;
+        }
+      });
   };
 };

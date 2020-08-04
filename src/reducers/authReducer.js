@@ -22,7 +22,7 @@ export default function authReducer(state = initState, action) {
       };
       break;
     case ERRORS_AUTH_USERS:
-      console.error(action.errors);
+      console.warn(action.errors);
       state = {
         ...state,
         isFetching: false,

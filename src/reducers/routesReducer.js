@@ -34,7 +34,7 @@ export default function routesReducer(state = initState(), action) {
       });
       break;
     case ERRORS_ROUTES:
-      console.error(action.errors);
+      console.warn(action.errors);
       state = { ...state, errors: action.errors, isFetching: false };
       break;
     case REQUEST_ROUTES_MISSIONS_BEGIN:

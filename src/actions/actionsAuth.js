@@ -1,4 +1,4 @@
-import { ApiAuth } from '../api';
+import { ApiAuth, AuthApiException } from '../api';
 import { fetchWorkflow, fetchUsers } from '../actions';
 
 export const REQUEST_AUTH_USERS = 'REQUEST_AUTH_USERS';
@@ -42,6 +42,10 @@ export const signInUsers = (connexions) => {
         dispatch(fetchWorkflow());
         dispatch(fetchUsers());
       })
-      .catch((errors) => dispatch(errorAuthUsers(errors)));
+      .catch(error => {
+        if (!(error instanceof AuthApiException))
+          throw error;
+        dispatch(errorAuthUsers(error));
+      });
   };
 };
