@@ -142,7 +142,7 @@ const MissionStatusFormater = (missionStatusTypeId, mission, rowIndex, missionSt
 const plannedTimeFormater = (date, mission, rowIndex, { route, t }) => {
   let delayInfo = route.extraInfo.missionDelayInfoMap[mission.id];
   return (<div>
-    <Label bsStyle='default' style={{ fontSize: '12px' }}>
+    <Label className='date' bsStyle='default' style={{ fontSize: '12px' }}>
       {toLocaleTimeString(new Date(date))}
     </Label>
     {delayInfo.plannedTimeWindow ? (
@@ -153,30 +153,26 @@ const plannedTimeFormater = (date, mission, rowIndex, { route, t }) => {
 };
 
 const etaTimeFormater = (eta, mission, rowIndex, { route, t, delayLowThreashold, delayHightThreashold }) => {
-  let routeDate = new Date(route.date),
+  const routeDate = new Date(route.date),
     delayInfo = route.extraInfo.missionDelayInfoMap[mission.id];
-  let arrival = new Date(delayInfo.arrivalDate);
+  const arrival = new Date(delayInfo.arrivalDate);
+
+  if (delayInfo.delayType === ETA_TYPE.STA && delayInfo.delay === 0)
+    return <Label className="eta" bsStyle='default' style={{ fontSize: '12px', fontWeight: null }}>--h--</Label>;
+
   let style = 'success';
   if (delayInfo.delay > delayHightThreashold)
     style = 'danger';
   else if (delayInfo.delay > delayLowThreashold)
     style = 'warning';
-
-  let arrivalLabel = delayInfo.delayType === ETA_TYPE.RTA ? '' : `ETA`;
-
+  const arrivalLabel = delayInfo.delayType === ETA_TYPE.RTA ? '' : `ETA`;
   return (
     <div>
-      <Label bsStyle={style} style={{ fontSize: '12px', fontWeight: null }}>
+      <Label className="eta" bsStyle={style} style={{ fontSize: '12px', fontWeight: null }}>
         {`${toLocaleTimeString(arrival)}${dayLabel(routeDate, arrival)}`}
       </Label>
-      <Badge style={{
-        background: '#989898',
-        display: 'inline-block',
-        position: 'relative',
-        left: '-10px',
-        top: '-10px',
-        fontSize: '0.6em'
-      }} title={t(`mission.eta_help_text.${delayInfo.delayType}`)}>
+      <Badge className="eta"
+        title={t(`mission.eta_help_text.${delayInfo.delayType}`)}>
         {arrivalLabel}
       </Badge>
     </div>);
