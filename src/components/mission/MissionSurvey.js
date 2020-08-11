@@ -3,11 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Hook
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Component
-import { Image, Form, FormGroup, Col, FormControl, ControlLabel, Carousel } from 'react-bootstrap';
+import { Image, Carousel } from 'react-bootstrap';
+import Address from '../utils/address';
 
 // Constant
 import { SURVEY_TYPE } from '../../constants';
@@ -99,51 +99,8 @@ const surveyAddressPropTypes = {
 };
 
 const SurveyAddress = (props) => {
-  let address = {
-    city: "",
-    country: "",
-    detail: "",
-    postalcode: "",
-    state: "",
-    street: "",
-    ...props.mission.survey_address
-  };
-  return (
-    <Form horizontal>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} xs={3}>Voie</Col>
-        <Col xs={9}>
-          <FormControl disabled type="input" value={address.street}/>
-        </Col>
-      </FormGroup>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} xs={3}>Complément</Col>
-        <Col xs={9}>
-          <FormControl disabled type="complement" value={address.detail}/>
-        </Col>
-      </FormGroup>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} xs={3}>Code postal</Col>
-        <Col xs={9}>
-          <FormControl disabled type="complement" value={address.postalcode}/>
-        </Col>
-      </FormGroup>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} xs={3}>Ville</Col>
-        <Col xs={9}>
-          <FormControl disabled type="complement" value={address.city}/>
-        </Col>
-      </FormGroup>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} xs={3}>Pays</Col>
-        <Col xs={9}>
-          <FormControl disabled type="complement" value={address.country}/>
-        </Col>
-      </FormGroup>
-    </Form>
-  );
+  return (<Address {...props.mission.survey_address} />);
 };
-
 
 SurveyAddress.propTypes = surveyAddressPropTypes;
 
