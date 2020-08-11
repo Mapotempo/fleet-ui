@@ -63,6 +63,10 @@ $generic-even-color: #ffffff;
   }
 }
 
+.mission-list-column.action{
+  width: 30%;
+}
+
 .route-list-column.overflow,
 .mission-list-column.overflow {
   text-overflow: ellipsis;

@@ -84,8 +84,8 @@ const MissionList = props => {
     formatExtraData: props.onMissionSurveyClick,
     headerAlign: 'right',
     align: 'right',
-    classes: 'mission-list-column overflow',
-    headerClasses: 'mission-list-column overflow'
+    classes: 'mission-list-column overflow action',
+    headerClasses: 'mission-list-column overflow action'
   }];
 
   const defaultSorted = [{
@@ -184,14 +184,14 @@ const AttachmentFormater = (cell, mission, rowIndex, formatExtraData) => {
   let comment = mission.survey_comment;
   let barcode = mission.survey_barcodes && mission.survey_barcodes.length > 0;
   let address = mission.survey_address;
-  // let temperature = row.survey_temperature;
+  let formCsvUrl = mission.survey_form_csv_url;
   return <ButtonGroup>
     <Button bsStyle={picture ? "info": "default"} disabled={!picture} onClick={() => formatExtraData(mission, SURVEY_TYPE.PICTURE)}><Glyphicon glyph="camera" /></Button>
     <Button bsStyle={signature ? "info": "default"} disabled={!signature} onClick={() => formatExtraData(mission, SURVEY_TYPE.SIGNATURE)}><Glyphicon glyph="pencil" /></Button>
     <Button bsStyle={comment ? "info": "default"} disabled={!comment} onClick={() => formatExtraData(mission, SURVEY_TYPE.COMMENT)}><Glyphicon glyph="comment" /></Button>
     <Button bsStyle={barcode ? "info": "default"} disabled={!barcode} onClick={() => formatExtraData(mission, SURVEY_TYPE.BARCODE)}><Glyphicon glyph="barcode" /></Button>
     <Button bsStyle={address ? "info": "default"} disabled={!address} onClick={() => formatExtraData(mission, SURVEY_TYPE.ADDRESS)}><FontAwesomeIcon icon={faMapMarkedAlt} /></Button>
-    {/* <Button bsStyle={temperature ? "info": "default"} disabled={!temperature} onClick={() => formatExtraData(row, SURVEY_TYPE.TEMPERATURE)}><FontAwesomeIcon icon={faTemperatureLow} /></Button> */}
+    <Button bsStyle={formCsvUrl ? "info": "default"} disabled={!formCsvUrl} href={formCsvUrl}><Glyphicon glyph="list-alt" /></Button>
   </ButtonGroup>;
 };
 
