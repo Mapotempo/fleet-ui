@@ -13,7 +13,10 @@ export const dayLabel = (a, b) => {
   return '';
 };
 
-
 export const toLocaleTimeString = (a) => {
   return `${a.getHours().toString().padStart(2, '0')}h${a.getMinutes().toString().padStart(2, '0')}`;
 };
+
+export const parseDashedDate = dashedDateString => new Date(dashedDateString.replace(/-/gi, '/'));
+export const formatIsoDashedDate = date => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+export const formatLocalDashedDate = (date, local='fr') => date.toLocaleDateString(local).replace(/\//gi, '-');

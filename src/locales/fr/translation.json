@@ -36,7 +36,7 @@
     }
   },
   "route": {
-    "routes_list_title": "Tournées du {{date}}",
+    "routes_of": "Tournées du ",
     "route_detail_title": "Tournée : {{name}}",
     "route_not_found": "Tournée non trouvée",
     "route_detail_back": "retour à la liste des tournées",

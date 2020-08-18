@@ -36,8 +36,7 @@
     }
   },
   "route": {
-    "routes_list_title": "Routes of {{date}}",
-    "route_detail_title": "Route: {{name}}",
+    "routes_of": "Routes of ",
     "route_not_found": "Route not found",
     "route_detail_back": "back to routes list",
     "list_header": {

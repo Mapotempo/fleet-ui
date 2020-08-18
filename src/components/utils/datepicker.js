@@ -43,12 +43,12 @@ const Datepicker = (props) => {
       })
       .on("changeDate", (e) => {
         if (e && e.date)
-          props.onChangeDate(e.date)
+          props.onChangeDate(e.date);
       })
       .datepicker("setDate", props.initialDate);
 
   }, []);
-  return <input className="form-control" type="text" name="bootstrap-date-picker" id={buttonId} />;
+  return <input className="form-control" style={props.style} disabled={props.disabled} type="text" name="bootstrap-date-picker" id={buttonId} />;
 };
 
 Datepicker.propTypes = propTypes;
