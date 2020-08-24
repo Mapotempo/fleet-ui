@@ -1,10 +1,7 @@
-$margin: 20px;
-$padding: 20px;
-
 .mtf-user-info-devices-container {
-  margin: $margin;
+  margin: $mtf-margin;
 }
 
 .mtf-user-info-device {
-  padding: $padding;
+  padding: $mtf-padding;
 }
