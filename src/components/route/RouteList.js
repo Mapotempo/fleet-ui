@@ -88,7 +88,7 @@ const RoutesList = (props) => {
       headerClasses: 'route-list-column',
       wideScreenOnly: true,
       sort: true,
-      ...widthStyleGenerator(50)
+      ...widthStyleGenerator(25)
     },
     {
       dataField: 'routeInfoDeparture',
@@ -134,6 +134,16 @@ const RoutesList = (props) => {
       headerClasses: 'route-list-column'
     },
     {
+      dataField: 'archived_at',
+      text: t('route.list_header.status'),
+      headerAlign: 'center',
+      align: 'center',
+      formatter: ArchivedSatusFormatter,
+      classes: 'route-list-column',
+      headerClasses: 'route-list-column',
+      wideScreenOnly: true
+    },
+    {
       dataField: 'extraInfo.progress',
       text: t('route.list_header.progress'),
       formatter: advancementFormatter,
@@ -169,9 +179,7 @@ const RoutesList = (props) => {
       expandRow={{
         onlyOneExpanding: true,
         renderer: expandFormater
-      }}
-    // rowEvents={ rowEvents }
-    />);
+      }}/>);
 };
 
 RoutesList.propTypes = propTypes;
@@ -184,7 +192,7 @@ export default RoutesList;
 // ========
 
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => {
-  return formatExtraData[row.user_id].email
+  return formatExtraData[row.user_id].email;
 };
 
 const statusFormatter = (cell, row, rowIndex, formatExtraData) => (<RouteStatusColors route={row} type={formatExtraData} withLabels withCount={false} />);
@@ -206,6 +214,8 @@ const ETAFormatter = (cell, row) => {
   }
   return <Label bsStyle={style} style={{ display: 'block', width: '100%' }}>{delay} - {delayPlanned}</Label>;
 };
+
+const ArchivedSatusFormatter = cell => <div title={cell}>{cell ? new Date(cell).toLocaleDateString() : ""}</div>;
 
 const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
   return (<ButtonGroup justified>

@@ -48,9 +48,11 @@
       "missions": "missions",
       "rests": "rests",
       "arrivals": "arrival",
+      "status": "archiving",
       "progress": "progress",
       "estimated_time_arrival": "estimated time arrival (ETA)"
     },
+    "archived_at_title": "route archived at {{date}}",
     "actions": {
       "help_text": {
         "details": "display route details"

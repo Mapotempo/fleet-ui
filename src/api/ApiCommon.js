@@ -7,7 +7,7 @@ axios.interceptors.response.use(
   thrown => {
     if (axios.isCancel(thrown))
       throw new CancelApiException();
-    else if (thrown.isAxiosError) {
+    else if (thrown.isAxiosError && thrown.response) {
       let status = thrown.response.status;
       let message = thrown.response.data ? thrown.response.data.error : thrown.toString();
       throw new BaseApiException(message, status);

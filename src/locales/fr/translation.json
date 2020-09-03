@@ -49,9 +49,11 @@
       "missions": "missions",
       "rests": "pauses",
       "arrivals": "arrivée",
+      "status": "archivage",
       "progress": "avancement",
       "estimated_time_arrival": "heure d'arrivée estimée (ETA)"
     },
+    "archived_at_title": "tournée archivée le {{date}}",
     "actions": {
       "help_text": {
         "details": "afficher les détails de la tournée"
