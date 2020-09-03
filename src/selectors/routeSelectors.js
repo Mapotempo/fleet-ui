@@ -9,7 +9,7 @@ export const routesSelector = state => state.fleet.routes.items;
 
 export const missionsDowloadProgressSelector = createSelector(
   routesSelector,
-  routes => routes.length ? (routes.filter(route => route.missions.length > 0).length / routes.length) * 100 : 100
+  routes => routes.length ? (routes.filter(route => route.missions.length > 0).length / routes.length) * 100 : 0
 );
 
 export const globalRoutesInfoSelector = createSelector(

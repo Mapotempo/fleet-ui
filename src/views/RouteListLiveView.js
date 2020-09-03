@@ -36,10 +36,10 @@ const RouteListLiveView = (props) => {
 
   // Use auto fetch
   useAutoFetchRoutesMissions(routes);
-
   return (
     <React.Fragment>
       <LoadingBar
+        shadow={false}
         progress={missionsDownloadProgress}
         height={3}
         color='#00AAC2'
