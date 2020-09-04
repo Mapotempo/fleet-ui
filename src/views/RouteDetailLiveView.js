@@ -53,12 +53,6 @@ const RouteDetailLiveView = (props) => {
 
   return (
     <React.Fragment>
-      {/* <Row className="mtf-dashboard-row" >
-        <Col md={12}>
-          <Header text={t('route.route_detail_title', { name: route.name })}
-            onBackClick={props.onBackClick} />
-        </Col>
-      </Row> */}
       <Row className="mtf-dashboard-row">
         <Col md={12}>
           <Panel>

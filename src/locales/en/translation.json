@@ -36,6 +36,16 @@
     }
   },
   "route": {
+    "route_info": {
+      "further_information": "Route further information:",
+      "created_at": "creation date",
+      "planned_version": "version {{version}}",
+      "planned_duration": "planned duration",
+      "planned_distance": "planned distance",
+      "expire_at": "expiration date",
+      "archiving_status": "archiving status",
+      "archived_by_xx_on_date": "archived by {{id}} on {{date}}"
+    },
     "routes_of": "Routes of ",
     "route_not_found": "Route not found",
     "route_detail_back": "back to routes list",
@@ -52,7 +62,6 @@
       "progress": "progress",
       "estimated_time_arrival": "estimated time arrival (ETA)"
     },
-    "archived_at_title": "route archived at {{date}}",
     "actions": {
       "help_text": {
         "details": "display route details"

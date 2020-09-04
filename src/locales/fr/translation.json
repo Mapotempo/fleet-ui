@@ -36,8 +36,17 @@
     }
   },
   "route": {
+    "route_info": {
+      "further_information": "Informations complémentaires à la tournée :",
+      "created_at": "date de création",
+      "planned_version": "version {{version}}",
+      "planned_duration": "durée planifiée",
+      "planned_distance": "distance planifiée",
+      "expire_at": "date d'expiration ",
+      "archiving_status": "statut de l'archivage",
+      "archived_by_xx_on_date": "archivé par {{id}} le {{date}}"
+    },
     "routes_of": "Tournées du ",
-    "route_detail_title": "Tournée : {{name}}",
     "route_not_found": "Tournée non trouvée",
     "route_detail_back": "retour à la liste des tournées",
     "list_header": {
@@ -53,7 +62,6 @@
       "progress": "avancement",
       "estimated_time_arrival": "heure d'arrivée estimée (ETA)"
     },
-    "archived_at_title": "tournée archivée le {{date}}",
     "actions": {
       "help_text": {
         "details": "afficher les détails de la tournée"

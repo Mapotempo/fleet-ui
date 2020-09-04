@@ -28,7 +28,7 @@ export const generateCompanyData = (companyId, email, apiKey, minMission = 0, ma
     missionActionTypes: generateMissionActionsType(companyId),
     missionStatusTypes: generateMissionStatusType(companyId)
   };
-  let routes = users.filter(user => user.vehicle).map(user => generateRoute(user, today, workflow));
+  let routes = users.filter(user => user.vehicle).map(user => generateRoute(user, today, workflow, userInfoSet));
   return {
     users: users,
     userInfoSet: userInfoSet,

@@ -7,10 +7,19 @@ import faker from 'Faker';
 const MAX_MISSION = 50;
 const LASTIFY_THREASHOLD = 96;
 
-export const generateRoute = (user, date, workflow) => {
+export const generateRoute = (user, date, workflow, userInfoSet) => {
   let routeId = 'route-' + getRandomUUID(11);
   let missions = generateMissionSet(routeId, user, date, workflow);
   let duration = computeDuration(missions);
+  let created_at = new Date(date);
+  created_at.setHours(created_at.getHours() - 2);
+  let expire_at = new Date(created_at);
+  expire_at.setMonth(expire_at.getMonth() + 6);
+
+  let archived_at = getRandomInt(0, 10) > 3 && userInfoSet[user.sync_user].length > 0 ? new Date() : null;
+  let archived_by = archived_at ? userInfoSet[user.sync_user][0].device_info.device_id : null;
+
+
   return {
     "id": routeId,
     "date": dateToLocalISO(date),
@@ -22,7 +31,12 @@ export const generateRoute = (user, date, workflow) => {
     "duration": duration,
     "distance": 29147,
     "missions_count": missions.length,
-    "missions": missions
+    "missions": missions,
+    "created_at": dateToLocalISO(created_at),
+    "planned_version": getRandomInt(0, 5),
+    "expire_at": dateToLocalISO(expire_at),
+    "archived_at": archived_at ? dateToLocalISO(archived_at) : undefined,
+    "archived_by": archived_by
   };
 };
 

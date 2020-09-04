@@ -12,10 +12,12 @@ import { missionStatusTypesMapper } from '../../selectors';
 import { usersMapper } from '../../selectors';
 
 // Component
-import { UserPanel } from '../user/UserInfos';
 import GenericTable from '../utils/table';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
+import { ProgressBar, Label, Badge, ButtonGroup, Button, Glyphicon, Grid, Col, Row } from 'react-bootstrap';
+import { Title } from '../utils/title';
+import { UserInfos, UserSettings, DeviceInfos } from '../user/UserInfos';
+import RouteInfos from './RouteInfos';
 
 // ==========
 // ROUTE LIST
@@ -76,7 +78,8 @@ const RoutesList = (props) => {
       title: true,
       classes: 'route-list-column overflow',
       headerClasses: 'route-list-column',
-      sort: true
+      sort: true,
+      ...widthStyleGenerator(25)
     },
     {
       dataField: 'user_email',
@@ -132,16 +135,6 @@ const RoutesList = (props) => {
       align: 'center',
       classes: 'route-list-column',
       headerClasses: 'route-list-column'
-    },
-    {
-      dataField: 'archived_at',
-      text: t('route.list_header.status'),
-      headerAlign: 'center',
-      align: 'center',
-      formatter: ArchivedSatusFormatter,
-      classes: 'route-list-column',
-      headerClasses: 'route-list-column',
-      wideScreenOnly: true
     },
     {
       dataField: 'extraInfo.progress',
@@ -215,8 +208,6 @@ const ETAFormatter = (cell, row) => {
   return <Label bsStyle={style} style={{ display: 'block', width: '100%' }}>{delay} - {delayPlanned}</Label>;
 };
 
-const ArchivedSatusFormatter = cell => <div title={cell}>{cell ? new Date(cell).toLocaleDateString() : ""}</div>;
-
 const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
   return (<ButtonGroup justified>
     <ButtonActionWrapper onClick={() => formatExtraData(row.id)} href="#"
@@ -257,4 +248,33 @@ ButtonActionWrapper.propTypes = { titleTag: PropTypes.string.isRequired };
 // ExpandRow
 // =========
 
-const expandFormater = row => <UserPanel userId={row.user_id}></UserPanel>;
+const ExpandRowComponent = (props) => {
+  const { t } = useTranslation();
+  return (
+    <Grid fluid>
+      <Row className="show-grid">
+        <Col md={5}>
+          <Title text={t("route.route_info.further_information")} />
+          <RouteInfos route={props.route} />
+          <Title text={t("user_info.driver.title")} />
+          <UserInfos userId={props.userId} />
+          <Title text={t("user_info.application_settings.title")} />
+          <UserSettings  userId={props.userId} />
+        </Col>
+        <Col md={7}>
+          <Title text={t("user_info.devices_informations.title")} />
+          <DeviceInfos  userId={props.userId} />
+        </Col>
+      </Row>
+    </Grid>
+  );
+};
+
+ExpandRowComponent.propTypes = {
+  route: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired
+};
+
+const expandFormater = row => <ExpandRowComponent route={row} userId={row.user_id}></ExpandRowComponent>;
+
+

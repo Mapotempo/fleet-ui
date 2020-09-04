@@ -11,14 +11,12 @@ import { useAutoFetchRoutesMissions } from '../hooks/useAutoFetch';
 import { routesSelector, globalRoutesInfoSelector, missionsDowloadProgressSelector } from '../selectors';
 
 // Component
-import { Title } from '../components/utils/title';
 import { Row, Col, Panel } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import RoutesList from '../components/route/RouteList';
 import DoughnutStatuses from '../components/route/RouteDoughnutStatuses';
 import { TotalFinishedRouteCard, TotalDelayedCard,
   TotalUndoneMissionCard, TotalFinishedMissionCard } from '../components/route/RouteCards';
-import DatePicker from "../components/utils/datepicker";
 
 const propTypes = {
   onRouteSelected: PropTypes.func,

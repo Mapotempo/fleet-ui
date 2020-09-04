@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Media } from 'react-bootstrap';
 
 export const Entry = (props) => {
-  let { icon, title, content } = props;
+  let { icon, title, titleHelp, content, contentHelp } = props;
   return (
     <React.Fragment>
       <Media>
@@ -14,10 +14,10 @@ export const Entry = (props) => {
           { icon }
         </Media.Left>) : null}
         <Media.Body>
-          <div className="mtf-entry-title">
+          <div className="mtf-entry-title" title={titleHelp}>
             { title }
           </div>
-          <div className="mtf-entry-content">
+          <div className="mtf-entry-content" title={contentHelp}>
             { content }
           </div>
         </Media.Body>
@@ -29,6 +29,7 @@ export const Entry = (props) => {
 Entry.propTypes = {
   icon: PropTypes.object,
   title: PropTypes.string,
-  content: PropTypes.any
+  titleHelp: PropTypes.string,
+  content: PropTypes.any,
+  contentHelp: PropTypes.string
 };
-
