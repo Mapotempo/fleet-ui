@@ -26,7 +26,7 @@ $generic-even-color: #ffffff;
       background-color: $generic-even-color !important;
     }
 
-    .generic-table-raw-expanding {
+    .generic-table-row-expanding {
       border-top: 0 !important;
     }
   }
@@ -38,6 +38,22 @@ $generic-even-color: #ffffff;
 //    #                      #
 //    ########################*/
 
+.row-expand {
+  a{
+    cursor: pointer;
+  }
+  ::before {
+    content: "▸\00a0";
+  }
+}
+
+.generic-table-row-expanded
+{
+  .row-expand ::before {
+    content: "▾\00a0" !important;
+  }
+}
+
 .route-table-wrapper {
   // max-height: $generic-wrapper-max-height;
   // overflow: auto;
@@ -48,7 +64,6 @@ $generic-even-color: #ffffff;
     z-index: 500;
   }
   .route-table-row {
-    cursor: pointer;
   }
 }
 

@@ -23,7 +23,7 @@ const RouteBreadcrumb = (props) => {
         {t("route.routes_of")}
         { props.routeId ? formatLocalDashedDate(props.selectedDate, i18n.language) :
           <DatePicker
-            style={{ display: 'inline-block', width: "150px", fontSize: '24px' }}
+            style={{ display: 'inline-block', width: "200px", fontSize: '24px' }}
             initialDate={props.selectedDate}
             disabled={props.routeId}
             onChangeDate={handleChange} />

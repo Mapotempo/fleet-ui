@@ -25,20 +25,23 @@ import RouteInfos from './RouteInfos';
 
 const propTypes = {
   routes: PropTypes.array,
-  expandable: PropTypes.bool,
   onRouteSelected: PropTypes.func
 };
 
 const defaultProps = {
   routes: [],
-  expandable: false,
   onRouteSelected: () => {}
 };
 
 const RoutesList = (props) => {
   const { t } = useTranslation();
   const [wideScreen, setWideScreen] = useState(true);
+  const [expandedRowId, setExpandedRowId] = useState(undefined);
   let usersMap = useSelector(usersMapper);
+
+  const expandOneRow = (routeId) => {
+    setExpandedRowId(routeId === expandedRowId ? undefined : routeId);
+  };
 
   useEffect(() => {
     const reportWindowSize = () => {
@@ -76,7 +79,9 @@ const RoutesList = (props) => {
       dataField: 'name',
       text: t('route.list_header.name'),
       title: true,
-      classes: 'route-list-column overflow',
+      formatter: nameFormatter,
+      formatExtraData: expandOneRow,
+      classes: 'route-list-column overflow row-expand',
       headerClasses: 'route-list-column',
       sort: true,
       ...widthStyleGenerator(25)
@@ -170,7 +175,8 @@ const RoutesList = (props) => {
       pagination={ paginationFactory() }
       noDataIndication="No Route found"
       expandRow={{
-        onlyOneExpanding: true,
+        expanded: expandedRowId ?  [expandedRowId] : [],
+        expandByColumnOnly: true,
         renderer: expandFormater
       }}/>);
 };
@@ -183,6 +189,9 @@ export default RoutesList;
 // ========
 // Formater
 // ========
+const nameFormatter = (cell, row, rowIndex, expandOneRow) => {
+  return <a onClick={()=>expandOneRow(row.id)}>{ cell }</a>;
+};
 
 const userEmailFormatter = (cell, row, rowIndex, formatExtraData) => {
   return formatExtraData[row.user_id].email;
