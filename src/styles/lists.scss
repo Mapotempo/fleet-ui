@@ -54,6 +54,12 @@ $generic-even-color: #ffffff;
   }
 }
 
+.route-list {
+  .react-bootstrap-table-pagination {
+    padding: 10px;
+  }
+}
+
 .route-table-wrapper {
   // max-height: $generic-wrapper-max-height;
   // overflow: auto;

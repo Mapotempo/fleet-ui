@@ -163,22 +163,24 @@ const RoutesList = (props) => {
   let columns = columnsBase.filter((item) => !item.wideScreenOnly || item.wideScreenOnly == wideScreen);
 
   return (
-    <GenericTable
-      wrapperClasses="route-table-wrapper"
-      rowClasses="route-table-row"
-      keyField='id'
-      data={props.routes}
-      columns={columns}
-      hover={false}
-      striped
-      bordered={false}
-      pagination={ paginationFactory() }
-      noDataIndication="No Route found"
-      expandRow={{
-        expanded: expandedRowId ?  [expandedRowId] : [],
-        expandByColumnOnly: true,
-        renderer: expandFormater
-      }}/>);
+    <div className="route-list">
+      <GenericTable
+        wrapperClasses="route-table-wrapper"
+        rowClasses="route-table-row"
+        keyField='id'
+        data={props.routes}
+        columns={columns}
+        hover={false}
+        striped
+        bordered={false}
+        pagination={ paginationFactory() }
+        noDataIndication="No Route found"
+        expandRow={{
+          expanded: expandedRowId ?  [expandedRowId] : [],
+          expandByColumnOnly: true,
+          renderer: expandFormater
+        }} />
+    </div>);
 };
 
 RoutesList.propTypes = propTypes;
