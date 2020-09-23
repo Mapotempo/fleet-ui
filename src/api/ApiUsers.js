@@ -11,7 +11,7 @@ export default {
   },
   apiFetchUserInfosCompany({ host, apiKey }) {
     return doGet(host, {
-      url: `/api/0.1/user_info/`,
+      url: `/api/0.1/user_infos/`,
       apiKey
     })
       .then(data => Promise.resolve(data.user_infos))

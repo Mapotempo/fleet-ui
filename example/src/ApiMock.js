@@ -28,7 +28,7 @@ const initMock = (dataSet) => {
       // ####################
       // # Users Info API
       // ####################
-      this.get("https://fleet.beta.mapotempo.com/api/0.1/user_info/:sync_user", (schema, request) => {
+      this.get("https://fleet.beta.mapotempo.com/api/0.1/user_infos/:sync_user", (schema, request) => {
         if (!checkCredential(dataSet, request.queryParams.api_key))
           return new Response(401, { "errors": "Your are not authorized to perform this action" });
         let userInfos = dataSet[request.queryParams.api_key].userInfoSet[request.params.sync_user];

@@ -24,9 +24,9 @@ const UserInfos = (props) => {
   let usersMap = useSelector(usersMapper);
   let user = usersMap[props.userId];
   return (<React.Fragment>
-    <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faUser} />} title={t("user_info.driver.name")} content={user.name} />
-    <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faAt} />} title={t("user_info.driver.email")} content={user.email} />
-    <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faPhone} />} title={t("user_info.driver.phone")} content={user.phone} />
+    <Entry icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faUser} />} title={t("user_info.driver.name")} content={user.name} />
+    <Entry icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faAt} />} title={t("user_info.driver.email")} content={user.email} />
+    <Entry icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faPhone} />} title={t("user_info.driver.phone")} content={user.phone} />
   </React.Fragment>);
 };
 
@@ -93,11 +93,12 @@ const DeviceInfoPanel = (props) => {
   const { t } = useTranslation();
   return (
     <Panel className="mtf-user-info-device">
-      <Entry title={t("user_info.devices_informations.device_id")} content={userInfo.device_info.device_id} />
+      <Entry title={t("user_info.devices_informations.device_id")} content={userInfo.device_id} />
       <Entry title={t("user_info.devices_informations.device_os")} content={`${userInfo.device_info.os}-${userInfo.device_info.os_version}`} />
       <Entry title={t("user_info.devices_informations.device_model")} content={userInfo.device_info.model} />
-      <Entry title={t("user_info.devices_informations.last_update")} content={userInfo.date} />
-      <Entry title={t("user_info.devices_informations.last_connection")} content={userInfo.last_sign_in_at} />
+      <Entry title={t("user_info.devices_informations.last_update")} content={userInfo.updated_at} />
+      <Entry title={t("user_info.devices_informations.last_sign_in")} content={userInfo.last_sign_in_at} />
+      <Entry title={t("user_info.devices_informations.sign_in_count")} content={userInfo.sign_in_count} />
       <Entry title={t("user_info.devices_informations.app_version")} content={userInfo.current_app_version} />
       <Entry title={t("user_info.devices_informations.lib_version")} content={userInfo.current_lib_version} />
       <Entry title={t("user_info.devices_informations.connection_type")} content={userInfo.current_sign_in_connexion_type} />
@@ -113,11 +114,12 @@ const DeviceInfos = (props) => {
   const { t } = useTranslation();
   let usersMap = useSelector(usersMapper);
   let user = usersMap[props.userId];
+
   return (
     <React.Fragment>
-      <Entry icon={<FontAwesomeIcon color="grey  " size="1x" icon={faMobile} />} title={t("user_info.devices_informations.current_connection", {count: user.user_infos.length})} content={user.user_infos.length} />
+      <Entry icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faMobile} />} title={t("user_info.devices_informations.current_connection", {count: user.user_infos.length})} content={user.user_infos.length} />
       <div className="mtf-user-info-devices-container">
-        {user.user_infos.map(userInfo => (<DeviceInfoPanel key={userInfo.id} userInfo={userInfo} />))}
+        {user.user_infos.sort((ui1, ui2) => ui2.updated_at.localeCompare(ui1.updated_at)).map(userInfo => (<DeviceInfoPanel key={userInfo.id} userInfo={userInfo} />))}
       </div>
     </React.Fragment>
   );

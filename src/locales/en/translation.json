@@ -127,7 +127,8 @@
       "device_os": "device os",
       "device_model": "device model",
       "last_update": "last update",
-      "last_connection": "last connection",
+      "last_sign_in": "last connection",
+      "sign_in_count": "connections count",
       "app_version": "app version",
       "lib_version": "lib version",
       "connection_type": "connection type"

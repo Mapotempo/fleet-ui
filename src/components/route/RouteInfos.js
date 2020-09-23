@@ -14,24 +14,24 @@ const RouteInfos = (props) => {
   const { t, i18n } = useTranslation();
   return (<React.Fragment>
     <Entry
-      icon={<FontAwesomeIcon color="grey  " size="1x" icon={faCalendarPlus} />}
+      icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faCalendarPlus} />}
       title={t("route.route_info.created_at")}
       content={new Date(props.route.created_at).toLocaleString(i18n.language)}
       contentHelp={t("route.route_info.planned_version", {version: props.route.planned_version})}/>
     <Entry
-      icon={<FontAwesomeIcon color="grey  " size="1x" icon={faClock} />}
+      icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faClock} />}
       title={t("route.route_info.planned_duration")}
       content={`${Math.floor(props.route.duration / 3600)}h${Math.floor((props.route.duration % 3600) / 60)}m`} />
     <Entry
-      icon={<FontAwesomeIcon color="grey  " size="1x" icon={faRoad} />}
+      icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faRoad} />}
       title={t("route.route_info.planned_distance")}
-      content={`${props.route.distance}km`} />
+      content={`${props.route.distance/1000}km`} />
     <Entry
-      icon={<FontAwesomeIcon color="grey  " size="1x" icon={faHourglassEnd} />}
+      icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faHourglassEnd} />}
       title={t("route.route_info.expire_at")}
       content={new Date(props.route.expire_at).toLocaleDateString(i18n.language)} />
     <Entry
-      icon={<FontAwesomeIcon color="grey  " size="1x" icon={faArchive} />}
+      icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faArchive} />}
       title={t("route.route_info.archiving_status")} content={
         props.route.archived_at ?
           t("route.route_info.archived_by_xx_on_date", {

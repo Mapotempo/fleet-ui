@@ -265,16 +265,24 @@ const ExpandRowComponent = (props) => {
     <Grid fluid>
       <Row className="show-grid">
         <Col md={5}>
-          <Title text={t("route.route_info.further_information")} />
-          <RouteInfos route={props.route} />
-          <Title text={t("user_info.driver.title")} />
-          <UserInfos userId={props.userId} />
-          <Title text={t("user_info.application_settings.title")} />
-          <UserSettings  userId={props.userId} />
+          <div className="route-expand-row-element">
+            <Title text={t("route.route_info.further_information")} />
+            <RouteInfos route={props.route} />
+          </div>
+          <div className="route-expand-row-element">
+            <Title text={t("user_info.driver.title")} />
+            <UserInfos userId={props.userId} />
+          </div>
+          <div className="route-expand-row-element">
+            <Title text={t("user_info.application_settings.title")} />
+            <UserSettings userId={props.userId} />
+          </div>
         </Col>
         <Col md={7}>
-          <Title text={t("user_info.devices_informations.title")} />
-          <DeviceInfos  userId={props.userId} />
+          <div className="route-expand-row-element">
+            <Title text={t("user_info.devices_informations.title")} />
+            <DeviceInfos userId={props.userId} />
+          </div>
         </Col>
       </Row>
     </Grid>
