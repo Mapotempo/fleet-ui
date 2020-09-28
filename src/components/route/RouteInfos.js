@@ -25,7 +25,7 @@ const RouteInfos = (props) => {
     <Entry
       icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faRoad} />}
       title={t("route.route_info.planned_distance")}
-      content={`${props.route.distance/1000}km`} />
+      content={`${(props.route.distance/1000).toFixed(1)}km`} />
     <Entry
       icon={<FontAwesomeIcon fixedWidth color="grey  " size="1x" icon={faHourglassEnd} />}
       title={t("route.route_info.expire_at")}
